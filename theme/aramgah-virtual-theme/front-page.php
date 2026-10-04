@@ -20,6 +20,8 @@ $memorials = get_posts([
   </nav>
 
   <section id="chapter-arrival" class="avam-chapter avam-chapter--hero" data-chapter="arrival">
+    <?php $home_video = get_option("avam_home_video",""); ?>
+    <div class="avam-cinematic-media" aria-hidden="true"><?php if ($home_video): ?><video class="avam-home-video" autoplay muted loop playsinline preload="metadata" src="<?php echo esc_url($home_video); ?>"></video><?php endif; ?><div class="avam-video-wash"></div><div class="avam-motion-field"><span></span><span></span><span></span></div></div>
     <div class="avam-chapter-bg" aria-hidden="true"></div>
     <div class="avam-orb avam-orb--one" aria-hidden="true"></div>
     <div class="avam-orb avam-orb--two" aria-hidden="true"></div>
