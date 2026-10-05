@@ -147,3 +147,26 @@ a{text-decoration:none;color:inherit}
  .avam-home-pre .avam-panel-dot{transform:none}
  .avam-home-pre .avam-panel-track i{transform:none}
 }
+
+/* Homepage search + media controls */
+.avam-home-search{position:absolute;left:calc((64 + 13)*var(--u));top:calc(50% + 101*var(--u));width:calc(510*var(--u));height:calc(66*var(--u));display:flex;align-items:center;gap:calc(12*var(--u));padding:calc(7*var(--u));border:calc(1*var(--u)) solid rgba(255,255,255,.72);border-radius:999px;background:rgba(255,255,255,.58);-webkit-backdrop-filter:blur(calc(34*var(--u))) saturate(120%);backdrop-filter:blur(calc(34*var(--u))) saturate(120%);box-shadow:0 calc(10*var(--u)) calc(30*var(--u)) rgba(20,42,75,.08),inset 0 calc(1*var(--u)) 0 rgba(255,255,255,.7);z-index:4}
+.avam-home-search-icon{width:calc(34*var(--u));height:calc(34*var(--u));display:flex;align-items:center;justify-content:center;flex:none;margin-right:calc(4*var(--u))}
+.avam-home-search-icon svg{width:calc(21*var(--u));height:calc(21*var(--u));stroke:#26334b;fill:none;stroke-width:1.7;stroke-linecap:round}
+.avam-home-search input{min-width:0;flex:1;border:0;outline:0;background:transparent;color:#142038;font:400 calc(15.5*var(--u))/1 "Vazirmatn",Arial,sans-serif;padding:0}
+.avam-home-search input::placeholder{color:#68748a;opacity:1}
+.avam-home-search-sep{width:1px;height:calc(27*var(--u));background:rgba(86,103,128,.24);flex:none}
+.avam-home-search button{height:calc(50*var(--u));padding:0 calc(23*var(--u));border:0;border-radius:999px;background:#0f1b31;color:#fff;font:500 calc(15*var(--u))/1 "Vazirmatn",Arial,sans-serif;cursor:pointer;flex:none;transition:transform .25s,background .25s}
+.avam-home-search button:hover{transform:translateY(calc(-1*var(--u)));background:#1b2b47}
+.avam-home-bg-image{object-fit:cover}
+@media(max-aspect-ratio:87/80),(max-width:899px),(max-height:639px){
+ .avam-home-search{position:relative;left:auto;top:auto;width:100%;height:calc(62*var(--u));margin-top:calc(25*var(--u));padding:calc(6*var(--u))}
+ .avam-home-search input{font-size:calc(16*var(--u))}
+ .avam-home-search button{height:calc(48*var(--u));padding:0 calc(19*var(--u));font-size:calc(15*var(--u))}
+ .avam-home-search-icon{width:calc(32*var(--u));height:calc(32*var(--u))}
+}
+@media(max-width:640px) and (max-aspect-ratio:1/1){
+ .avam-home-search{height:calc(60*var(--u));margin-top:calc(23*var(--u))}
+ .avam-home-search-sep{display:none}
+ .avam-home-search input[name="city"]{display:none}
+ .avam-home-search button{padding:0 calc(18*var(--u))}
+}
