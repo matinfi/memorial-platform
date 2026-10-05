@@ -5,15 +5,23 @@ $user_count = count_users();
 $total_users = isset($user_count['total_users']) ? (int) $user_count['total_users'] : 0;
 $memorial_count = wp_count_posts('avam_memorial');
 $total_memorials = isset($memorial_count->publish) ? (int) $memorial_count->publish : 0;
-$poster = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260912_105822_bf7c2d53-9957-4521-bbbf-7c1ab7a70130.png';
-$video = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260912_105953_21ad8049-9088-4a00-bad3-aee6b5575a2b.mp4';
+$image_id = (int) get_option('avam_home_image', 0);
+$video_id = (int) get_option('avam_home_video', 0);
+$poster = $image_id ? wp_get_attachment_url($image_id) : 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260912_105822_bf7c2d53-9957-4521-bbbf-7c1ab7a70130.png';
+$video = $video_id ? wp_get_attachment_url($video_id) : 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260912_105953_21ad8049-9088-4a00-bad3-aee6b5575a2b.mp4';
+$media_type = get_option('avam_home_media_type', 'video');
+$search_url = function_exists('avam_memorials_url') ? avam_memorials_url() : home_url('/memorials/');
 $register_url = function_exists('avam_register_url') ? avam_register_url() : wp_registration_url();
 $login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url();
 ?>
 <div class="avam-home-page">
   <div class="avam-home-card">
-    <video class="avam-home-bg" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"
-      poster="<?php echo esc_url($poster); ?>" src="<?php echo esc_url($video); ?>"></video>
+    <?php if($media_type === 'image' || !$video): ?>
+      <img class="avam-home-bg avam-home-bg-image" src="<?php echo esc_url($poster); ?>" alt="" aria-hidden="true">
+    <?php else: ?>
+      <video class="avam-home-bg" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"
+        poster="<?php echo esc_url($poster); ?>" src="<?php echo esc_url($video); ?>"></video>
+    <?php endif; ?>
     <div class="avam-home-tint" aria-hidden="true"></div>
 
     <div class="avam-home-stack">
@@ -55,6 +63,13 @@ $login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url
       <main class="avam-home-hero">
         <p class="avam-home-eyebrow">جایی برای نام، تصویر و روایت</p>
         <h1><span>یادها</span><br><span>اینجا <em>می‌مانند.</em></span></h1>
+        <form class="avam-home-search" action="<?php echo esc_url($search_url); ?>" method="get" role="search">
+          <span class="avam-home-search-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg></span>
+          <input name="q" type="search" placeholder="جستجوی نام متوفی" aria-label="جستجوی نام متوفی">
+          <span class="avam-home-search-sep"></span>
+          <input name="city" type="search" placeholder="شهر" aria-label="شهر">
+          <button type="submit">جستجو</button>
+        </form>
         <div class="avam-home-tagrow">
           <a class="avam-home-play" href="#avam-home-stats" aria-label="دیدن یادبودها"><svg viewBox="0 0 13 14" aria-hidden="true"><path d="M1.4 1.3 11.6 7 1.4 12.7z" fill="#0b1526"/></svg></a>
           <span>برای کسانی که نمی‌خواهیم از یاد بروند.</span>
@@ -94,6 +109,9 @@ $login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url
 </div>
 
 <script>
+(function(){
+  const media=document.querySelector('.avam-home-bg-video');
+});
 (function(){
   const d=document.documentElement;
   if(!('animate' in Element.prototype)) return;
