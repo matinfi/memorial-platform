@@ -26,6 +26,7 @@ final class AVAM_Core {
   add_action('template_redirect',[__CLASS__,'handle_auth']);
   add_action('wp_ajax_avam_save_memorial',[__CLASS__,'save_front_memorial']);
   add_action('wp_ajax_nopriv_avam_save_memorial',[__CLASS__,'save_front_memorial']);
+  add_action('wp_ajax_avam_delete_memorial',[__CLASS__,'delete_front_memorial']);
  }
 
  public static function register_cpt(){
@@ -89,13 +90,120 @@ JS;
 
  public static function account(){
   if(!is_user_logged_in()) return '<div class="avam-card"><p>برای مشاهده حساب خود ابتدا وارد شوید.</p><a class="avam-btn" href="'.esc_url(avam_login_url()).'">ورود</a></div>';
-  $uid=get_current_user_id();$posts=get_posts(['post_type'=>self::CPT,'author'=>$uid,'posts_per_page'=>20,'post_status'=>['publish','draft','pending']]);
-  ob_start();?><div class="avam-card"><div class="avam-account-head"><div><h1>حساب من</h1><p>یادبودهای شما در اینجا مدیریت می‌شوند.</p></div><a class="avam-btn" href="<?php echo esc_url(avam_create_url());?>">یادبود جدید</a></div><div class="avam-memorial-list"><?php foreach($posts as $p):?><div class="avam-memorial-item"><div><strong><?php echo esc_html($p->post_title);?></strong><div class="avam-plugin-muted"><?php echo esc_html($p->post_status);?></div></div><a href="<?php echo esc_url(get_permalink($p));?>">مشاهده</a></div><?php endforeach;if(!$posts):?><p>هنوز یادبودی نساخته‌اید.</p><?php endif;?></div><p><a href="<?php echo esc_url(wp_logout_url(home_url('/')));?>">خروج از حساب</a></p></div><?php return ob_get_clean();
+  $uid=get_current_user_id();
+  $user=wp_get_current_user();
+  $posts=get_posts(['post_type'=>self::CPT,'author'=>$uid,'posts_per_page'=>50,'post_status'=>['publish','draft','pending'],'orderby'=>'date','order'=>'DESC']);
+  $total=count($posts);$published=0;$drafts=0;
+  foreach($posts as $p){if($p->post_status==='publish')$published++;else$drafts++;}
+  $recent=array_slice($posts,0,3);
+  $create=avam_create_url();$memorials=avam_memorials_url();$logout=wp_logout_url(home_url('/'));
+  ob_start(); ?>
+  <section class="avam-dashboard" dir="rtl">
+    <aside class="avam-dash-sidebar">
+      <a class="avam-dash-brand" href="<?php echo esc_url(home_url('/')); ?>">
+        <span class="avam-dash-brand-mark">آ</span><span><b>آرامگاه مجازی</b><small>فضای شخصی شما</small></span>
+      </a>
+      <nav class="avam-dash-nav" aria-label="ناوبری حساب">
+        <a class="is-active" href="<?php echo esc_url(avam_account_url()); ?>"><span class="avam-nav-icon">⌂</span>نمای کلی</a>
+        <a href="<?php echo esc_url($create); ?>"><span class="avam-nav-icon">＋</span>ساخت یادبود</a>
+        <a href="<?php echo esc_url($memorials); ?>"><span class="avam-nav-icon">⌕</span>جستجوی یادبودها</a>
+        <a href="<?php echo esc_url(home_url('/')); ?>"><span class="avam-nav-icon">↗</span>مشاهده سایت</a>
+      </nav>
+      <div class="avam-dash-sidebar-foot">
+        <div class="avam-dash-user-mini"><span><?php echo esc_html(mb_substr($user->display_name ?: $user->user_login,0,1)); ?></span><div><strong><?php echo esc_html($user->display_name ?: $user->user_login); ?></strong><small><?php echo esc_html($user->user_email); ?></small></div></div>
+        <a class="avam-dash-logout" href="<?php echo esc_url($logout); ?>">خروج از حساب <span>↪</span></a>
+      </div>
+    </aside>
+
+    <main class="avam-dash-main">
+      <header class="avam-dash-topbar">
+        <div>
+          <span class="avam-dash-kicker">فضای شخصی</span>
+          <h1>سلام، <?php echo esc_html($user->display_name ?: $user->user_login); ?></h1>
+          <p>اینجا می‌توانید یادبودها را با آرامش مدیریت و روایت هر عزیز را کامل‌تر کنید.</p>
+        </div>
+        <a class="avam-dash-primary" href="<?php echo esc_url($create); ?>"><span>＋</span> ساخت یادبود جدید</a>
+      </header>
+
+      <div class="avam-dash-mobile-nav">
+        <a class="is-active" href="<?php echo esc_url(avam_account_url()); ?>">نمای کلی</a>
+        <a href="<?php echo esc_url($create); ?>">ساخت یادبود</a>
+        <a href="<?php echo esc_url($memorials); ?>">جستجو</a>
+      </div>
+
+      <section class="avam-dash-stats" aria-label="آمار حساب">
+        <article><span class="avam-stat-icon">♡</span><div><small>همه یادبودها</small><strong><?php echo esc_html($total); ?></strong></div><em>مجموع</em></article>
+        <article><span class="avam-stat-icon is-green">✓</span><div><small>منتشر شده</small><strong><?php echo esc_html($published); ?></strong></div><em>قابل مشاهده</em></article>
+        <article><span class="avam-stat-icon is-blue">◷</span><div><small>در حال تکمیل</small><strong><?php echo esc_html($drafts); ?></strong></div><em>پیش‌نویس / بررسی</em></article>
+      </section>
+
+      <section class="avam-dash-section">
+        <div class="avam-section-head"><div><span>مدیریت یادبودها</span><h2>آخرین یادبودها</h2></div><a href="<?php echo esc_url($create); ?>">+ افزودن یادبود</a></div>
+        <?php if($recent): ?>
+        <div class="avam-dash-memorials">
+        <?php foreach($recent as $p):
+          $city=get_post_meta($p->ID,'avam_city',true);$death=get_post_meta($p->ID,'avam_death',true);$thumb=get_the_post_thumbnail_url($p->ID,'medium');$status=$p->post_status==='publish'?'منتشر شده':($p->post_status==='draft'?'پیش‌نویس':'در انتظار بررسی');
+          $edit=add_query_arg('edit',(int)$p->ID,$create);
+        ?>
+          <article class="avam-dash-memorial">
+            <div class="avam-dash-memorial-photo"><?php if($thumb): ?><img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($p->post_title); ?>"><?php else: ?><span>♡</span><?php endif; ?></div>
+            <div class="avam-dash-memorial-body">
+              <div class="avam-dash-status <?php echo $p->post_status==='publish'?'is-published':''; ?>"><i></i><?php echo esc_html($status); ?></div>
+              <h3><?php echo esc_html($p->post_title); ?></h3>
+              <p><?php echo esc_html($city ?: 'شهر ثبت نشده'); ?><?php if($death): ?><span>•</span><?php echo esc_html($death); ?><?php endif; ?></p>
+              <small>ایجاد شده در <?php echo esc_html(get_the_date('j F Y',$p)); ?></small>
+            </div>
+            <div class="avam-dash-memorial-actions">
+              <a class="avam-action-view" href="<?php echo esc_url(get_permalink($p)); ?>">مشاهده</a>
+              <a class="avam-action-edit" href="<?php echo esc_url($edit); ?>">ویرایش</a>
+              <button type="button" class="avam-action-delete" data-id="<?php echo esc_attr($p->ID); ?>">حذف</button>
+            </div>
+          </article>
+        <?php endforeach; ?>
+        </div>
+        <?php else: ?>
+        <div class="avam-dash-empty"><div class="avam-empty-mark">♡</div><h3>هنوز یادبودی نساخته‌اید</h3><p>اولین یادبود را بسازید و نام، تصویر و روایت عزیزتان را در یک صفحه ماندگار نگه دارید.</p><a class="avam-dash-primary" href="<?php echo esc_url($create); ?>">ساخت اولین یادبود</a></div>
+        <?php endif; ?>
+      </section>
+
+      <section class="avam-dash-bottom">
+        <article class="avam-dash-info-card">
+          <div class="avam-info-head"><span class="avam-info-icon">✦</span><div><small>پیشنهاد</small><h3>یادبود را کامل‌تر کنید</h3></div></div>
+          <p>تصویر، روایت زندگی، خاطره، نامه و دعا را اضافه کنید تا صفحه یادبود فقط یک نام نباشد؛ یک روایت زنده باشد.</p>
+          <a href="<?php echo esc_url($create); ?>">مدیریت یادبودها <span>←</span></a>
+        </article>
+        <article class="avam-dash-profile">
+          <div class="avam-profile-avatar"><?php echo esc_html(mb_substr($user->display_name ?: $user->user_login,0,1)); ?></div>
+          <div><small>حساب شما</small><h3><?php echo esc_html($user->display_name ?: $user->user_login); ?></h3><p><?php echo esc_html($user->user_email); ?></p></div>
+          <a href="<?php echo esc_url($logout); ?>" aria-label="خروج">↪</a>
+        </article>
+      </section>
+    </main>
+  </section>
+  <?php return ob_get_clean();
  }
 
  public static function create(){
   if(!is_user_logged_in()) return '<div class="avam-card"><p>برای ساخت یادبود ابتدا وارد شوید.</p><a class="avam-btn" href="'.esc_url(avam_login_url()).'">ورود</a></div>';
-  ob_start();?><div class="avam-card"><h1>ساخت صفحه یادبود</h1><p class="avam-auth-lead">اطلاعاتی که دوست دارید برای همیشه کنار نام او بماند.</p><div id="avam-create-notice"></div><form id="avam-create-form" class="avam-form"><div class="avam-field"><label>نام و نام خانوادگی متوفی</label><input name="title" required></div><div class="avam-field"><label>شهر</label><input name="city" placeholder="مثلاً تهران"></div><div class="avam-field"><label>تاریخ تولد</label><input name="birth" placeholder="مثلاً ۱۳۳۵/۰۳/۱۰"></div><div class="avam-field"><label>تاریخ درگذشت</label><input name="death" placeholder="مثلاً ۱۴۰۴/۰۸/۲۱"></div><div class="avam-field"><label>روایت زندگی</label><textarea name="content" required></textarea></div><div class="avam-field"><label>وصیت</label><textarea name="will"></textarea></div><div class="avam-field"><label>نامه</label><textarea name="letter"></textarea></div><div class="avam-field"><label>خاطره</label><textarea name="memory"></textarea></div><div class="avam-field"><label>دعا</label><textarea name="prayer"></textarea></div><div class="avam-field"><label>تصویر</label><input type="file" name="image" accept="image/jpeg,image/png,image/webp"></div><button class="avam-btn" type="submit">ذخیره و ساخت یادبود</button></form></div><?php return ob_get_clean();
+  $edit_id=isset($_GET['edit'])?absint($_GET['edit']):0;$editing=false;$data=[];
+  if($edit_id){$p=get_post($edit_id);if($p&&$p->post_type===self::CPT&&(int)$p->post_author===get_current_user_id()){$editing=true;$data=['title'=>$p->post_title,'content'=>$p->post_content];foreach(['city','birth','death','will','letter','memory','prayer'] as $k)$data[$k]=get_post_meta($edit_id,'avam_'.$k,true);}}
+  $val=function($k)use($data){return esc_textarea($data[$k]??'');};
+  ob_start(); ?>
+  <div class="avam-card avam-create-card">
+    <div class="avam-create-top"><div><span class="avam-dash-kicker"><?php echo $editing?'ویرایش یادبود':'ساخت یادبود'; ?></span><h1><?php echo $editing?'روایت را کامل‌تر کنید':'صفحه‌ای برای ماندن'; ?></h1><p class="avam-auth-lead"><?php echo $editing?'اطلاعات این یادبود را ویرایش کنید و جزئیات بیشتری به آن اضافه کنید.':'اطلاعاتی که دوست دارید برای همیشه کنار نام او بماند.'; ?></p></div><a class="avam-create-back" href="<?php echo esc_url(avam_account_url()); ?>">← بازگشت به حساب</a></div>
+    <div id="avam-create-notice"></div>
+    <form id="avam-create-form" class="avam-form avam-memorial-form" enctype="multipart/form-data">
+      <input type="hidden" name="edit_id" value="<?php echo esc_attr($editing?$edit_id:0); ?>">
+      <div class="avam-form-section"><div class="avam-form-section-title"><span>01</span><div><strong>اطلاعات اصلی</strong><small>مشخصات پایه عزیز شما</small></div></div>
+        <div class="avam-form-grid"><div class="avam-field"><label>نام و نام خانوادگی متوفی</label><input name="title" value="<?php echo $val('title'); ?>" required></div><div class="avam-field"><label>شهر</label><input name="city" value="<?php echo $val('city'); ?>" placeholder="مثلاً تهران"></div><div class="avam-field"><label>تاریخ تولد</label><input name="birth" value="<?php echo $val('birth'); ?>" placeholder="مثلاً ۱۳۳۵/۰۳/۱۰"></div><div class="avam-field"><label>تاریخ درگذشت</label><input name="death" value="<?php echo $val('death'); ?>" placeholder="مثلاً ۱۴۰۴/۰۸/۲۱"></div></div>
+      </div>
+      <div class="avam-form-section"><div class="avam-form-section-title"><span>02</span><div><strong>روایت زندگی</strong><small>داستانی که باید ماندگار بماند</small></div></div><div class="avam-field"><label>روایت زندگی</label><textarea name="content" required placeholder="از زندگی، شخصیت، لحظه‌های مهم و چیزهایی که دوست دارید دیگران بدانند بنویسید..."><?php echo $val('content'); ?></textarea></div></div>
+      <div class="avam-form-section"><div class="avam-form-section-title"><span>03</span><div><strong>یادها و کلمات</strong><small>وصیت، نامه، خاطره و دعا</small></div></div><div class="avam-form-grid avam-form-grid-2"><div class="avam-field"><label>وصیت</label><textarea name="will" placeholder="اگر نوشته‌ای از او باقی مانده است..."><?php echo $val('will'); ?></textarea></div><div class="avam-field"><label>نامه</label><textarea name="letter" placeholder="نامه یا کلماتی که می‌خواهید نگه داشته شوند..."><?php echo $val('letter'); ?></textarea></div><div class="avam-field"><label>خاطره</label><textarea name="memory" placeholder="خاطره‌ای که هرگز نمی‌خواهید فراموش شود..."><?php echo $val('memory'); ?></textarea></div><div class="avam-field"><label>دعا</label><textarea name="prayer" placeholder="دعایی برای او..."><?php echo $val('prayer'); ?></textarea></div></div></div>
+      <div class="avam-form-section"><div class="avam-form-section-title"><span>04</span><div><strong>تصویر یادبود</strong><small>یک تصویر آرام و ماندگار انتخاب کنید</small></div></div><div class="avam-upload"><input type="file" name="image" accept="image/jpeg,image/png,image/webp"><div><strong><?php echo $editing?'تغییر تصویر یادبود':'افزودن تصویر'; ?></strong><small>JPG، PNG یا WebP — ترجیحاً تصویر باکیفیت و روشن</small></div><span>↑</span></div></div>
+      <div class="avam-form-submit"><a class="avam-create-back" href="<?php echo esc_url(avam_account_url()); ?>">انصراف</a><button class="avam-dash-primary" type="submit"><?php echo $editing?'ذخیره تغییرات':'ذخیره و ساخت یادبود'; ?><span>←</span></button></div>
+    </form>
+  </div>
+  <?php return ob_get_clean();
  }
 
  public static function search(){
@@ -129,11 +237,18 @@ JS;
  public static function save_front_memorial(){
   if(!is_user_logged_in()||!check_ajax_referer('avam_front','nonce',false))wp_send_json_error(['message'=>'درخواست نامعتبر است.'],403);
   $title=sanitize_text_field(wp_unslash($_POST['title']??''));if(!$title)wp_send_json_error(['message'=>'نام الزامی است.'],422);
-  $id=wp_insert_post(['post_type'=>self::CPT,'post_status'=>'publish','post_title'=>$title,'post_content'=>sanitize_textarea_field(wp_unslash($_POST['content']??'')),'post_author'=>get_current_user_id()],true);
+  $edit_id=absint($_POST['edit_id']??0);$post_content=sanitize_textarea_field(wp_unslash($_POST['content']??''));
+  if($edit_id){$existing=get_post($edit_id);if(!$existing||$existing->post_type!==self::CPT||(int)$existing->post_author!==get_current_user_id())wp_send_json_error(['message'=>'دسترسی به این یادبود مجاز نیست.'],403);$id=wp_update_post(['ID'=>$edit_id,'post_title'=>$title,'post_content'=>$post_content],true);}else{$id=wp_insert_post(['post_type'=>self::CPT,'post_status'=>'publish','post_title'=>$title,'post_content'=>$post_content,'post_author'=>get_current_user_id()],true);}
   if(is_wp_error($id))wp_send_json_error(['message'=>'ذخیره انجام نشد.'],500);
   foreach(['city','birth','death','will','letter','memory','prayer'] as $k)update_post_meta($id,'avam_'.$k,sanitize_textarea_field(wp_unslash($_POST[$k]??'')));
   if(!empty($_FILES['image']['name'])){require_once ABSPATH.'wp-admin/includes/file.php';require_once ABSPATH.'wp-admin/includes/media.php';require_once ABSPATH.'wp-admin/includes/image.php';$att=media_handle_upload('image',$id);if(!is_wp_error($att))set_post_thumbnail($id,$att);}
   wp_send_json_success(['url'=>get_permalink($id)]);
+ }
+
+ public static function delete_front_memorial(){
+  if(!is_user_logged_in()||!check_ajax_referer('avam_front','nonce',false))wp_send_json_error(['message'=>'درخواست نامعتبر است.'],403);
+  $id=absint($_POST['id']??0);$p=get_post($id);if(!$p||$p->post_type!==self::CPT||(int)$p->post_author!==get_current_user_id())wp_send_json_error(['message'=>'دسترسی مجاز نیست.'],403);
+  wp_delete_post($id,true);wp_send_json_success(['url'=>avam_account_url()]);
  }
 
  public static function meta_boxes(){
