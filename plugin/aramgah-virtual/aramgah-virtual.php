@@ -45,9 +45,28 @@ final class AVAM_Core {
  public static function admin_assets($hook){
   if($hook!=='settings_page_avam-settings') return;
   wp_enqueue_media();
-  wp_add_inline_script('jquery-core',"jQuery(function($){$('.avam-media-pick').on('click',function(e){e.preventDefault();var b=$(this),f=b.data('field'),t=wp.media({title:'انتخاب فایل',button:{text:'انتخاب'},multiple:false,library:{type:b.data('type')||''}});t.on('select',function(){var a=t.state().get('selection').first().toJSON();$('#'+f).val(a.id);$('#'+f+'-url').val(a.url);});t.open();});});");
+  $script = <<<'JS'
+jQuery(function($){
+  $('.avam-media-pick').on('click',function(e){
+    e.preventDefault();
+    var b=$(this),f=b.data('field');
+    var t=wp.media({
+      title:'انتخاب فایل',
+      button:{text:'انتخاب'},
+      multiple:false,
+      library:{type:b.data('type')||''}
+    });
+    t.on('select',function(){
+      var a=t.state().get('selection').first().toJSON();
+      $('#'+f).val(a.id);
+      $('#'+f+'-url').val(a.url);
+    });
+    t.open();
+  });
+});
+JS;
+  wp_add_inline_script('jquery-core',$script);
  }
-
  public static function shortcodes(){
   add_shortcode('avam_login',[__CLASS__,'login']);
   add_shortcode('avam_register',[__CLASS__,'register']);
