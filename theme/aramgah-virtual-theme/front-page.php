@@ -52,7 +52,7 @@ $login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url
               <svg viewBox="0 0 20 21" aria-hidden="true"><path d="M2 8.4 10 2l8 6.4V18a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" stroke="#202940" stroke-width="1.7" stroke-linejoin="round"/></svg>
               <span>خانه</span>
             </a>
-            <a href="#avam-home-stats"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="1" y="1" width="7.4" height="7.4" rx="1.7" stroke="#202940" stroke-width="1.7"/><rect x="11.6" y="1" width="7.4" height="7.4" rx="1.7" stroke="#202940" stroke-width="1.7"/><rect x="1" y="11.6" width="7.4" height="7.4" rx="1.7" stroke="#202940" stroke-width="1.7"/><rect x="11.6" y="11.6" width="7.4" height="7.4" rx="1.7" stroke="#202940" stroke-width="1.7"/></svg><span>یادبودها</span></a>
+            <a href="<?php echo esc_url($search_url); ?>"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="1" y="1" width="7.4" height="7.4" rx="1.7" stroke="#202940" stroke-width="1.7"/><rect x="11.6" y="1" width="7.4" height="7.4" rx="1.7" stroke="#202940" stroke-width="1.7"/><rect x="1" y="11.6" width="7.4" height="7.4" rx="1.7" stroke="#202940" stroke-width="1.7"/><rect x="11.6" y="11.6" width="7.4" height="7.4" rx="1.7" stroke="#202940" stroke-width="1.7"/></svg><span>یادبودها</span></a>
             <span class="avam-home-divider" aria-hidden="true"></span>
             <a class="avam-home-login-mobile" href="<?php echo esc_url($login_url); ?>">ورود</a>
           </nav>
@@ -71,7 +71,7 @@ $login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url
           <button type="submit">جستجو</button>
         </form>
         <div class="avam-home-tagrow">
-          <a class="avam-home-play" href="#avam-home-stats" aria-label="دیدن یادبودها"><svg viewBox="0 0 13 14" aria-hidden="true"><path d="M1.4 1.3 11.6 7 1.4 12.7z" fill="#0b1526"/></svg></a>
+          <a class="avam-home-play" href="#avam-home-stats" aria-label="جستجوی یادبودها"><svg viewBox="0 0 13 14" aria-hidden="true"><path d="M1.4 1.3 11.6 7 1.4 12.7z" fill="#0b1526"/></svg></a>
           <span>برای کسانی که نمی‌خواهیم از یاد بروند.</span>
         </div>
       </main>
