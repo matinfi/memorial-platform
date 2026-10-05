@@ -170,3 +170,56 @@ a{text-decoration:none;color:inherit}
  .avam-home-search input[name="city"]{display:none}
  .avam-home-search button{padding:0 calc(18*var(--u))}
 }
+
+
+/* Premium homepage controls */
+.avam-home-search{
+ position:absolute;left:calc((65.7 + 13)*var(--u));top:calc(50% + (118*var(--u)));
+ width:calc(620*var(--u));height:calc(78*var(--u));
+ display:flex;align-items:center;gap:0;padding:calc(8*var(--u));
+ border-radius:999px;background:rgba(255,255,255,.72);
+ border:calc(1*var(--u)) solid rgba(255,255,255,.9);
+ box-shadow:0 calc(14*var(--u)) calc(35*var(--u)) rgba(28,52,92,.12),inset 0 1px 0 rgba(255,255,255,.8);
+ -webkit-backdrop-filter:blur(calc(28*var(--u))) saturate(125%);backdrop-filter:blur(calc(28*var(--u))) saturate(125%);
+ z-index:4;
+}
+.avam-home-search-icon{width:calc(52*var(--u));height:calc(52*var(--u));display:flex;align-items:center;justify-content:center;flex:none}
+.avam-home-search-icon svg{width:calc(25*var(--u));height:calc(25*var(--u));fill:none;stroke:#31405a;stroke-width:1.8;stroke-linecap:round}
+.avam-home-search input{
+ height:calc(54*var(--u));border:0;outline:0;background:transparent;
+ color:#17233a;font-family:"Vazirmatn","Noto Sans Arabic",Tahoma,sans-serif;
+ font-size:calc(17*var(--u));font-weight:500;letter-spacing:-.025em;min-width:0;
+}
+.avam-home-search input::placeholder{color:#66738a;opacity:1}
+.avam-home-search input[name="q"]{width:calc(255*var(--u))}
+.avam-home-search input[name="city"]{width:calc(105*var(--u))}
+.avam-home-search-sep{width:1px;height:calc(34*var(--u));background:#cbd3df;flex:none;margin:0 calc(8*var(--u))}
+.avam-home-search button{
+ height:calc(58*var(--u));min-width:calc(124*var(--u));padding:0 calc(25*var(--u));
+ border:0;border-radius:999px;background:#101d34;color:#fff;cursor:pointer;
+ font-family:"Vazirmatn","Noto Sans Arabic",Tahoma,sans-serif;
+ font-size:calc(17*var(--u));font-weight:600;letter-spacing:-.025em;
+ box-shadow:0 calc(7*var(--u)) calc(16*var(--u)) rgba(16,29,52,.2);
+ transition:transform .25s ease,background .25s ease,box-shadow .25s ease;
+}
+.avam-home-search button:hover{transform:translateY(calc(-2*var(--u)));background:#182844;box-shadow:0 calc(10*var(--u)) calc(22*var(--u)) rgba(16,29,52,.24)}
+.avam-home-search button:active{transform:translateY(0)}
+@media(max-aspect-ratio:87/80),(max-width:899px),(max-height:639px){
+ .avam-home-search{
+  left:calc(52*var(--u));right:calc(52*var(--u));top:auto;bottom:calc(190*var(--u));
+  width:auto;height:calc(72*var(--u));padding:calc(7*var(--u));
+ }
+ .avam-home-search-icon{width:calc(47*var(--u));height:calc(47*var(--u))}
+ .avam-home-search-icon svg{width:calc(23*var(--u));height:calc(23*var(--u))}
+ .avam-home-search input{font-size:calc(17*var(--u));height:calc(50*var(--u))}
+ .avam-home-search input[name="q"]{width:auto;flex:1;min-width:0}
+ .avam-home-search input[name="city"]{width:calc(78*var(--u))}
+ .avam-home-search button{height:calc(56*var(--u));min-width:calc(105*var(--u));font-size:calc(16*var(--u));padding:0 calc(18*var(--u))}
+}
+@media(max-width:640px) and (max-aspect-ratio:1/1){
+ .avam-home-search{left:calc(40*var(--u));right:calc(40*var(--u));bottom:calc(188*var(--u));height:calc(70*var(--u))}
+ .avam-home-search input{font-size:calc(16*var(--u))}
+ .avam-home-search input[name="city"]{display:none}
+ .avam-home-search-sep{display:none}
+ .avam-home-search button{min-width:calc(98*var(--u));font-size:calc(15*var(--u))}
+}
