@@ -14,10 +14,10 @@ Text Domain: avam
  --frame:#E6EDF6;--cta:#0F1B31;--cta-knob:#384B64;--meet-knob:#1A2B45;
  --accent:#4A78B0;--track:#DDE4EE;--serif:"Noto Serif Arabic",Georgia,serif;
 }
-@supports (height:100dvh){:root{--u:min(100vw / 1280,100dvh / 960)}}
+@supports (height:100dvh){:root{--u:min(calc(100vw / 1280),calc(100dvh / 960))}}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;padding:0}
-body{background:var(--frame);overflow:hidden;color:var(--ink);font-family:Inter,"Helvetica Neue",Helvetica,Arial,"Vazirmatn",Tahoma,sans-serif;font-synthesis:none;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+body{background:var(--frame);overflow-x:hidden;color:var(--ink);font-family:Inter,"Helvetica Neue",Helvetica,Arial,"Vazirmatn",Tahoma,sans-serif;font-synthesis:none;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
 body:has(.avam-home-page){overflow:hidden}
 a{text-decoration:none;color:inherit}
 .avam-home-page{position:fixed;inset:0;background:var(--frame)}
@@ -86,8 +86,8 @@ a{text-decoration:none;color:inherit}
 .avam-home-pre .avam-panel-dot{transform:scale(0)}
 .avam-home-pre .avam-panel-track i{transform:scaleX(0);transform-origin:left center}
 @media(max-aspect-ratio:87/80),(max-width:899px),(max-height:639px){
- :root{--u:min(100vw / 880,100vh / 1220)}
- @supports(height:100dvh){:root{--u:min(100vw / 880,100dvh / 1220)}}
+ :root{--u:min(calc(100vw / 880),calc(100vh / 1220))}
+ @supports(height:100dvh){:root{--u:min(calc(100vw / 880),calc(100dvh / 1220))}}
  .avam-home-menu{display:none}
  .avam-home-burger{display:flex;position:absolute;right:calc(52*var(--u));top:calc(52*var(--u));width:calc(56*var(--u));height:calc(56*var(--u));border-radius:999px;padding:0;align-items:center;justify-content:center;flex-direction:column;gap:calc(6*var(--u));background:rgba(255,255,255,.78);border:calc(1*var(--u)) solid rgba(255,255,255,.85);backdrop-filter:blur(calc(40*var(--u)));z-index:10}
  .avam-home-burger i{display:block;width:calc(20*var(--u));height:calc(1.8*var(--u));border-radius:999px;background:#202940;transition:transform .3s,opacity .3s}
@@ -129,8 +129,8 @@ a{text-decoration:none;color:inherit}
  .avam-home-meet .avam-home-knob{left:auto;right:calc(11*var(--u));top:calc(11*var(--u));width:calc(50*var(--u));height:calc(50*var(--u))}
 }
 @media(max-width:640px) and (max-aspect-ratio:1/1){
- :root{--u:min(100vw / 600,100vh / 940)}
- @supports(height:100dvh){:root{--u:min(100vw / 600,100dvh / 940)}}
+ :root{--u:min(calc(100vw / 600),calc(100vh / 940))}
+ @supports(height:100dvh){:root{--u:min(calc(100vw / 600),calc(100dvh / 940))}}
  .avam-home-brand{left:calc(40*var(--u));top:calc(40*var(--u))}
  .avam-home-burger{right:calc(40*var(--u));top:calc(40*var(--u))}
  .avam-home-menu{left:calc(40*var(--u));right:calc(40*var(--u));top:calc(110*var(--u))}
