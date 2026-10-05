@@ -110,9 +110,6 @@ $login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url
 
 <script>
 (function(){
-  const media=document.querySelector('.avam-home-bg-video');
-});
-(function(){
   const d=document.documentElement;
   if(!('animate' in Element.prototype)) return;
   if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
