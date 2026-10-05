@@ -1,1 +1,1 @@
-</main><footer class="avam-footer"><div class="avam-container"><div>آرامگاه مجازی — جایی برای نگه‌داشتن یک روایت با احترام.</div></div></footer><?php wp_footer(); ?></body></html>
+</main><?php if(!is_front_page()): ?><footer class="avam-footer"><div class="avam-container"><div>آرامگاه مجازی — جایی برای نگه‌داشتن یک روایت با احترام.</div></div></footer><?php endif; ?><?php wp_footer(); ?></body></html>
