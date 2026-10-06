@@ -322,7 +322,7 @@ function avam_account_url(){return home_url('/account/');}
 function avam_login_url(){return home_url('/login/');}
 function avam_register_url(){return home_url('/register/');}
 function avam_create_url(){return home_url('/create-memorial/');}
-function avam_memorials_url(){return home_url('/memorials/');}
+function avam_memorials_url(){ $url=get_post_type_archive_link('avam_memorial'); return $url ? $url : home_url('/memorials/'); }
 
 register_activation_hook(__FILE__,function(){
  AVAM_Core::register_cpt();
@@ -333,3 +333,4 @@ register_activation_hook(__FILE__,function(){
 });
 register_deactivation_hook(__FILE__,function(){flush_rewrite_rules();});
 AVAM_Core::init();
+add_action('init',function(){ if(get_option('avam_rewrite_version')!=='1.4.0'){ flush_rewrite_rules(false); update_option('avam_rewrite_version','1.4.0'); } },99);
