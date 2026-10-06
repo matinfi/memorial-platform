@@ -345,3 +345,10 @@ a{text-decoration:none;color:inherit}
  .avam-memorial-actions{display:grid;grid-template-columns:1fr}
  .avam-memorial-btn,.avam-memorial-share{width:100%}
 }
+
+/* public chrome */
+.avam-header{position:relative;z-index:20;background:rgba(247,249,248,.88);border-bottom:1px solid #dfe5e2;backdrop-filter:blur(16px)}
+.avam-header-inner{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.avam-brand{font:600 18px "Noto Serif Arabic",serif;color:#172236;text-decoration:none}.avam-nav{display:flex;align-items:center;gap:20px}.avam-nav>a{color:#5f6d7e;font:600 12px "Vazirmatn",sans-serif;text-decoration:none}.avam-nav>a:hover{color:#172236}.avam-header-cta{min-height:40px;padding:0 16px;display:inline-flex;align-items:center;border-radius:10px;background:#17253d;color:#fff!important}
+.avam-footer{background:#172236;color:#dce3e1;padding:28px 0}.avam-footer .avam-container{display:flex;align-items:center;justify-content:space-between;gap:20px;font:11px/1.8 "Vazirmatn",sans-serif}.avam-footer nav{display:flex;gap:18px}.avam-footer a{color:#dce3e1;text-decoration:none}
+@media(max-width:640px){.avam-header-inner{min-height:64px}.avam-nav{gap:10px}.avam-nav>a:not(.avam-header-cta){display:none}.avam-header-cta{min-height:40px}.avam-footer .avam-container{align-items:flex-start;flex-direction:column}.avam-footer nav{flex-wrap:wrap}}
