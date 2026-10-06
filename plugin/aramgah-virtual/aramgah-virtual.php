@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.2.0
+ * Version: 1.3.0
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -110,7 +110,7 @@ JS;
         <a href="<?php echo esc_url(home_url('/')); ?>"><span class="avam-nav-icon">↗</span>مشاهده سایت</a>
       </nav>
       <div class="avam-dash-sidebar-foot">
-        <div class="avam-dash-user-mini"><span><?php echo esc_html(substr($user->display_name ?: $user->user_login,0,3)); ?></span><div><strong><?php echo esc_html($user->display_name ?: $user->user_login); ?></strong><small><?php echo esc_html($user->user_email); ?></small></div></div>
+        <div class="avam-dash-user-mini"><span><?php echo esc_html(mb_substr($user->display_name ?: $user->user_login,0,1)); ?></span><div><strong><?php echo esc_html($user->display_name ?: $user->user_login); ?></strong><small><?php echo esc_html($user->user_email); ?></small></div></div>
         <a class="avam-dash-logout" href="<?php echo esc_url($logout); ?>">خروج از حساب <span>↪</span></a>
       </div>
     </aside>
