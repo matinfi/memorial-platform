@@ -32,14 +32,14 @@ final class AVAM_Core {
  public static function register_cpt(){
   register_post_type(self::CPT,[
    'labels'=>['name'=>'یادبودها','singular_name'=>'یادبود','add_new'=>'یادبود جدید','add_new_item'=>'افزودن یادبود','edit_item'=>'ویرایش یادبود','menu_name'=>'یادبودها'],
-   'public'=>true,'show_in_rest'=>true,'has_archive'=>false,'rewrite'=>['slug'=>'memorial','with_front'=>false],
+   'public'=>true,'show_in_rest'=>true,'has_archive'=>'memorials','rewrite'=>['slug'=>'memorial','with_front'=>false],
    'supports'=>['title','editor','thumbnail','author'],'menu_icon'=>'dashicons-heart','capability_type'=>'post','map_meta_cap'=>true
   ]);
  }
 
  public static function assets(){
-  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.2.0');
-  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'],'1.2.0',true);
+  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.4.0');
+  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'],'1.4.0',true);
   wp_localize_script('avam-plugin','AVAM',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_front'),'account'=>avam_account_url()]);
  }
 
@@ -267,29 +267,54 @@ JS;
  public static function admin_menu(){add_options_page('تنظیمات آرامگاه مجازی','آرامگاه مجازی','manage_options','avam-settings',[__CLASS__,'settings_page']);}
 
  public static function settings(){
-  register_setting('avam_settings','avam_site_message',['sanitize_callback'=>'sanitize_textarea_field']);
+  $text_fields=[
+   'avam_site_message','avam_home_eyebrow','avam_home_title','avam_home_subtitle',
+   'avam_home_panel_title','avam_home_panel_text','avam_home_cta','avam_footer_text',
+   'avam_single_kicker','avam_single_intro','avam_search_title','avam_search_intro'
+  ];
+  foreach($text_fields as $field) register_setting('avam_settings',$field,['sanitize_callback'=>'sanitize_textarea_field']);
   register_setting('avam_settings','avam_home_media_type',['sanitize_callback'=>'sanitize_key']);
   register_setting('avam_settings','avam_home_image',['sanitize_callback'=>'absint']);
   register_setting('avam_settings','avam_home_video',['sanitize_callback'=>'absint']);
-  add_settings_section('avam_general','تنظیمات صفحه اصلی',function(){echo '<p>تصویر یا ویدیوی پس‌زمینه صفحه اول را از کتابخانه رسانه انتخاب کنید.</p>';},'avam-settings');
-  add_settings_field('avam_home_media_type','نوع پس‌زمینه',[__CLASS__,'media_type_field'],'avam-settings','avam_general');
-  add_settings_field('avam_home_image','تصویر صفحه اصلی',[__CLASS__,'image_field'],'avam-settings','avam_general');
-  add_settings_field('avam_home_video','ویدیوی لوپ صفحه اصلی',[__CLASS__,'video_field'],'avam-settings','avam_general');
-  add_settings_field('avam_site_message','پیام پایانی',[__CLASS__,'settings_field'],'avam-settings','avam_general');
+  register_setting('avam_settings','avam_accent_color',['sanitize_callback'=>'sanitize_hex_color']);
+  register_setting('avam_settings','avam_primary_color',['sanitize_callback'=>'sanitize_hex_color']);
+  register_setting('avam_settings','avam_show_stats',['sanitize_callback'=>function($v){return $v?'1':'0';}]);
+  register_setting('avam_settings','avam_show_home_panel',['sanitize_callback'=>function($v){return $v?'1':'0';}]);
+  register_setting('avam_settings','avam_show_search',['sanitize_callback'=>function($v){return $v?'1':'0';}]);
+
+  add_settings_section('avam_general','هویت و متن‌های عمومی',function(){echo '<p>متن‌های اصلی سایت را از اینجا مدیریت کنید. ساختار و عملکرد صفحات ثابت می‌ماند.</p>';},'avam-settings');
+  foreach([
+   ['avam_site_message','پیام پایانی سایت'],['avam_footer_text','متن فوتر'],['avam_search_title','عنوان جستجو'],['avam_search_intro','توضیح جستجو'],
+   ['avam_single_kicker','برچسب بالای صفحه یادبود'],['avam_single_intro','متن معرفی صفحه یادبود']
+  ] as $f) add_settings_field($f[0],$f[1],[__CLASS__,'text_setting_field'],'avam-settings','avam_general',['field'=>$f[0]]);
+
+  add_settings_section('avam_home','صفحه اول — محتوای Hero',function(){echo '<p>عنوان، توضیح و اجزای اصلی Hero را کنترل کنید.</p>';},'avam-settings');
+  foreach([
+   ['avam_home_eyebrow','متن بالای عنوان'],['avam_home_title','عنوان اصلی'],['avam_home_subtitle','زیرعنوان'],['avam_home_panel_title','عنوان پنل شیشه‌ای'],['avam_home_panel_text','متن پنل'],['avam_home_cta','متن دکمه اصلی']
+  ] as $f) add_settings_field($f[0],$f[1],[__CLASS__,'text_setting_field'],'avam-settings','avam_home',['field'=>$f[0]]);
+  add_settings_field('avam_show_stats','نمایش آمار صفحه اول',[__CLASS__,'checkbox_field'],'avam-settings','avam_home',['field'=>'avam_show_stats']);
+  add_settings_field('avam_show_home_panel','نمایش پنل معرفی',[__CLASS__,'checkbox_field'],'avam-settings','avam_home',['field'=>'avam_show_home_panel']);
+  add_settings_field('avam_show_search','نمایش جستجوی Hero',[__CLASS__,'checkbox_field'],'avam-settings','avam_home',['field'=>'avam_show_search']);
+
+  add_settings_section('avam_media','رسانه و ظاهر',function(){echo '<p>رسانه و رنگ‌های اصلی رابط را مدیریت کنید.</p>';},'avam-settings');
+  add_settings_field('avam_home_media_type','نوع پس‌زمینه',[__CLASS__,'media_type_field'],'avam-settings','avam_media');
+  add_settings_field('avam_home_image','تصویر صفحه اصلی',[__CLASS__,'image_field'],'avam-settings','avam_media');
+  add_settings_field('avam_home_video','ویدیوی لوپ صفحه اصلی',[__CLASS__,'video_field'],'avam-settings','avam_media');
+  add_settings_field('avam_primary_color','رنگ اصلی',[__CLASS__,'color_field'],'avam-settings','avam_media',['field'=>'avam_primary_color','default'=>'#17253d']);
+  add_settings_field('avam_accent_color','رنگ Accent',[__CLASS__,'color_field'],'avam-settings','avam_media',['field'=>'avam_accent_color','default'=>'#a76652']);
  }
-
- public static function media_type_field(){ $v=get_option('avam_home_media_type','video');?><label><input type="radio" name="avam_home_media_type" value="video" <?php checked($v,'video');?> > ویدیوی لوپ</label> &nbsp; <label><input type="radio" name="avam_home_media_type" value="image" <?php checked($v,'image');?> > تصویر ثابت</label><?php }
- public static function image_field(){self::media_picker('avam_home_image','image','تصویر را انتخاب کنید','image');}
- public static function video_field(){self::media_picker('avam_home_video','video','ویدیوی MP4/WebM را انتخاب کنید','video');}
- private static function media_picker($field,$type,$button,$library){
-  $id=(int)get_option($field,0);$url=$id?wp_get_attachment_url($id):'';echo '<input type="hidden" id="'.esc_attr($field).'" name="'.esc_attr($field).'" value="'.esc_attr($id).'"><input type="text" readonly id="'.esc_attr($field).'-url" class="regular-text" value="'.esc_attr($url).'"> <button type="button" class="button avam-media-pick" data-field="'.esc_attr($field).'" data-type="'.esc_attr($library).'">'.esc_html($button).'</button>';
- }
-
- public static function settings_field(){echo '<textarea name="avam_site_message" id="avam_site_message" rows="5" class="large-text">'.esc_textarea(get_option('avam_site_message','')).'</textarea>';}
-
+ public static function text_setting_field($args){$field=$args['field'];$defaults=[
+  'avam_home_eyebrow'=>'جایی برای نام، تصویر و روایت','avam_home_title'=>'یادها اینجا می‌مانند.','avam_home_subtitle'=>'برای کسانی که نمی‌خواهیم از یاد بروند.',
+  'avam_home_panel_title'=>'یادبودهای دیجیتال','avam_home_panel_text'=>"نام، تصویر و روایت\nبا احترام نگه‌داری می‌شود.",'avam_home_cta'=>'ساخت یادبود',
+  'avam_footer_text'=>'آرامگاه مجازی — جایی برای نگه‌داشتن یک روایت با احترام.','avam_site_message'=>'هر نام، یک روایت است.',
+  'avam_single_kicker'=>'صفحه یادبود','avam_single_intro'=>'روایتی برای ماندن و به یاد آوردن.',
+  'avam_search_title'=>'جستجوی یادبودها','avam_search_intro'=>'نام متوفی یا شهر را جستجو کنید.'
+ ];$v=get_option($field,$defaults[$field]??'');echo '<textarea name="'.esc_attr($field).'" rows="3" class="large-text" style="max-width:760px">'.esc_textarea($v).'</textarea>'; }
+ public static function checkbox_field($args){$field=$args['field'];$v=get_option($field,'1');echo '<label><input type="checkbox" name="'.esc_attr($field).'" value="1" '.checked($v,'1',false).'> فعال باشد</label>'; }
+ public static function color_field($args){$field=$args['field'];$v=get_option($field,$args['default']??'#17253d');echo '<input type="color" name="'.esc_attr($field).'" value="'.esc_attr($v).'"> <code>'.esc_html($v).'</code>'; }
  public static function settings_page(){
   if(!current_user_can('manage_options'))return;
-  echo '<div class="wrap" dir="rtl"><h1>تنظیمات آرامگاه مجازی</h1><form method="post" action="options.php">';settings_fields('avam_settings');do_settings_sections('avam-settings');submit_button('ذخیره تنظیمات');echo '</form></div>';
+  echo '<div class="wrap avam-admin-settings" dir="rtl"><h1>تنظیمات آرامگاه مجازی</h1><p>مرکز مدیریت تجربه سایت: صفحه اول، جستجو، صفحه یادبود، رسانه و ظاهر.</p><form method="post" action="options.php">';settings_fields('avam_settings');do_settings_sections('avam-settings');submit_button('ذخیره همه تنظیمات');echo '</form></div>';
  }
 }
 
