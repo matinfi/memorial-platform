@@ -38,7 +38,7 @@ final class AVAM_Core {
  }
 
  public static function assets(){
-  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.5.0');
+  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.6.0');
   wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'],'1.5.0',true);
   wp_localize_script('avam-plugin','AVAM',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_front'),'account'=>avam_account_url()]);
  }
