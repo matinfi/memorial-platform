@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.4.0
+ * Version: 1.5.0
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -333,4 +333,11 @@ register_activation_hook(__FILE__,function(){
 });
 register_deactivation_hook(__FILE__,function(){flush_rewrite_rules();});
 AVAM_Core::init();
-add_action('init',function(){ if(get_option('avam_rewrite_version')!=='1.4.0'){ flush_rewrite_rules(false); update_option('avam_rewrite_version','1.4.0'); } },99);
+add_action('init',function(){
+ if(get_option('avam_rewrite_version')!=='1.5.0'){
+  $legacy=get_page_by_path('memorials');
+  if($legacy && $legacy->post_type==='page' && trim($legacy->post_content)==='[avam_memorial_search]') wp_delete_post($legacy->ID,true);
+  flush_rewrite_rules(false);
+  update_option('avam_rewrite_version','1.5.0');
+ }
+},99);
