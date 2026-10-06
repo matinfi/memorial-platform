@@ -303,6 +303,18 @@ JS;
   add_settings_field('avam_primary_color','رنگ اصلی',[__CLASS__,'color_field'],'avam-settings','avam_media',['field'=>'avam_primary_color','default'=>'#17253d']);
   add_settings_field('avam_accent_color','رنگ Accent',[__CLASS__,'color_field'],'avam-settings','avam_media',['field'=>'avam_accent_color','default'=>'#a76652']);
  }
+ public static function media_type_field(){
+  $v=get_option('avam_home_media_type','video');
+  echo '<select name="avam_home_media_type"><option value="video" '.selected($v,'video',false).'>ویدیو</option><option value="image" '.selected($v,'image',false).'>تصویر</option></select><p class="description">در حالت ویدیو، ویدیوی لوپ نمایش داده می‌شود و تصویر به‌عنوان پوستر/جایگزین استفاده خواهد شد.</p>';
+ }
+ public static function image_field(){
+  $id=absint(get_option('avam_home_image',0));$url=$id?wp_get_attachment_url($id):'';
+  echo '<input type="hidden" id="avam_home_image" name="avam_home_image" value="'.esc_attr($id).'"><input id="avam_home_image-url" class="regular-text" type="text" value="'.esc_attr($url).'" readonly> <button class="button avam-media-pick" data-field="avam_home_image" data-type="image">انتخاب تصویر</button>';
+ }
+ public static function video_field(){
+  $id=absint(get_option('avam_home_video',0));$url=$id?wp_get_attachment_url($id):'';
+  echo '<input type="hidden" id="avam_home_video" name="avam_home_video" value="'.esc_attr($id).'"><input id="avam_home_video-url" class="regular-text" type="text" value="'.esc_attr($url).'" readonly> <button class="button avam-media-pick" data-field="avam_home_video" data-type="video">انتخاب ویدیو</button>';
+ }
  public static function text_setting_field($args){$field=$args['field'];$defaults=[
   'avam_home_eyebrow'=>'جایی برای نام، تصویر و روایت','avam_home_title'=>'یادها اینجا می‌مانند.','avam_home_subtitle'=>'برای کسانی که نمی‌خواهیم از یاد بروند.',
   'avam_home_panel_title'=>'یادبودهای دیجیتال','avam_home_panel_text'=>"نام، تصویر و روایت\nبا احترام نگه‌داری می‌شود.",'avam_home_cta'=>'ساخت یادبود',
