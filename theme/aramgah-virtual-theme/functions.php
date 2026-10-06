@@ -15,3 +15,10 @@ function avam_theme_assets(){
 }
 add_action('wp_enqueue_scripts','avam_theme_assets');
 function avam_body_classes($classes){$classes[]='avam-shell';return $classes;} add_filter('body_class','avam_body_classes');
+
+add_action('admin_menu',function(){
+ add_theme_page('تنظیمات آرامگاه مجازی','تنظیمات آرامگاه مجازی','manage_options','avam-theme-settings',function(){
+  if(!current_user_can('manage_options')) return;
+  echo '<div class="wrap" dir="rtl"><h1>تنظیمات قالب آرامگاه مجازی</h1><p>مدیریت تمام جزئیات محتوایی و ظاهری سایت در یک مرکز تنظیمات.</p><p><a class="button button-primary" href="'.esc_url(admin_url('options-general.php?page=avam-settings')).'">باز کردن مرکز تنظیمات آرامگاه مجازی</a></p></div>';
+ });
+});
