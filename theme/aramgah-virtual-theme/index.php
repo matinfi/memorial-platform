@@ -8,7 +8,7 @@
 get_header();
 ?>
 
-<main class="avam-page">
+<section class="avam-page">
   <div class="avam-container">
     <?php if ( have_posts() ) : ?>
       <?php while ( have_posts() ) : the_post(); ?>
@@ -28,6 +28,6 @@ get_header();
       </article>
     <?php endif; ?>
   </div>
-</main>
+</section>
 
 <?php get_footer(); ?>
