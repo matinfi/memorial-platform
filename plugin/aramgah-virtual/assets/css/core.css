@@ -733,3 +733,62 @@
   .avam-dash-nav a,.avam-dash-logout,.avam-dash-section a,.avam-btn,.avam-dash-primary,
   .avam-dash-memorial-actions a,.avam-dash-memorial-actions button{min-height:44px}
 }
+
+
+/* =========================================================
+   Modern calm UX layer — dashboard / auth / editor
+   Visual-only: no layout or behavior changes.
+   ========================================================= */
+:root{
+  --c-primary:#1d2732;--c-primary-hover:#2b3741;
+  --c-secondary:#718579;--c-accent:#b87562;--c-accent-soft:#f2e7e1;
+  --c-bg:#f5f3ee;--c-bg-subtle:#eeefeb;--c-surface:#fbfaf7;--c-surface-raised:#fdfcf9;--c-card:#fbfaf7;
+  --c-border:#e3e3dc;--c-border-strong:#d0d3cc;
+  --c-text:#1d2732;--c-text-secondary:#69767b;--c-muted:#929b9d;--c-placeholder:#a8b0b0;
+  --shadow-xs:0 2px 10px rgba(34,43,49,.025);--shadow-sm:0 10px 30px rgba(34,43,49,.055);--shadow-md:0 18px 44px rgba(34,43,49,.075);--shadow-lg:0 28px 70px rgba(34,43,49,.10);
+  --radius-sm:10px;--radius-md:14px;--radius-lg:18px;--radius-xl:24px;--radius-2xl:28px;
+}
+.avam-card,.avam-auth-card,.avam-create-card{background:var(--c-card);border-color:var(--c-border);box-shadow:var(--shadow-sm);border-radius:24px}
+.avam-card h1,.avam-search-hero h1,.avam-create-top h1,.avam-dash-topbar h1,.avam-section-head h2,.avam-dash-memorial h3,.avam-dash-empty h3,.avam-info-head h3,.avam-form-section-title strong{
+  font-family:var(--avam-font-display);font-weight:500;color:var(--c-text);letter-spacing:-.045em;
+}
+.avam-field{gap:10px}.avam-field label{font-size:12px;font-weight:650;color:#46535a}
+.avam-field input,.avam-field textarea,.avam-field select{
+  min-height:48px;border-color:var(--c-border-strong);background:var(--c-surface);border-radius:14px;padding:12px 15px;color:var(--c-text);
+  transition:border-color .16s ease,box-shadow .16s ease,background .16s ease;
+}
+.avam-field textarea{min-height:180px}.avam-field input:hover,.avam-field textarea:hover,.avam-field select:hover{border-color:#bcc3bd}
+.avam-field input:focus,.avam-field textarea:focus,.avam-field select:focus{border-color:var(--c-secondary);box-shadow:0 0 0 4px rgba(113,133,121,.13)}
+.avam-btn,.avam-dash-primary{min-height:48px;border-radius:14px;background:var(--c-primary);font-weight:650;box-shadow:none}.avam-btn:hover,.avam-dash-primary:hover{background:var(--c-primary-hover);box-shadow:0 8px 20px rgba(29,39,50,.12)}
+.avam-auth-card{max-width:520px;padding:clamp(28px,5vw,46px);margin:clamp(40px,9vh,100px) auto}.avam-auth-card h1{font-size:clamp(32px,5vw,46px);line-height:1.3}.avam-auth-lead{color:var(--c-text-secondary);line-height:2.1}
+.avam-search-page{max-width:1180px;padding:clamp(52px,8vw,92px) 28px}.avam-search-hero{text-align:right;padding:28px 0 40px}.avam-search-hero h1{font-size:clamp(38px,5vw,64px)}.avam-search-hero p{color:var(--c-muted)}
+.avam-search-form{max-width:none;border-color:var(--c-border);border-radius:20px;background:rgba(251,250,247,.9);box-shadow:var(--shadow-sm);padding:7px}.avam-search-form button{min-height:52px;border-radius:14px;background:var(--c-primary)}
+.avam-results{gap:24px}.avam-result{border-color:var(--c-border);border-radius:24px;background:var(--c-card);box-shadow:var(--shadow-xs)}.avam-result:hover{box-shadow:var(--shadow-md);border-color:#d5d8d2;transform:translateY(-4px)}.avam-result div{padding:22px}.avam-result h2{font-weight:500;font-size:22px}.avam-result span{color:var(--c-muted)}
+.avam-dashboard{
+  background:radial-gradient(circle at 10% 0%,rgba(220,230,234,.48),transparent 26%),linear-gradient(180deg,#f7f6f1 0%,#efefea 100%);
+}
+.avam-dash-sidebar{
+  background:rgba(249,249,245,.84);border-left-color:var(--c-border);backdrop-filter:blur(24px);padding-top:32px;
+}
+.avam-dash-brand{padding-bottom:30px}.avam-dash-brand-mark{width:42px;height:42px;flex-basis:42px;border-radius:14px;background:var(--c-primary);box-shadow:none}.avam-dash-brand b{font-weight:650}.avam-dash-brand small{color:var(--c-muted)}
+.avam-dash-nav{padding-top:18px;border-top-color:var(--c-border)}.avam-dash-nav a{border-radius:12px;color:#6e7a7e!important}.avam-dash-nav a:hover{background:#eef0eb;color:var(--c-text)!important}.avam-dash-nav a.is-active{background:#e7ebe5;color:var(--c-primary)!important}.avam-dash-nav a.is-active:before{background:var(--c-terra,#b87562)}
+.avam-nav-icon{color:#8d9898}.avam-dash-nav a.is-active .avam-nav-icon{color:var(--c-accent)}
+.avam-dash-sidebar-foot{border-top-color:var(--c-border)}.avam-dash-user-mini>span,.avam-profile-avatar{background:#e4ebe6;color:#5e7468}.avam-dash-logout:hover{background:#f4e9e8}
+.avam-dash-main{padding-top:clamp(38px,5vw,70px);padding-bottom:92px}
+.avam-dash-topbar{margin-bottom:40px}.avam-dash-kicker{color:var(--c-accent);font-size:10px}.avam-dash-topbar h1{font-size:clamp(32px,3.2vw,46px)}.avam-dash-topbar p{color:var(--c-text-secondary);line-height:2.1}
+.avam-dash-primary{min-width:180px}
+.avam-dash-stats{gap:16px;margin-bottom:48px}.avam-dash-stats article{min-height:104px;padding:18px;background:rgba(251,250,247,.84);border-color:var(--c-border);border-radius:20px;box-shadow:var(--shadow-xs)}.avam-dash-stats article:hover{box-shadow:var(--shadow-sm)}
+.avam-stat-icon{width:44px;height:44px;flex-basis:44px;border-radius:14px;background:var(--c-accent-soft);color:var(--c-accent)}.avam-stat-icon.is-green{background:#e7eee9;color:#61796b}.avam-stat-icon.is-blue{background:#e5edf0;color:#607d88}
+.avam-dash-stats small{color:var(--c-muted)}.avam-dash-stats strong{font-size:26px;font-weight:650}
+.avam-section-head{margin-bottom:18px}.avam-section-head h2{font-size:clamp(23px,2vw,30px)}.avam-section-head>a{color:var(--c-accent)!important}
+.avam-dash-memorials{gap:12px}.avam-dash-memorial{padding:12px 16px;background:rgba(251,250,247,.88);border-color:var(--c-border);border-radius:18px;box-shadow:var(--shadow-xs)}.avam-dash-memorial:hover{box-shadow:var(--shadow-sm);border-color:#d5d8d2}
+.avam-dash-memorial-photo{width:68px;height:68px;border-radius:14px;background:#e7ece8;color:#72877c}.avam-dash-memorial h3{font-size:20px}.avam-dash-memorial p{color:#7b8588}.avam-dash-memorial-actions{gap:6px}.avam-dash-memorial-actions a,.avam-dash-memorial-actions button{min-height:42px;border-radius:11px;border-color:var(--c-border);background:var(--c-surface);font-weight:600}
+.avam-action-view{background:var(--c-primary)!important;border-color:var(--c-primary)!important}.avam-action-delete:hover{background:#f5eaea!important}
+.avam-dash-empty{padding:72px 24px;background:rgba(251,250,247,.65);border-color:#d1d5ce;border-radius:24px}.avam-empty-mark{background:#e7eee9;color:#61796b}.avam-dash-empty h3{font-size:23px}
+.avam-dash-bottom{gap:16px;margin-top:36px}.avam-dash-info-card,.avam-dash-profile{background:rgba(251,250,247,.76);border-color:var(--c-border);border-radius:20px;box-shadow:var(--shadow-xs)}.avam-info-icon{background:var(--c-accent-soft);color:var(--c-accent)}
+.avam-create-card{max-width:960px;margin:clamp(32px,6vw,70px) auto;padding:clamp(28px,5vw,52px)}
+.avam-create-top{padding-bottom:30px;margin-bottom:32px;border-bottom-color:var(--c-border)}.avam-create-top h1{font-size:clamp(32px,4vw,48px)}.avam-create-back{color:#7b8588!important}
+.avam-form-section{padding-bottom:36px;margin-bottom:36px;border-bottom-color:var(--c-border)}.avam-form-section-title{margin-bottom:22px}.avam-form-section-title>span{width:34px;height:34px;flex-basis:34px;border-radius:11px;background:var(--c-accent-soft);color:var(--c-accent)}
+.avam-form-grid{gap:20px}.avam-memorial-form .avam-field input,.avam-memorial-form .avam-field textarea{border-radius:14px;background:var(--c-surface);font-size:13px}.avam-memorial-form .avam-field textarea{line-height:2.05}
+.avam-upload{min-height:84px;padding:16px;border-color:#c5cdc7;border-radius:18px;background:#f0f1ec}.avam-upload:hover{border-color:#9baa9f;background:#ebeee9}.avam-upload>span{background:#e1e9e4;color:#617a6d;border-radius:12px}
+@media(max-width:640px){.avam-search-page{padding-inline:16px}.avam-dashboard{background:#f5f3ee}.avam-dash-main{padding:28px 16px 56px}.avam-dash-stats{gap:10px}.avam-dash-stats article{border-radius:16px}.avam-dash-memorial{border-radius:16px}.avam-create-card{border-radius:20px;margin:16px 0;padding:26px 18px}}
