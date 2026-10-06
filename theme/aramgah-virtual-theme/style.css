@@ -223,3 +223,125 @@ a{text-decoration:none;color:inherit}
  .avam-home-search-sep{display:none}
  .avam-home-search button{min-width:calc(98*var(--u));font-size:calc(15*var(--u))}
 }
+
+
+/* =========================================================
+   Public product pages — archive / memorial / content
+   ========================================================= */
+.avam-container{width:min(1200px,calc(100% - 48px));margin-inline:auto}
+.avam-archive-page,.avam-memorial-page,.avam-page{min-height:100dvh;background:#f7f8f7;color:#172236}
+.avam-archive-hero{padding:clamp(64px,9vw,120px) 0 48px;background:linear-gradient(180deg,#eef3f0 0%,#f7f8f7 100%);border-bottom:1px solid #dfe5e2}
+.avam-archive-hero>div{max-width:980px}
+.avam-archive-hero>div>span{color:#a76652;font:700 12px/1.5 "Vazirmatn",sans-serif}
+.avam-archive-hero h1{font:600 clamp(38px,6vw,72px)/1.2 "Noto Serif Arabic",serif;letter-spacing:-.05em;margin:10px 0 12px}
+.avam-archive-hero p{margin:0;color:#647181;font:14px/2 "Vazirmatn",sans-serif}
+.avam-archive-search{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(180px,.7fr) auto;gap:8px;margin-top:32px;padding:8px;background:#fff;border:1px solid #dfe5e2;border-radius:18px;box-shadow:0 10px 30px rgba(23,34,54,.06)}
+.avam-archive-search label{display:grid;gap:4px;padding:8px 14px}
+.avam-archive-search label span{font:600 10px/1.4 "Vazirmatn",sans-serif;color:#8995a4}
+.avam-archive-search input{width:100%;border:0;outline:0;background:transparent;color:#172236;font:14px/1.6 "Vazirmatn",sans-serif;min-height:36px}
+.avam-archive-search input:focus{box-shadow:inset 0 -2px #789183}
+.avam-archive-search button{min-height:52px;padding:0 28px;border:0;border-radius:12px;background:#17253d;color:#fff;font:600 13px "Vazirmatn",sans-serif;cursor:pointer}
+.avam-archive-search button:hover{background:#223653}
+.avam-archive-results{padding-block:48px 80px}
+.avam-archive-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+.avam-archive-head strong{font:700 13px "Vazirmatn",sans-serif}
+.avam-archive-head span{color:#8995a4;font:12px "Vazirmatn",sans-serif}
+.avam-memorial-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.avam-memorial-card{display:block;overflow:hidden;background:#fff;border:1px solid #dfe5e2;border-radius:20px;text-decoration:none;color:inherit;box-shadow:0 2px 8px rgba(23,34,54,.035);transition:transform .22s cubic-bezier(.22,.61,.36,1),box-shadow .22s,border-color .14s}
+.avam-memorial-card:hover{transform:translateY(-4px);box-shadow:0 18px 42px rgba(23,34,54,.09);border-color:#cbd5d1}
+.avam-memorial-card-image{aspect-ratio:1.35;display:grid;place-items:center;background:#e9efec;overflow:hidden;color:#789183;font-size:32px}
+.avam-memorial-card-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.22,.61,.36,1)}
+.avam-memorial-card:hover .avam-memorial-card-image img{transform:scale(1.025)}
+.avam-memorial-card-body{padding:20px 20px 22px}
+.avam-memorial-card-body>span{color:#a76652;font:700 10px "Vazirmatn",sans-serif}
+.avam-memorial-card h2{font:600 22px/1.5 "Noto Serif Arabic",serif;letter-spacing:-.035em;margin:5px 0 4px}
+.avam-memorial-card p{margin:0;color:#697585;font:11px/1.8 "Vazirmatn",sans-serif;min-height:20px}
+.avam-archive-pagination{display:flex;justify-content:center;margin-top:40px}
+.avam-archive-pagination ul{list-style:none;display:flex;gap:6px;margin:0;padding:0;direction:ltr}
+.avam-archive-pagination a,.avam-archive-pagination span{min-width:40px;height:40px;padding:0 10px;display:grid;place-items:center;border:1px solid #dfe5e2;border-radius:10px;background:#fff;color:#526071;text-decoration:none;font:12px "Vazirmatn",sans-serif}
+.avam-archive-pagination .current{background:#17253d;color:#fff;border-color:#17253d}
+.avam-archive-empty{padding:72px 24px;text-align:center;background:#fff;border:1px dashed #cbd5d1;border-radius:20px}
+.avam-archive-empty>div{width:56px;height:56px;margin:0 auto 16px;display:grid;place-items:center;border-radius:16px;background:#eaf4ee;color:#47765e;font-size:24px}
+.avam-archive-empty h2{font:600 24px "Noto Serif Arabic",serif;margin:0 0 6px}
+.avam-archive-empty p{margin:0 0 20px;color:#718091;font:12px "Vazirmatn",sans-serif}
+.avam-archive-empty a{display:inline-flex;min-height:44px;align-items:center;padding:0 20px;border-radius:10px;background:#17253d;color:#fff;text-decoration:none;font:600 12px "Vazirmatn",sans-serif}
+
+/* memorial detail */
+.avam-memorial-cover{padding:clamp(64px,9vw,110px) 0 56px;background:radial-gradient(circle at 82% 30%,rgba(218,230,224,.7),transparent 30%),linear-gradient(180deg,#eef3f0,#f7f8f7);border-bottom:1px solid #dfe5e2}
+.avam-memorial-cover-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:clamp(40px,7vw,96px);align-items:center}
+.avam-memorial-cover-copy{order:1}
+.avam-memorial-cover-photo{order:2}
+.avam-memorial-kicker{color:#a76652;font:700 11px "Vazirmatn",sans-serif}
+.avam-memorial-cover h1{font:600 clamp(42px,6vw,76px)/1.2 "Noto Serif Arabic",serif;letter-spacing:-.055em;margin:12px 0}
+.avam-memorial-cover-copy>p{max-width:540px;margin:0;color:#687586;font:14px/2 "Vazirmatn",sans-serif}
+.avam-memorial-dates{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.avam-memorial-dates span{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.78);border:1px solid #dfe5e2;color:#526071;font:11px "Vazirmatn",sans-serif}
+.avam-memorial-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.avam-memorial-btn,.avam-memorial-share{min-height:46px;padding:0 18px;display:inline-flex;align-items:center;justify-content:center;border-radius:11px;font:600 12px "Vazirmatn",sans-serif;text-decoration:none;cursor:pointer}
+.avam-memorial-btn{background:#17253d;color:#fff}
+.avam-memorial-share{background:#fff;color:#526071;border:1px solid #dfe5e2}
+.avam-memorial-cover-photo{display:flex;justify-content:center}
+.avam-memorial-cover-photo img,.avam-memorial-photo-empty{width:min(100%,500px);aspect-ratio:4/5;object-fit:cover;border-radius:28px;border:1px solid rgba(255,255,255,.9);box-shadow:0 24px 60px rgba(23,34,54,.12)}
+.avam-memorial-photo-empty{display:grid;place-items:center;background:#e5ece8;color:#718c7e;font-size:64px}
+.avam-memorial-content{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:clamp(36px,7vw,90px);padding-block:64px 100px}
+.avam-memorial-main{min-width:0}
+.avam-memory-section{padding:0 0 48px;margin-bottom:48px;border-bottom:1px solid #dfe5e2}
+.avam-memory-section:last-child{border-bottom:0;margin-bottom:0}
+.avam-memory-label{color:#a76652;font:700 10px "Vazirmatn",sans-serif}
+.avam-memory-section h2{font:600 clamp(27px,3vw,38px)/1.4 "Noto Serif Arabic",serif;letter-spacing:-.04em;margin:8px 0 20px}
+.avam-richtext{max-width:760px;color:#3d4a5c;font:15px/2.25 "Vazirmatn",sans-serif}
+.avam-richtext p{margin:0 0 18px}
+.avam-memorial-aside{padding-top:8px}
+.avam-memorial-aside-card{position:sticky;top:28px;padding:24px;border-radius:20px;background:#fff;border:1px solid #dfe5e2;box-shadow:0 8px 26px rgba(23,34,54,.05)}
+.avam-memorial-aside-card span{display:block;color:#8995a4;font:10px/1.8 "Vazirmatn",sans-serif;margin-bottom:10px}
+.avam-memorial-aside-card strong{font:600 20px/1.8 "Noto Serif Arabic",serif}
+.avam-memorial-back{display:inline-flex;margin-top:16px;min-height:44px;align-items:center;color:#a76652;text-decoration:none;font:700 11px "Vazirmatn",sans-serif}
+
+/* generic content + 404 */
+.avam-page{padding:clamp(48px,8vw,90px) 0}
+.avam-page>.avam-container{max-width:980px}
+.avam-section-title{font:600 clamp(32px,5vw,56px)/1.3 "Noto Serif Arabic",serif;letter-spacing:-.045em}
+.avam-page .avam-card{background:#fff;border:1px solid #dfe5e2;border-radius:24px;padding:clamp(28px,5vw,56px);box-shadow:0 10px 30px rgba(23,34,54,.05)}
+.avam-page .avam-richtext{max-width:none}
+.avam-404{text-align:center;padding:clamp(80px,12vw,150px) 24px}
+.avam-404 h1{font:600 clamp(56px,10vw,110px)/1 "Noto Serif Arabic",serif;letter-spacing:-.06em;margin:0}
+.avam-404 h2{font:600 28px "Noto Serif Arabic",serif;margin:16px 0 8px}
+.avam-404 p{color:#687586;font:13px/2 "Vazirmatn",sans-serif;margin:0 auto 24px}
+.avam-404 a{display:inline-flex;min-height:46px;align-items:center;padding:0 20px;border-radius:11px;background:#17253d;color:#fff;font:600 12px "Vazirmatn",sans-serif}
+
+/* admin settings */
+.avam-admin-settings{max-width:1100px}
+.avam-admin-settings h1{font-size:30px}
+.avam-admin-settings>form{background:#fff;border:1px solid #dfe5e2;border-radius:18px;padding:28px;margin-top:24px}
+.avam-admin-settings .form-table th{font-weight:700}
+.avam-admin-settings .form-table td{padding-block:18px}
+.avam-admin-settings textarea.large-text{border-radius:10px;border-color:#cbd5d1;padding:10px;max-width:760px}
+.avam-admin-settings input[type=color]{width:58px;height:38px;padding:2px;border:1px solid #cbd5d1;border-radius:8px}
+
+@media(max-width:900px){
+ .avam-memorial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .avam-memorial-cover-grid{grid-template-columns:1fr}
+ .avam-memorial-cover-photo{order:1;justify-content:flex-start}
+ .avam-memorial-cover-copy{order:2}
+ .avam-memorial-content{grid-template-columns:1fr}
+ .avam-memorial-aside{order:-1}
+ .avam-memorial-aside-card{position:static}
+}
+@media(max-width:640px){
+ .avam-container{width:min(100% - 32px,1200px)}
+ .avam-archive-hero{padding-top:48px}
+ .avam-archive-search{grid-template-columns:1fr;border-radius:16px}
+ .avam-archive-search button{width:100%}
+ .avam-memorial-grid{grid-template-columns:1fr}
+ .avam-archive-results{padding-block:32px 56px}
+ .avam-memorial-cover{padding-block:48px 40px}
+ .avam-memorial-cover h1{font-size:42px}
+ .avam-memorial-content{padding-block:40px 64px}
+ .avam-richtext{font-size:14px;line-height:2.15}
+}
+@media(max-width:374px){
+ .avam-container{width:calc(100% - 24px)}
+ .avam-memorial-cover h1{font-size:36px}
+ .avam-memorial-actions{display:grid;grid-template-columns:1fr}
+ .avam-memorial-btn,.avam-memorial-share{width:100%}
+}
