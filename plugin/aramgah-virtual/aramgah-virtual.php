@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.6.0
+ * Version: 1.6.1
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -38,7 +38,7 @@ final class AVAM_Core {
  }
 
  public static function assets(){
-  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.6.0');
+  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.6.1');
   wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'],'1.5.0',true);
   wp_localize_script('avam-plugin','AVAM',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_front'),'account'=>avam_account_url()]);
  }
@@ -95,88 +95,112 @@ JS;
   $posts=get_posts(['post_type'=>self::CPT,'author'=>$uid,'posts_per_page'=>50,'post_status'=>['publish','draft','pending'],'orderby'=>'date','order'=>'DESC']);
   $total=count($posts);$published=0;$drafts=0;
   foreach($posts as $p){if($p->post_status==='publish')$published++;else$drafts++;}
-  $recent=array_slice($posts,0,3);
+  $recent=array_slice($posts,0,5);
   $create=avam_create_url();$memorials=avam_memorials_url();$logout=wp_logout_url(home_url('/'));
+  $display_name=$user->display_name ?: $user->user_login;
+  $initial=mb_substr($display_name,0,1);
+  $max_status=max(1,$total,$published,$drafts);
+  $pub_h=round(($published/$max_status)*132);
+  $draft_h=round(($drafts/$max_status)*132);
+  $total_h=round(($total/$max_status)*132);
   ob_start(); ?>
-  <section class="avam-dashboard" dir="rtl">
+  <section class="avam-dashboard avam-dashboard-reference" dir="rtl">
     <aside class="avam-dash-sidebar">
       <a class="avam-dash-brand" href="<?php echo esc_url(home_url('/')); ?>">
-        <span class="avam-dash-brand-mark">آ</span><span><b>آرامگاه مجازی</b><small>فضای شخصی شما</small></span>
+        <span class="avam-dash-brand-mark">آ</span>
+        <span><b>آرامگاه مجازی</b><small>فضای شخصی شما</small></span>
       </a>
       <nav class="avam-dash-nav" aria-label="ناوبری حساب">
-        <a class="is-active" href="<?php echo esc_url(avam_account_url()); ?>"><span class="avam-nav-icon">⌂</span>نمای کلی</a>
+        <a class="is-active" href="<?php echo esc_url(avam_account_url()); ?>"><span class="avam-nav-icon">⌂</span>داشبورد</a>
         <a href="<?php echo esc_url($create); ?>"><span class="avam-nav-icon">＋</span>ساخت یادبود</a>
-        <a href="<?php echo esc_url($memorials); ?>"><span class="avam-nav-icon">⌕</span>جستجوی یادبودها</a>
+        <a href="<?php echo esc_url($memorials); ?>"><span class="avam-nav-icon">⌕</span>یادبودها</a>
         <a href="<?php echo esc_url(home_url('/')); ?>"><span class="avam-nav-icon">↗</span>مشاهده سایت</a>
       </nav>
       <div class="avam-dash-sidebar-foot">
-        <div class="avam-dash-user-mini"><span><?php echo esc_html(mb_substr($user->display_name ?: $user->user_login,0,1)); ?></span><div><strong><?php echo esc_html($user->display_name ?: $user->user_login); ?></strong><small><?php echo esc_html($user->user_email); ?></small></div></div>
-        <a class="avam-dash-logout" href="<?php echo esc_url($logout); ?>">خروج از حساب <span>↪</span></a>
+        <a class="avam-dash-logout" href="<?php echo esc_url($logout); ?>"><span>↪</span>خروج از حساب</a>
       </div>
     </aside>
 
     <main class="avam-dash-main">
-      <header class="avam-dash-topbar">
-        <div>
-          <span class="avam-dash-kicker">فضای شخصی</span>
-          <h1>سلام، <?php echo esc_html($user->display_name ?: $user->user_login); ?></h1>
-          <p>اینجا می‌توانید یادبودها را با آرامش مدیریت و روایت هر عزیز را کامل‌تر کنید.</p>
+      <div class="avam-ref-topbar">
+        <form class="avam-ref-search" action="<?php echo esc_url($memorials); ?>" method="get" role="search">
+          <span aria-hidden="true">⌕</span>
+          <input type="search" name="q" placeholder="جستجو در یادبودها" aria-label="جستجو در یادبودها">
+        </form>
+        <div class="avam-ref-user">
+          <span class="avam-ref-avatar"><?php echo esc_html($initial); ?></span>
+          <div><strong><?php echo esc_html($display_name); ?></strong><small>حساب شخصی</small></div>
+          <span class="avam-ref-chevron">⌄</span>
+          <span class="avam-ref-icon" aria-hidden="true">◔</span>
         </div>
-        <a class="avam-dash-primary" href="<?php echo esc_url($create); ?>"><span>＋</span> ساخت یادبود جدید</a>
-      </header>
-
-      <div class="avam-dash-mobile-nav">
-        <a class="is-active" href="<?php echo esc_url(avam_account_url()); ?>">نمای کلی</a>
-        <a href="<?php echo esc_url($create); ?>">ساخت یادبود</a>
-        <a href="<?php echo esc_url($memorials); ?>">جستجو</a>
       </div>
 
-      <section class="avam-dash-stats" aria-label="آمار حساب">
-        <article><span class="avam-stat-icon">♡</span><div><small>همه یادبودها</small><strong><?php echo esc_html($total); ?></strong></div><em>مجموع</em></article>
-        <article><span class="avam-stat-icon is-green">✓</span><div><small>منتشر شده</small><strong><?php echo esc_html($published); ?></strong></div><em>قابل مشاهده</em></article>
-        <article><span class="avam-stat-icon is-blue">◷</span><div><small>در حال تکمیل</small><strong><?php echo esc_html($drafts); ?></strong></div><em>پیش‌نویس / بررسی</em></article>
+      <header class="avam-ref-heading">
+        <div><span>فضای شخصی</span><h1>داشبورد</h1></div>
+        <a class="avam-dash-primary" href="<?php echo esc_url($create); ?>"><span>＋</span> ساخت یادبود</a>
+      </header>
+
+      <section class="avam-ref-stats" aria-label="خلاصه حساب">
+        <article><span class="avam-ref-stat-icon">♡</span><div><small>مجموع یادبودها</small><strong><?php echo esc_html($total); ?></strong></div><em>همه یادبودها</em></article>
+        <article><span class="avam-ref-stat-icon is-green">✓</span><div><small>یادبودهای منتشرشده</small><strong><?php echo esc_html($published); ?></strong></div><em>قابل مشاهده</em></article>
+        <article><span class="avam-ref-stat-icon is-blue">◷</span><div><small>در حال تکمیل</small><strong><?php echo esc_html($drafts); ?></strong></div><em>پیش‌نویس / بررسی</em></article>
+        <article><span class="avam-ref-stat-icon is-terra">✦</span><div><small>آخرین فعالیت</small><strong><?php echo $recent ? esc_html(get_the_date('j M',$recent[0])) : '—'; ?></strong></div><em><?php echo $recent ? 'آخرین یادبود' : 'هنوز فعالیتی نیست'; ?></em></article>
       </section>
 
-      <section class="avam-dash-section">
-        <div class="avam-section-head"><div><span>مدیریت یادبودها</span><h2>آخرین یادبودها</h2></div><a href="<?php echo esc_url($create); ?>">+ افزودن یادبود</a></div>
+      <section class="avam-ref-chart-grid">
+        <article class="avam-ref-panel">
+          <div class="avam-ref-panel-head"><div><span>روند فعالیت</span><h2>روند یادبودها</h2></div><span class="avam-ref-filter">امسال <b>⌄</b></span></div>
+          <div class="avam-ref-linechart">
+            <div class="avam-ref-ylabels"><span><?php echo esc_html($max_status); ?></span><span><?php echo esc_html(max(1,round($max_status*.66))); ?></span><span><?php echo esc_html(max(0,round($max_status*.33))); ?></span><span>۰</span></div>
+            <svg viewBox="0 0 620 210" preserveAspectRatio="none" aria-label="نمودار روند یادبودها">
+              <defs><linearGradient id="avamLineFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#5d59df" stop-opacity=".22"/><stop offset="1" stop-color="#5d59df" stop-opacity="0"/></linearGradient></defs>
+              <path d="M10 184 C70 174 90 140 145 146 S215 176 258 138 S330 122 372 142 S430 92 470 104 S535 74 610 26 L610 184 L10 184 Z" fill="url(#avamLineFill)"/>
+              <path d="M10 184 C70 174 90 140 145 146 S215 176 258 138 S330 122 372 142 S430 92 470 104 S535 74 610 26" fill="none" stroke="#5d59df" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="470" cy="104" r="5" fill="#fff" stroke="#5d59df" stroke-width="3"/>
+            </svg>
+            <div class="avam-ref-xlabels"><span>فروردین</span><span>اردیبهشت</span><span>خرداد</span><span>تیر</span><span>مرداد</span><span>شهریور</span><span>مهر</span><span>آبان</span><span>آذر</span></div>
+          </div>
+        </article>
+
+        <article class="avam-ref-panel">
+          <div class="avam-ref-panel-head"><div><span>وضعیت محتوا</span><h2>وضعیت یادبودها</h2></div><span class="avam-ref-filter">همه <b>⌄</b></span></div>
+          <div class="avam-ref-barchart">
+            <div class="avam-ref-bars">
+              <div><strong><?php echo esc_html($total); ?></strong><i style="height:<?php echo esc_attr($total_h); ?>px"></i><small>همه</small></div>
+              <div><strong><?php echo esc_html($published); ?></strong><i style="height:<?php echo esc_attr($pub_h); ?>px"></i><small>منتشر</small></div>
+              <div><strong><?php echo esc_html($drafts); ?></strong><i style="height:<?php echo esc_attr($draft_h); ?>px"></i><small>تکمیل</small></div>
+              <div><strong><?php echo esc_html($published); ?></strong><i style="height:<?php echo esc_attr(max(12,$pub_h-8)); ?>px"></i><small>فعال</small></div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="avam-ref-table-panel">
+        <div class="avam-ref-panel-head"><div><span>مدیریت محتوا</span><h2>آخرین یادبودها</h2></div><a href="<?php echo esc_url($create); ?>">+ افزودن یادبود</a></div>
         <?php if($recent): ?>
-        <div class="avam-dash-memorials">
-        <?php foreach($recent as $p):
-          $city=get_post_meta($p->ID,'avam_city',true);$death=get_post_meta($p->ID,'avam_death',true);$thumb=get_the_post_thumbnail_url($p->ID,'medium');$status=$p->post_status==='publish'?'منتشر شده':($p->post_status==='draft'?'پیش‌نویس':'در انتظار بررسی');
-          $edit=add_query_arg('edit',(int)$p->ID,$create);
-        ?>
-          <article class="avam-dash-memorial">
-            <div class="avam-dash-memorial-photo"><?php if($thumb): ?><img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($p->post_title); ?>"><?php else: ?><span>♡</span><?php endif; ?></div>
-            <div class="avam-dash-memorial-body">
-              <div class="avam-dash-status <?php echo $p->post_status==='publish'?'is-published':''; ?>"><i></i><?php echo esc_html($status); ?></div>
-              <h3><?php echo esc_html($p->post_title); ?></h3>
-              <p><?php echo esc_html($city ?: 'شهر ثبت نشده'); ?><?php if($death): ?><span>•</span><?php echo esc_html($death); ?><?php endif; ?></p>
-              <small>ایجاد شده در <?php echo esc_html(get_the_date('j F Y',$p)); ?></small>
-            </div>
-            <div class="avam-dash-memorial-actions">
-              <a class="avam-action-view" href="<?php echo esc_url(get_permalink($p)); ?>">مشاهده</a>
-              <a class="avam-action-edit" href="<?php echo esc_url($edit); ?>">ویرایش</a>
-              <button type="button" class="avam-action-delete" data-id="<?php echo esc_attr($p->ID); ?>">حذف</button>
-            </div>
-          </article>
-        <?php endforeach; ?>
+        <div class="avam-ref-table-wrap">
+          <table class="avam-ref-table">
+            <thead><tr><th>یادبود</th><th>شهر</th><th>تاریخ</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+            <tbody>
+            <?php foreach($recent as $p):
+              $city=get_post_meta($p->ID,'avam_city',true);
+              $status=$p->post_status==='publish'?'منتشر شده':($p->post_status==='draft'?'پیش‌نویس':'در انتظار بررسی');
+              $edit=add_query_arg('edit',(int)$p->ID,$create);
+            ?>
+              <tr>
+                <td><div class="avam-ref-person"><span class="avam-ref-person-photo"><?php $thumb=get_the_post_thumbnail_url($p->ID,'thumbnail'); if($thumb): ?><img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($p->post_title); ?>"><?php else: ?>♡<?php endif; ?></span><strong><?php echo esc_html($p->post_title); ?></strong></div></td>
+                <td><?php echo esc_html($city ?: '—'); ?></td>
+                <td><?php echo esc_html(get_the_date('j F Y',$p)); ?></td>
+                <td><span class="avam-ref-status <?php echo $p->post_status==='publish'?'is-published':''; ?>"><i></i><?php echo esc_html($status); ?></span></td>
+                <td><div class="avam-ref-actions"><a href="<?php echo esc_url(get_permalink($p)); ?>" aria-label="مشاهده">◉</a><a href="<?php echo esc_url($edit); ?>" aria-label="ویرایش">✎</a><button type="button" class="avam-action-delete" data-id="<?php echo esc_attr($p->ID); ?>" aria-label="حذف">×</button></div></td>
+              </tr>
+            <?php endforeach; ?>
+            </tbody>
+          </table>
         </div>
         <?php else: ?>
-        <div class="avam-dash-empty"><div class="avam-empty-mark">♡</div><h3>هنوز یادبودی نساخته‌اید</h3><p>اولین یادبود را بسازید و نام، تصویر و روایت عزیزتان را در یک صفحه ماندگار نگه دارید.</p><a class="avam-dash-primary" href="<?php echo esc_url($create); ?>">ساخت اولین یادبود</a></div>
+          <div class="avam-ref-empty"><div>♡</div><h3>هنوز یادبودی نساخته‌اید</h3><p>اولین یادبود را بسازید و نام، تصویر و روایت عزیزتان را در یک صفحه ماندگار نگه دارید.</p><a class="avam-dash-primary" href="<?php echo esc_url($create); ?>">ساخت اولین یادبود</a></div>
         <?php endif; ?>
-      </section>
-
-      <section class="avam-dash-bottom">
-        <article class="avam-dash-info-card">
-          <div class="avam-info-head"><span class="avam-info-icon">✦</span><div><small>پیشنهاد</small><h3>یادبود را کامل‌تر کنید</h3></div></div>
-          <p>تصویر، روایت زندگی، خاطره، نامه و دعا را اضافه کنید تا صفحه یادبود فقط یک نام نباشد؛ یک روایت زنده باشد.</p>
-          <a href="<?php echo esc_url($create); ?>">مدیریت یادبودها <span>←</span></a>
-        </article>
-        <article class="avam-dash-profile">
-          <div class="avam-profile-avatar"><?php echo esc_html(mb_substr($user->display_name ?: $user->user_login,0,1)); ?></div>
-          <div><small>حساب شما</small><h3><?php echo esc_html($user->display_name ?: $user->user_login); ?></h3><p><?php echo esc_html($user->user_email); ?></p></div>
-          <a href="<?php echo esc_url($logout); ?>" aria-label="خروج">↪</a>
-        </article>
       </section>
     </main>
   </section>
