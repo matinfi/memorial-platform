@@ -22,6 +22,7 @@ $show_search = get_option('avam_show_search','1');
 $search_url = function_exists('avam_memorials_url') ? avam_memorials_url() : home_url('/memorials/');
 $register_url = function_exists('avam_register_url') ? avam_register_url() : wp_registration_url();
 $login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url();
+$home_cta_url = is_user_logged_in() ? (function_exists('avam_create_url') ? avam_create_url() : home_url('/create-memorial/')) : $register_url;
 ?>
 <div class="avam-home-page">
   <div class="avam-home-card">
@@ -65,7 +66,7 @@ $login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url
             <span class="avam-home-divider" aria-hidden="true"></span>
             <a class="avam-home-login-mobile" href="<?php echo esc_url($login_url); ?>">ورود</a>
           </nav>
-          <a class="avam-home-cta" href="<?php echo esc_url($register_url); ?>"><span><?php echo esc_html($home_cta); ?></span><i class="avam-home-knob"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="m6.6 3.6 6 5.4-6 5.4" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
+          <a class="avam-home-cta" href="<?php echo esc_url($home_cta_url); ?>"><span><?php echo esc_html($home_cta); ?></span><i class="avam-home-knob"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="m6.6 3.6 6 5.4-6 5.4" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
         </div>
       </header>
 
