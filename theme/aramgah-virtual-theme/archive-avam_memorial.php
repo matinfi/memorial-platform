@@ -7,7 +7,7 @@ if($q)$args['s']=$q;
 if($city)$args['meta_query']=[['key'=>'avam_city','value'=>$city,'compare'=>'LIKE']];
 $memorials=new WP_Query($args);
 ?>
-<main class="avam-archive-page" dir="rtl">
+<div class="avam-archive-page" dir="rtl">
   <section class="avam-archive-hero">
     <div class="avam-container">
       <span>آرامگاه مجازی</span>
@@ -39,5 +39,5 @@ $memorials=new WP_Query($args);
       <div class="avam-archive-empty"><div>♡</div><h2>یادبودی پیدا نشد</h2><p>نام یا شهر دیگری را امتحان کنید.</p><a href="<?php echo esc_url(get_post_type_archive_link('avam_memorial')); ?>">مشاهده همه یادبودها</a></div>
     <?php endif; ?>
   </section>
-</main>
+</div>
 <?php get_footer();
