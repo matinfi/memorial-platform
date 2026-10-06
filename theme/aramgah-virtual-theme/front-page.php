@@ -10,6 +10,15 @@ $video_id = (int) get_option('avam_home_video', 0);
 $poster = $image_id ? wp_get_attachment_url($image_id) : 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260912_105822_bf7c2d53-9957-4521-bbbf-7c1ab7a70130.png';
 $video = $video_id ? wp_get_attachment_url($video_id) : 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260912_105953_21ad8049-9088-4a00-bad3-aee6b5575a2b.mp4';
 $media_type = get_option('avam_home_media_type', 'video');
+$home_eyebrow = get_option('avam_home_eyebrow','جایی برای نام، تصویر و روایت');
+$home_title = get_option('avam_home_title','یادها اینجا می‌مانند.');
+$home_subtitle = get_option('avam_home_subtitle','برای کسانی که نمی‌خواهیم از یاد بروند.');
+$home_panel_title = get_option('avam_home_panel_title','یادبودهای دیجیتال');
+$home_panel_text = get_option('avam_home_panel_text',"نام، تصویر و روایت\nبا احترام نگه‌داری می‌شود.");
+$home_cta = get_option('avam_home_cta','ساخت یادبود');
+$show_stats = get_option('avam_show_stats','1');
+$show_panel = get_option('avam_show_home_panel','1');
+$show_search = get_option('avam_show_search','1');
 $search_url = function_exists('avam_memorials_url') ? avam_memorials_url() : home_url('/memorials/');
 $register_url = function_exists('avam_register_url') ? avam_register_url() : wp_registration_url();
 $login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url();
@@ -56,38 +65,38 @@ $login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url
             <span class="avam-home-divider" aria-hidden="true"></span>
             <a class="avam-home-login-mobile" href="<?php echo esc_url($login_url); ?>">ورود</a>
           </nav>
-          <a class="avam-home-cta" href="<?php echo esc_url($register_url); ?>"><span>ساخت یادبود</span><i class="avam-home-knob"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="m6.6 3.6 6 5.4-6 5.4" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
+          <a class="avam-home-cta" href="<?php echo esc_url($register_url); ?>"><span><?php echo esc_html($home_cta); ?></span><i class="avam-home-knob"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="m6.6 3.6 6 5.4-6 5.4" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
         </div>
       </header>
 
       <main class="avam-home-hero">
-        <p class="avam-home-eyebrow">جایی برای نام، تصویر و روایت</p>
-        <h1><span>یادها</span><br><span>اینجا <em>می‌مانند.</em></span></h1>
-        <form class="avam-home-search" action="<?php echo esc_url($search_url); ?>" method="get" role="search">
+        <p class="avam-home-eyebrow"><?php echo esc_html($home_eyebrow); ?></p>
+        <h1><?php echo nl2br(esc_html($home_title)); ?></h1>
+        <?php if($show_search): ?><form class="avam-home-search" action="<?php echo esc_url($search_url); ?>" method="get" role="search">
           <span class="avam-home-search-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg></span>
           <input name="q" type="search" placeholder="جستجوی نام متوفی" aria-label="جستجوی نام متوفی">
           <span class="avam-home-search-sep"></span>
           <input name="city" type="search" placeholder="شهر" aria-label="شهر">
           <button type="submit">جستجو</button>
-        </form>
+        </form><?php endif; ?>
         <div class="avam-home-tagrow">
           <a class="avam-home-play" href="#avam-home-stats" aria-label="جستجوی یادبودها"><svg viewBox="0 0 13 14" aria-hidden="true"><path d="M1.4 1.3 11.6 7 1.4 12.7z" fill="#0b1526"/></svg></a>
-          <span>برای کسانی که نمی‌خواهیم از یاد بروند.</span>
+          <span><?php echo esc_html($home_subtitle); ?></span>
         </div>
       </main>
 
-      <aside class="avam-home-panel" aria-label="آرامگاه مجازی">
-        <div class="avam-panel-title">یادبودهای دیجیتال</div>
+      <?php if($show_panel): ?><aside class="avam-home-panel" aria-label="آرامگاه مجازی">
+        <div class="avam-panel-title"><?php echo esc_html($home_panel_title); ?></div>
         <span class="avam-panel-dot"></span>
         <div class="avam-panel-shield" aria-hidden="true">
           <svg viewBox="0 0 30 39" fill="none"><path d="M15 1.2 1.6 6.6v13.1c0 6.6 5.1 12.6 13.4 17.9 8.3-5.3 13.4-11.3 13.4-17.9V6.6z" stroke="#101c33" stroke-width="2" stroke-linejoin="round"/><path d="M2.1 18.9c4.6-1.1 8.9-1.6 12.9-1.6s8.3.5 12.9 1.6" stroke="#101c33" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
-        <p>نام، تصویر و روایت<br>با احترام نگه‌داری می‌شود.</p>
+        <p><?php echo nl2br(esc_html($home_panel_text)); ?></p>
         <div class="avam-panel-scale"><span>نام</span><span>تصویر</span><span>روایت</span><span>یاد</span></div>
         <div class="avam-panel-track"><i></i></div>
-      </aside>
+      </aside><?php endif; ?>
 
-      <div class="avam-home-stats" id="avam-home-stats">
+      <?php if($show_stats): ?><div class="avam-home-stats" id="avam-home-stats">
         <div class="avam-home-stat">
           <span class="avam-home-num"><?php echo esc_html(number_format_i18n($total_memorials)); ?>+</span>
           <span class="avam-home-label">یادبود<br>ثبت‌شده</span>
@@ -97,7 +106,7 @@ $login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url
           <span class="avam-home-num"><?php echo esc_html(number_format_i18n($total_users)); ?>+</span>
           <span class="avam-home-label">کاربر<br>همراه</span>
         </div>
-      </div>
+      </div><?php endif; ?>
 
       <a class="avam-home-meet" href="<?php echo esc_url($login_url); ?>">
         <span class="avam-home-thumb"><img src="<?php echo esc_url($poster); ?>" alt=""></span>
