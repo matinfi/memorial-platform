@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.5.0
+ * Version: 1.5.1
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -221,7 +221,9 @@ JS;
   if(!isset($_POST['avam_nonce']))return;
   $nonce=sanitize_text_field(wp_unslash($_POST['avam_nonce']));$action=sanitize_key($_POST['avam_action']);
   if($action==='login'&&wp_verify_nonce($nonce,'avam_login')){
-   $u=wp_signon(['user_login'=>sanitize_text_field(wp_unslash($_POST['log']??'')),'user_password'=>$_POST['pwd']??'','remember'=>true],is_ssl());
+   $login=sanitize_text_field(wp_unslash($_POST['log']??''));
+   if(is_email($login)){$email_user=get_user_by('email',$login);if($email_user)$login=$email_user->user_login;}
+   $u=wp_signon(['user_login'=>$login,'user_password'=>$_POST['pwd']??'','remember'=>true],is_ssl());
    if(is_wp_error($u)){wp_safe_redirect(add_query_arg('avam_error',rawurlencode('نام کاربری یا رمز عبور نادرست است.'),avam_login_url()));exit;}
    wp_safe_redirect(avam_account_url());exit;
   }
