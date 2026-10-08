@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.6.6
+ * Version: 1.7.0
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -25,7 +25,6 @@ final class AVAM_Core {
   add_action('after_setup_theme',[__CLASS__,'hide_admin_bar']);
   add_action('template_redirect',[__CLASS__,'handle_auth']);
   add_action('wp_ajax_avam_save_memorial',[__CLASS__,'save_front_memorial']);
-  add_action('wp_ajax_nopriv_avam_save_memorial',[__CLASS__,'save_front_memorial']);
   add_action('wp_ajax_avam_delete_memorial',[__CLASS__,'delete_front_memorial']);
  }
 
@@ -38,8 +37,8 @@ final class AVAM_Core {
  }
 
  public static function assets(){
-  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.6.6');
-  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'],'1.6.5',true);
+  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.7.0');
+  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'],'1.7.0',true);
   wp_localize_script('avam-plugin','AVAM',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_front'),'account'=>avam_account_url()]);
  }
 
@@ -267,11 +266,20 @@ JS;
   if(!is_user_logged_in()||!check_ajax_referer('avam_front','nonce',false))wp_send_json_error(['message'=>'درخواست نامعتبر است.'],403);
   $title=sanitize_text_field(wp_unslash($_POST['title']??''));if(!$title)wp_send_json_error(['message'=>'نام الزامی است.'],422);
   $edit_id=absint($_POST['edit_id']??0);$post_content=sanitize_textarea_field(wp_unslash($_POST['content']??''));
+  if(mb_strlen($title)>160)wp_send_json_error(['message'=>'نام یادبود بیش از حد طولانی است.'],422);
+  if(mb_strlen($post_content)>50000)wp_send_json_error(['message'=>'متن روایت بیش از حد طولانی است.'],422);
   if($edit_id){$existing=get_post($edit_id);if(!$existing||$existing->post_type!==self::CPT||(int)$existing->post_author!==get_current_user_id())wp_send_json_error(['message'=>'دسترسی به این یادبود مجاز نیست.'],403);$id=wp_update_post(['ID'=>$edit_id,'post_title'=>$title,'post_content'=>$post_content],true);}else{$id=wp_insert_post(['post_type'=>self::CPT,'post_status'=>'publish','post_title'=>$title,'post_content'=>$post_content,'post_author'=>get_current_user_id()],true);}
   if(is_wp_error($id))wp_send_json_error(['message'=>'ذخیره انجام نشد.'],500);
   foreach(['city','birth','death','will','letter','memory','prayer'] as $k)update_post_meta($id,'avam_'.$k,sanitize_textarea_field(wp_unslash($_POST[$k]??'')));
-  if(!empty($_FILES['image']['name'])){require_once ABSPATH.'wp-admin/includes/file.php';require_once ABSPATH.'wp-admin/includes/media.php';require_once ABSPATH.'wp-admin/includes/image.php';$att=media_handle_upload('image',$id);if(!is_wp_error($att))set_post_thumbnail($id,$att);}
-  wp_send_json_success(['url'=>get_permalink($id)]);
+  if(!empty($_FILES['image']['name'])){
+   if(!empty($_FILES['image']['error']) && (int)$_FILES['image']['error']!==UPLOAD_ERR_OK)wp_send_json_error(['message'=>'آپلود تصویر ناموفق بود.'],422);
+   if(!empty($_FILES['image']['size']) && (int)$_FILES['image']['size']>8*1024*1024)wp_send_json_error(['message'=>'حجم تصویر باید کمتر از ۸ مگابایت باشد.'],422);
+   require_once ABSPATH.'wp-admin/includes/file.php';require_once ABSPATH.'wp-admin/includes/media.php';require_once ABSPATH.'wp-admin/includes/image.php';
+   $att=media_handle_upload('image',$id);
+   if(is_wp_error($att))wp_send_json_error(['message'=>'تصویر قابل ذخیره‌سازی نبود.'],422);
+   set_post_thumbnail($id,$att);
+  }
+  wp_send_json_success(['url'=>get_permalink($id),'id'=>(int)$id]);
  }
 
  public static function delete_front_memorial(){
