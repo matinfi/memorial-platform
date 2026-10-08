@@ -21,3 +21,33 @@ jQuery(function($){
   }).fail(function(){alert('ارتباط با سرور برقرار نشد.');b.prop('disabled',false).text('حذف');});
  });
 });
+
+/* Mobile account dashboard navigation — v1.6.4 */
+jQuery(function($){
+ const dashboard=$('.avam-dashboard-reference');
+ if(!dashboard.length)return;
+ const toggle=dashboard.find('.avam-mobile-menu-toggle');
+ const sidebar=dashboard.find('.avam-dash-sidebar');
+ const backdrop=dashboard.find('.avam-mobile-menu-backdrop');
+ const closeMenu=function(){
+   dashboard.removeClass('mobile-menu-open');
+   toggle.attr('aria-expanded','false');
+   backdrop.attr('hidden',true);
+   $('body').removeClass('avam-mobile-nav-open');
+ };
+ toggle.on('click',function(){
+   const open=!dashboard.hasClass('mobile-menu-open');
+   dashboard.toggleClass('mobile-menu-open',open);
+   toggle.attr('aria-expanded',open?'true':'false');
+   backdrop.attr('hidden',!open);
+   $('body').toggleClass('avam-mobile-nav-open',open);
+ });
+ backdrop.on('click',closeMenu);
+ sidebar.on('click','a',function(){closeMenu();});
+ $(document).on('keydown',function(e){
+   if(e.key==='Escape' && dashboard.hasClass('mobile-menu-open'))closeMenu();
+ });
+ $(window).on('resize',function(){
+   if(window.innerWidth>760 && dashboard.hasClass('mobile-menu-open'))closeMenu();
+ });
+});
