@@ -1415,3 +1415,102 @@
   .avam-search-form{grid-template-columns:1fr}
   .avam-search-form button{width:100%}
 }
+
+
+/* =========================================================
+   Final visual system v1.7.0 — warm memorial editorial UI
+   ========================================================= */
+.avam-card,.avam-auth-card,.avam-create-card,.avam-search-page,.avam-dashboard{
+  --ui-paper:#fbf9f4;
+  --ui-paper-2:#f3efe6;
+  --ui-ink:#2c3531;
+  --ui-muted:#77817b;
+  --ui-sage:#6b7b70;
+  --ui-bronze:#ad875c;
+  --ui-line:#ddd8cc;
+  color:var(--ui-ink);
+}
+.avam-auth-card,.avam-create-card{
+  background:rgba(251,249,244,.96)!important;
+  border:1px solid var(--ui-line)!important;
+  box-shadow:0 28px 80px rgba(45,54,49,.09)!important;
+}
+.avam-auth-card h1,.avam-create-card h1{
+  font-family:"Noto Serif Arabic",Georgia,serif!important;
+  color:var(--ui-ink)!important;
+  letter-spacing:-.035em;
+}
+.avam-auth-lead{color:var(--ui-muted)!important}
+.avam-auth-btn,.avam-btn,.avam-dash-primary{
+  background:var(--ui-ink)!important;
+  border:1px solid var(--ui-ink)!important;
+  border-radius:14px!important;
+  box-shadow:0 12px 24px rgba(44,53,49,.10);
+}
+.avam-auth-btn:hover,.avam-btn:hover,.avam-dash-primary:hover{
+  background:#202925!important;
+}
+.avam-auth-foot a,.avam-create-back{color:var(--ui-sage)!important}
+.avam-field label{color:#56615b!important;font-weight:650}
+.avam-field input,.avam-field textarea,.avam-field select{
+  background:#fffdf9!important;
+  border:1px solid #d9d4c8!important;
+  border-radius:13px!important;
+}
+.avam-field input:focus,.avam-field textarea:focus,.avam-field select:focus{
+  border-color:var(--ui-sage)!important;
+  box-shadow:0 0 0 4px rgba(107,123,112,.11)!important;
+}
+.avam-form-section{
+  background:linear-gradient(180deg,rgba(248,245,238,.72),rgba(251,249,244,.5))!important;
+  border-color:var(--ui-line)!important;
+  border-radius:18px!important;
+}
+.avam-form-section-title>span{
+  background:#e8e2d6!important;color:var(--ui-sage)!important;border-color:#d9d0c0!important;
+}
+.avam-form-section-title strong{color:var(--ui-ink)!important}
+.avam-form-section-title small{color:var(--ui-muted)!important}
+.avam-upload{
+  background:#f7f3eb!important;border:1px dashed #cfc7b8!important;border-radius:16px!important;
+}
+.avam-upload>span{color:var(--ui-sage)!important}
+.avam-notice{background:#f4f1e8!important;border-color:#d8d1c4!important;color:var(--ui-ink)!important}
+.avam-notice.avam-error{background:#fbefea!important;border-color:#dcb8ab!important}
+.avam-dashboard-reference{
+  background:#f1ede5!important;
+}
+.avam-dashboard-reference .avam-dash-sidebar{
+  background:#2c3531!important;
+  border-color:#39433e!important;
+}
+.avam-dashboard-reference .avam-dash-brand b,
+.avam-dashboard-reference .avam-dash-brand small,
+.avam-dashboard-reference .avam-dash-nav a,
+.avam-dashboard-reference .avam-dash-logout{color:#f5f1e8!important}
+.avam-dashboard-reference .avam-dash-nav a.is-active{
+  background:#435148!important;color:#fff!important;
+}
+.avam-dashboard-reference .avam-dash-brand-mark{
+  background:#b6a17d!important;color:#2c3531!important;
+}
+.avam-dashboard-reference .avam-dash-main{background:#f1ede5!important}
+.avam-ref-topbar,.avam-ref-stats article,.avam-ref-panel,.avam-ref-table-panel{
+  background:#fbf9f4!important;
+  border-color:var(--ui-line)!important;
+  box-shadow:0 14px 40px rgba(45,54,49,.045)!important;
+}
+.avam-ref-search{background:#f7f3eb!important;border-color:#ddd6ca!important}
+.avam-ref-search input{color:var(--ui-ink)!important}
+.avam-ref-heading h1,.avam-ref-panel-head h2,.avam-ref-person strong{color:var(--ui-ink)!important}
+.avam-ref-heading>div>span,.avam-ref-panel-head>div>span{color:var(--ui-muted)!important}
+.avam-ref-stat-icon{background:#e9e3d8!important;color:var(--ui-sage)!important}
+.avam-ref-stat-icon.is-green{background:#e3ebe5!important;color:#587261!important}
+.avam-ref-stat-icon.is-blue{background:#e4e9e6!important;color:#667a70!important}
+.avam-ref-stat-icon.is-terra{background:#eee3d8!important;color:#9b7655!important}
+.avam-ref-table th{color:#8c948f!important}
+.avam-ref-table td{border-color:#ebe6dd!important;color:#5c6660!important}
+.avam-ref-status.is-published{color:#5e7b68!important}
+.avam-ref-actions a,.avam-ref-actions button{background:#f1eee7!important;color:#68736d!important}
+.avam-ref-actions a:hover,.avam-ref-actions button:hover{background:#e6e1d6!important;color:var(--ui-sage)!important}
+.avam-mobile-menu-toggle{background:#fbf9f4!important;color:var(--ui-ink)!important;border-color:var(--ui-line)!important}
