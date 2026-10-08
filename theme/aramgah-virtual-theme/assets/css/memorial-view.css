@@ -993,3 +993,13 @@ body:has(.avam-memorial-content-view){
     font-size:24px;
   }
 }
+
+/* =========================================================
+   Editorial memorial reading mode
+   Only the main memorial reading sections are visible as
+   expandable chapters; comments are social-style.
+   ========================================================= */
+.avam-reading-body > .avam-reading-story,
+.avam-reading-body > .avam-reading-section{
+  border-bottom:0;
+}
