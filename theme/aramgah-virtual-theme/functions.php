@@ -7,7 +7,7 @@ function avam_theme_setup(){
 add_action('after_setup_theme','avam_theme_setup');
 function avam_theme_assets(){
  wp_enqueue_style('avam-fonts','https://fonts.googleapis.com/css2?family=Noto+Serif+Arabic:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700&display=swap',[],null);
- wp_enqueue_style('avam-style',get_stylesheet_uri(),[], '2.0.1');
+ wp_enqueue_style('avam-style',get_stylesheet_uri(),[], '2.0.2');
  $primary=sanitize_hex_color(get_option('avam_primary_color','#17253d')) ?: '#17253d';
  $accent=sanitize_hex_color(get_option('avam_accent_color','#a76652')) ?: '#a76652';
  wp_add_inline_style('avam-style',':root{--ink:'.$primary.';--cta:'.$primary.';--accent:'.$accent.';--c-primary:'.$primary.';--c-accent:'.$accent.';}');
