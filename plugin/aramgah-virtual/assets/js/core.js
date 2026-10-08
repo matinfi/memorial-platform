@@ -16,7 +16,7 @@ jQuery(function($){
   if(!id||!window.confirm('این یادبود برای همیشه حذف شود؟ این عمل قابل بازگشت نیست.'))return;
   b.prop('disabled',true).text('در حال حذف...');
   $.post(AVAM.ajax,{action:'avam_delete_memorial',nonce:AVAM.nonce,id:id}).done(function(r){
-   if(r.success){b.closest('.avam-dash-memorial').slideUp(220,function(){$(this).remove();});}
+   if(r.success){const row=b.closest('.avam-ref-table tr,.avam-dash-memorial');row.slideUp(220,function(){$(this).remove();});}
    else{alert(r.data?.message||'حذف انجام نشد.');b.prop('disabled',false).text('حذف');}
   }).fail(function(){alert('ارتباط با سرور برقرار نشد.');b.prop('disabled',false).text('حذف');});
  });
