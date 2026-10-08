@@ -23,6 +23,7 @@ $search_url = function_exists('avam_memorials_url') ? avam_memorials_url() : hom
 $register_url = function_exists('avam_register_url') ? avam_register_url() : wp_registration_url();
 $login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url();
 $home_cta_url = is_user_logged_in() ? (function_exists('avam_create_url') ? avam_create_url() : home_url('/create-memorial/')) : $register_url;
+$home_account_url = is_user_logged_in() ? (function_exists('avam_account_url') ? avam_account_url() : home_url('/account/')) : $login_url;
 ?>
 <div class="avam-home-page">
   <div class="avam-home-card">
@@ -64,7 +65,7 @@ $home_cta_url = is_user_logged_in() ? (function_exists('avam_create_url') ? avam
             </a>
             <a href="<?php echo esc_url($search_url); ?>"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="1" y="1" width="7.4" height="7.4" rx="1.7" stroke="#202940" stroke-width="1.7"/><rect x="11.6" y="1" width="7.4" height="7.4" rx="1.7" stroke="#202940" stroke-width="1.7"/><rect x="1" y="11.6" width="7.4" height="7.4" rx="1.7" stroke="#202940" stroke-width="1.7"/><rect x="11.6" y="11.6" width="7.4" height="7.4" rx="1.7" stroke="#202940" stroke-width="1.7"/></svg><span>یادبودها</span></a>
             <span class="avam-home-divider" aria-hidden="true"></span>
-            <a class="avam-home-login-mobile" href="<?php echo esc_url($login_url); ?>">ورود</a>
+            <a class="avam-home-login-mobile" href="<?php echo esc_url($home_account_url); ?>"><?php echo is_user_logged_in() ? 'حساب من' : 'ورود'; ?></a>
           </nav>
           <a class="avam-home-cta" href="<?php echo esc_url($home_cta_url); ?>"><span><?php echo esc_html($home_cta); ?></span><i class="avam-home-knob"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="m6.6 3.6 6 5.4-6 5.4" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
         </div>
@@ -109,9 +110,9 @@ $home_cta_url = is_user_logged_in() ? (function_exists('avam_create_url') ? avam
         </div>
       </div><?php endif; ?>
 
-      <a class="avam-home-meet" href="<?php echo esc_url($login_url); ?>">
+      <a class="avam-home-meet" href="<?php echo esc_url($home_account_url); ?>">
         <span class="avam-home-thumb"><img src="<?php echo esc_url($poster); ?>" alt=""></span>
-        <b>ورود به آرامگاه</b>
+        <b><?php echo is_user_logged_in() ? 'ورود به حساب' : 'ورود به آرامگاه'; ?></b>
         <i class="avam-home-knob"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="m6.6 3.6 6 5.4-6 5.4" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
       </a>
     </div>
