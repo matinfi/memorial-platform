@@ -114,6 +114,13 @@ $extras=[
 
 <script>
 document.addEventListener('click',function(e){
+  const trigger=e.target.closest('.avam-accordion-trigger');
+  if(trigger){
+    const accordion=trigger.closest('.avam-accordion');
+    const open=accordion.classList.toggle('is-open');
+    trigger.setAttribute('aria-expanded',open?'true':'false');
+  }
+
   const share=e.target.closest('[data-share]');
   if(share){
     const original=share.textContent;
