@@ -726,3 +726,39 @@ a{text-decoration:none;color:inherit}
   .avam-memorial-content{padding-top:54px}
   .avam-richtext{font-size:14px;line-height:2.25}
 }
+
+/* =========================================================
+   Global responsive sizing pass — v2.0.5
+   Consistent laptop / desktop / tablet / mobile scale.
+   ========================================================= */
+.avam-page,.avam-footer,.avam-header{font-family:"Vazirmatn","Noto Sans Arabic",Tahoma,sans-serif}
+.avam-container{width:min(1200px,calc(100% - 48px));margin-inline:auto}
+.avam-page{padding:clamp(48px,6vw,88px) 0}
+.avam-section-title{font-family:"Noto Serif Arabic",Georgia,serif;font-size:clamp(34px,3.2vw,52px);line-height:1.35;margin:0 0 28px}
+.avam-header-inner{min-height:78px}
+.avam-brand{font-size:18px}
+.avam-nav{gap:28px}
+.avam-nav a{font-size:14px;min-height:44px;display:inline-flex;align-items:center}
+.avam-header-cta{padding:0 22px!important;border-radius:12px}
+.avam-footer{font-size:14px}
+.avam-footer a{min-height:40px;display:inline-flex;align-items:center}
+
+@media(min-width:1100px){
+  .avam-container{width:min(1280px,calc(100% - 72px))}
+  .avam-page{padding-block:72px 96px}
+}
+@media(max-width:800px){
+  .avam-container{width:min(100% - 32px,680px)}
+  .avam-page{padding-block:36px 60px}
+  .avam-section-title{font-size:clamp(30px,7vw,42px)}
+  .avam-nav{gap:14px}
+  .avam-nav a{font-size:13px}
+}
+@media(max-width:640px){
+  .avam-container{width:calc(100% - 28px)}
+  .avam-header-inner{min-height:68px}
+  .avam-brand{font-size:16px}
+  .avam-nav{gap:8px}
+  .avam-nav a{font-size:12px}
+  .avam-header-cta{padding-inline:14px!important}
+}
