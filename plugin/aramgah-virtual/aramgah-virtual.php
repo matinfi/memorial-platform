@@ -383,6 +383,14 @@ register_activation_hook(__FILE__,function(){
 register_deactivation_hook(__FILE__,function(){flush_rewrite_rules();});
 AVAM_Core::init();
 add_action('init',function(){
+ $visual_version=get_option('avam_visual_version','0');
+ if(version_compare($visual_version,'2.1.0','<')){
+  if(!get_option('avam_primary_color') || get_option('avam_primary_color')==='#17253d') update_option('avam_primary_color','#2c3531');
+  if(!get_option('avam_accent_color') || get_option('avam_accent_color')==='#a76652') update_option('avam_accent_color','#ad875c');
+  update_option('avam_visual_version','2.1.0');
+ }
+},98);
+add_action('init',function(){
  if(get_option('avam_rewrite_version')!=='1.5.0'){
   $legacy=get_page_by_path('memorials');
   if($legacy && $legacy->post_type==='page' && trim($legacy->post_content)==='[avam_memorial_search]') wp_delete_post($legacy->ID,true);
