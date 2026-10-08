@@ -762,3 +762,86 @@ a{text-decoration:none;color:inherit}
   .avam-nav a{font-size:12px}
   .avam-header-cta{padding-inline:14px!important}
 }
+
+
+/* =========================================================
+   آرامگاه مجازی — Final visual system v2.1.0
+   Warm editorial / memorial garden language.
+   ========================================================= */
+:root{
+  --avam-paper:#f5f1e8;
+  --avam-paper-2:#fbf9f4;
+  --avam-ink:#2c3531;
+  --avam-ink-2:#46514b;
+  --avam-sage:#6b7b70;
+  --avam-sage-deep:#506257;
+  --avam-bronze:#ad875c;
+  --avam-line:#ddd8cc;
+  --avam-shadow:0 24px 70px rgba(45,54,49,.08);
+}
+body:not(:has(.avam-home-page)){
+  background:var(--avam-paper);
+  color:var(--avam-ink);
+}
+.avam-header{
+  background:rgba(251,249,244,.88)!important;
+  border-bottom:1px solid rgba(221,216,204,.8)!important;
+  backdrop-filter:blur(18px);
+}
+.avam-brand,.avam-header a{color:var(--avam-ink)!important}
+.avam-header-cta{
+  background:var(--avam-ink)!important;
+  box-shadow:0 10px 24px rgba(44,53,49,.14);
+}
+.avam-footer{
+  background:#e9e4da!important;
+  color:#66716b!important;
+  border-top:1px solid var(--avam-line);
+}
+.avam-page{background:var(--avam-paper)}
+.avam-card{
+  background:rgba(251,249,244,.94)!important;
+  border:1px solid var(--avam-line)!important;
+  box-shadow:var(--avam-shadow)!important;
+}
+.avam-section-title{
+  color:var(--avam-ink)!important;
+}
+.avam-btn,.avam-dash-primary{
+  background:var(--avam-ink)!important;
+  color:#fff!important;
+  border-color:var(--avam-ink)!important;
+}
+.avam-btn:hover,.avam-dash-primary:hover{background:#202925!important;transform:translateY(-1px)}
+.avam-field input,.avam-field textarea,.avam-field select{
+  background:#fffdf9!important;
+  border-color:#d9d4c8!important;
+  color:var(--avam-ink)!important;
+}
+.avam-field input:focus,.avam-field textarea:focus,.avam-field select:focus{
+  border-color:var(--avam-sage)!important;
+  box-shadow:0 0 0 4px rgba(107,123,112,.10)!important;
+}
+.avam-notice{border-color:#d9d4c8!important;background:#f8f5ee!important;color:var(--avam-ink)!important}
+.avam-notice.avam-error{border-color:#d9b9ae!important;background:#fbf0ec!important}
+.avam-search-hero{
+  background:linear-gradient(135deg,#ece7dd,#f8f5ef)!important;
+}
+.avam-search-hero h1{color:var(--avam-ink)!important}
+.avam-search-form{
+  background:#fffdf9!important;
+  border-color:var(--avam-line)!important;
+  box-shadow:0 16px 40px rgba(45,54,49,.07)!important;
+}
+.avam-search-form button{background:var(--avam-ink)!important}
+.avam-result{
+  background:#fbf9f4!important;
+  border-color:var(--avam-line)!important;
+}
+.avam-result:hover{border-color:#c5bba9!important;box-shadow:0 18px 45px rgba(45,54,49,.08)!important}
+.avam-result span{color:var(--avam-sage)!important}
+.avam-home-cta,.avam-home-search button{background:#2c3531!important}
+.avam-home-menu,.avam-home-meet,.avam-home-panel{
+  border-color:rgba(247,244,236,.8)!important;
+}
+.avam-home-page{background:#e9e5dc}
