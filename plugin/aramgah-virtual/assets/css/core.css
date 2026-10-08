@@ -1287,3 +1287,34 @@
     margin-right:96px;
   }
 }
+
+
+/* Desktop dashboard typography refinement — v1.6.5 */
+@media(min-width:1051px){
+  .avam-dashboard-reference .avam-dash-nav a{font-size:13px;min-height:46px}
+  .avam-dashboard-reference .avam-dash-brand b{font-size:16px}
+  .avam-dashboard-reference .avam-dash-brand small{font-size:10px}
+  .avam-dashboard-reference .avam-ref-search input{font-size:13px}
+  .avam-dashboard-reference .avam-ref-user strong{font-size:13px}
+  .avam-dashboard-reference .avam-ref-user small{font-size:10px}
+  .avam-dashboard-reference .avam-ref-heading>div>span{font-size:10px}
+  .avam-dashboard-reference .avam-ref-heading h1{font-size:28px}
+  .avam-dashboard-reference .avam-dashboard-reference .avam-dash-primary,
+  .avam-dashboard-reference .avam-dash-primary{font-size:13px;min-height:44px}
+  .avam-dashboard-reference .avam-ref-stats small{font-size:10px}
+  .avam-dashboard-reference .avam-ref-stats strong{font-size:22px}
+  .avam-dashboard-reference .avam-ref-stats em{font-size:9px}
+  .avam-dashboard-reference .avam-ref-panel-head>div>span{font-size:9px}
+  .avam-dashboard-reference .avam-ref-panel-head h2{font-size:16px}
+  .avam-dashboard-reference .avam-ref-filter{font-size:9px}
+  .avam-dashboard-reference .avam-ref-ylabels,
+  .avam-dashboard-reference .avam-ref-xlabels{font-size:9px}
+  .avam-dashboard-reference .avam-ref-bars strong{font-size:10px}
+  .avam-dashboard-reference .avam-ref-bars small{font-size:9px}
+  .avam-dashboard-reference .avam-ref-table th{font-size:9px}
+  .avam-dashboard-reference .avam-ref-table td{font-size:11px}
+  .avam-dashboard-reference .avam-ref-person strong{font-size:12px}
+  .avam-dashboard-reference .avam-ref-status{font-size:9px}
+  .avam-dashboard-reference .avam-ref-actions a,
+  .avam-dashboard-reference .avam-ref-actions button{font-size:13px}
+}
