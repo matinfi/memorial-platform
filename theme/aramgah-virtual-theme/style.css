@@ -845,3 +845,422 @@ body:not(:has(.avam-home-page)){
   border-color:rgba(247,244,236,.8)!important;
 }
 .avam-home-page{background:#e9e5dc}
+
+
+/* =========================================================
+   UX / Visual redesign v2.2.0 — premium editorial system
+   Goal: calm, human, contemporary, readable and unmistakably Persian.
+   ========================================================= */
+:root{
+  --avam-paper:#f6f1e7;
+  --avam-paper-deep:#ebe3d5;
+  --avam-ink:#24302b;
+  --avam-ink-2:#35433c;
+  --avam-muted:#68736d;
+  --avam-sage:#65776d;
+  --avam-bronze:#a67c50;
+  --avam-line:rgba(54,66,59,.15);
+  --avam-white:#fffdf8;
+  --avam-shadow:0 24px 70px rgba(31,42,36,.11);
+}
+.avam-skip{
+  position:fixed!important;
+  top:10px!important;
+  right:10px!important;
+  z-index:99999!important;
+  width:1px!important;height:1px!important;
+  padding:0!important;margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+  background:var(--avam-ink)!important;
+  color:#fff!important;
+}
+.avam-skip:focus{
+  width:auto!important;height:auto!important;
+  padding:12px 18px!important;margin:0!important;
+  overflow:visible!important;
+  clip:auto!important;
+  border-radius:12px!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.2)!important;
+}
+.avam-header{
+  background:rgba(246,241,231,.88)!important;
+  border-bottom:1px solid rgba(54,66,59,.10)!important;
+  backdrop-filter:blur(18px)!important;
+  -webkit-backdrop-filter:blur(18px)!important;
+}
+.avam-header-inner{min-height:82px!important}
+.avam-brand{
+  color:var(--avam-ink)!important;
+  font-family:"Noto Serif Arabic",Georgia,serif!important;
+  font-size:20px!important;
+  font-weight:600!important;
+  letter-spacing:-.035em!important;
+}
+.avam-nav{gap:8px!important}
+.avam-nav a{
+  min-height:48px!important;
+  padding:0 15px!important;
+  border-radius:12px!important;
+  color:#526058!important;
+  font-size:15px!important;
+  font-weight:550!important;
+  transition:background .2s ease,color .2s ease,transform .2s ease!important;
+}
+.avam-nav a:hover{background:rgba(101,119,109,.09)!important;color:var(--avam-ink)!important}
+.avam-nav .avam-header-cta{
+  min-width:138px!important;
+  justify-content:center!important;
+  background:var(--avam-ink)!important;
+  color:#fff!important;
+  box-shadow:0 9px 22px rgba(36,48,43,.15)!important;
+}
+.avam-nav .avam-header-cta:hover{
+  background:#17211d!important;
+  color:#fff!important;
+  transform:translateY(-1px)!important;
+}
+
+/* Public non-home pages */
+.avam-page{
+  background:var(--avam-paper);
+  color:var(--avam-ink);
+}
+.avam-container{width:min(1240px,calc(100% - 56px))!important}
+.avam-section-title{
+  color:var(--avam-ink)!important;
+  font-family:"Noto Serif Arabic",Georgia,serif!important;
+  font-weight:600!important;
+  letter-spacing:-.045em!important;
+}
+
+/* Cinematic homepage: preserve the moving image, replace the toy-like scaling
+   with a stable editorial hierarchy and readable touch targets. */
+.avam-home-page{
+  background:#ded7ca!important;
+}
+.avam-home-card{
+  background:#ded7ca!important;
+}
+.avam-home-bg{
+  filter:brightness(.79) saturate(.72) contrast(.96)!important;
+}
+.avam-home-card:after{
+  background:
+    linear-gradient(90deg,rgba(247,241,231,.92) 0%,rgba(247,241,231,.78) 34%,rgba(247,241,231,.18) 68%,rgba(30,39,34,.10) 100%)!important;
+}
+.avam-home-tint{
+  background:linear-gradient(180deg,rgba(22,31,27,.08),rgba(22,31,27,.02) 55%,rgba(22,31,27,.16))!important;
+}
+.avam-home-brand{color:var(--avam-ink)!important}
+.avam-home-brand b{
+  font-family:"Noto Serif Arabic",Georgia,serif!important;
+  font-weight:650!important;
+  font-size:clamp(18px,1.55vw,23px)!important;
+}
+.avam-home-menu{
+  width:auto!important;
+  min-width:330px!important;
+  height:58px!important;
+  padding:6px!important;
+  background:rgba(255,253,248,.78)!important;
+  border:1px solid rgba(255,255,255,.85)!important;
+  box-shadow:0 14px 40px rgba(28,38,33,.10)!important;
+}
+.avam-home-nav{display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important}
+.avam-home-nav>a{
+  position:relative!important;
+  inset:auto!important;
+  min-height:46px!important;
+  padding:0 18px!important;
+  border-radius:10px!important;
+  font-size:15px!important;
+  font-family:"Vazirmatn",Tahoma,sans-serif!important;
+}
+.avam-home-nav>a:hover{background:rgba(101,119,109,.10)}
+.avam-home-divider{display:none!important}
+.avam-home-cta{
+  min-width:180px!important;
+  width:auto!important;
+  height:58px!important;
+  padding:0 62px 0 26px!important;
+  right:4.5vw!important;
+  top:30px!important;
+  background:var(--avam-ink)!important;
+  box-shadow:0 16px 34px rgba(29,40,35,.18)!important;
+}
+.avam-home-cta>span{
+  position:static!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  height:100%!important;
+  font-family:"Vazirmatn",Tahoma,sans-serif!important;
+  font-size:16px!important;
+  font-weight:600!important;
+}
+.avam-home-cta .avam-home-knob{
+  left:auto!important;right:7px!important;top:7px!important;
+  width:44px!important;height:44px!important;
+  background:#53665b!important;
+}
+.avam-home-hero{
+  padding-inline:6vw!important;
+}
+.avam-home-eyebrow{
+  left:6vw!important;
+  top:calc(50% - 180px)!important;
+  color:#59665f!important;
+  font-size:clamp(15px,1.25vw,18px)!important;
+  font-weight:600!important;
+}
+.avam-home-hero h1{
+  left:5.7vw!important;
+  top:calc(50% - 125px)!important;
+  width:min(700px,52vw)!important;
+  color:var(--avam-ink)!important;
+  font-family:"Noto Serif Arabic",Georgia,serif!important;
+  font-size:clamp(58px,7.2vw,112px)!important;
+  line-height:1.05!important;
+  font-weight:600!important;
+  letter-spacing:-.065em!important;
+  white-space:normal!important;
+}
+.avam-home-tagrow{
+  left:5.9vw!important;
+  top:calc(50% + 100px)!important;
+  gap:16px!important;
+}
+.avam-home-tagrow span{
+  color:#3f4c45!important;
+  font-size:clamp(18px,1.55vw,23px)!important;
+  line-height:1.65!important;
+}
+.avam-home-play{
+  width:48px!important;height:48px!important;
+  background:rgba(255,253,248,.88)!important;
+  box-shadow:0 12px 25px rgba(29,40,35,.11)!important;
+}
+.avam-home-panel{
+  right:5vw!important;
+  top:calc(50% - 125px)!important;
+  width:min(330px,25vw)!important;
+  height:300px!important;
+  padding:32px!important;
+  border-radius:28px!important;
+  background:rgba(255,253,248,.72)!important;
+  border:1px solid rgba(255,255,255,.82)!important;
+  box-shadow:0 28px 70px rgba(29,40,35,.13)!important;
+}
+.avam-panel-title{
+  left:32px!important;top:34px!important;
+  font-family:"Noto Serif Arabic",Georgia,serif!important;
+  font-size:22px!important;font-weight:650!important;
+}
+.avam-home-panel p{
+  left:32px!important;top:84px!important;
+  width:235px!important;
+  color:#59655f!important;
+  font-size:16px!important;
+  line-height:1.95!important;
+}
+.avam-panel-shield{
+  left:auto!important;right:24px!important;top:22px!important;
+  width:62px!important;height:62px!important;
+  background:#e7e0d2!important;
+}
+.avam-panel-scale{
+  left:32px!important;top:200px!important;width:calc(100% - 64px)!important;
+  color:#7a847e!important;font-size:12px!important;
+}
+.avam-panel-track{
+  left:32px!important;top:232px!important;width:calc(100% - 64px)!important;
+  height:7px!important;background:#ddd7cc!important;
+}
+.avam-panel-track i{background:var(--avam-bronze)!important}
+.avam-home-search{
+  left:5.9vw!important;
+  top:calc(50% + 178px)!important;
+  width:min(640px,50vw)!important;
+  height:62px!important;
+  padding:6px!important;
+  background:rgba(255,253,248,.90)!important;
+  border:1px solid rgba(255,255,255,.94)!important;
+  box-shadow:0 18px 44px rgba(29,40,35,.14)!important;
+}
+.avam-home-search input{
+  font-size:15px!important;
+  min-height:48px!important;
+  font-family:"Vazirmatn",Tahoma,sans-serif!important;
+}
+.avam-home-search button{
+  height:50px!important;
+  min-width:100px!important;
+  padding:0 22px!important;
+  background:var(--avam-ink)!important;
+  font-size:14px!important;font-weight:650!important;
+}
+.avam-home-stats{
+  left:5.9vw!important;bottom:5.2vh!important;
+}
+.avam-home-num{
+  font-family:"Vazirmatn",Tahoma,sans-serif!important;
+  font-size:clamp(48px,5vw,78px)!important;
+  font-weight:350!important;
+}
+.avam-home-label{font-size:15px!important;line-height:1.7!important;color:#526059!important}
+.avam-home-meet{
+  right:5vw!important;bottom:5vh!important;
+  width:min(330px,27vw)!important;height:74px!important;
+  background:rgba(255,253,248,.82)!important;
+  border:1px solid rgba(255,255,255,.9)!important;
+  box-shadow:0 16px 38px rgba(29,40,35,.12)!important;
+}
+.avam-home-meet b{color:var(--avam-ink)!important;font-size:15px!important;font-weight:650!important}
+.avam-home-meet .avam-home-knob{background:var(--avam-ink)!important}
+
+/* Mobile gets its own composition rather than a scaled desktop canvas. */
+@media(max-width:899px){
+  .avam-home-page{position:relative;min-height:100svh;overflow:hidden}
+  .avam-home-card{min-height:100svh;position:relative;overflow:hidden}
+  .avam-home-bg{
+    position:absolute!important;inset:0!important;
+    width:100%!important;height:100%!important;
+    object-position:58% center!important;
+    filter:brightness(.56) saturate(.70)!important;
+  }
+  .avam-home-card:after{
+    background:
+      linear-gradient(180deg,rgba(22,30,26,.30) 0%,rgba(22,30,26,.08) 30%,rgba(22,30,26,.18) 55%,rgba(22,30,26,.88) 100%)!important;
+  }
+  .avam-home-tint{background:rgba(26,34,30,.10)!important}
+  .avam-home-stack{position:relative;min-height:100svh}
+  .avam-home-brand{
+    left:24px!important;top:22px!important;
+    color:#fff!important;z-index:20;
+  }
+  .avam-home-brand b{font-size:18px!important;color:#fff!important}
+  .avam-home-mark{filter:brightness(0) invert(1)!important;width:34px!important;height:34px!important}
+  .avam-home-burger{
+    right:20px!important;top:18px!important;
+    width:48px!important;height:48px!important;
+    background:rgba(255,253,248,.94)!important;
+    border:0!important;
+    box-shadow:0 10px 28px rgba(0,0,0,.18)!important;
+  }
+  .avam-home-menu{
+    left:16px!important;right:16px!important;top:76px!important;
+    min-width:0!important;width:auto!important;height:auto!important;
+    padding:10px!important;border-radius:20px!important;
+    background:rgba(250,247,240,.97)!important;
+    box-shadow:0 24px 55px rgba(0,0,0,.22)!important;
+  }
+  .avam-home-nav{display:grid!important;grid-template-columns:1fr 1fr!important;gap:5px!important}
+  .avam-home-nav>a{
+    min-height:52px!important;padding:0 14px!important;
+    color:var(--avam-ink)!important;font-size:14px!important;
+  }
+  .avam-home-login-mobile{display:flex!important;grid-column:1/-1!important}
+  .avam-home-cta{
+    position:relative!important;inset:auto!important;
+    min-width:0!important;width:100%!important;height:56px!important;
+    margin-top:7px!important;padding:0 58px 0 18px!important;
+  }
+  .avam-home-cta>span{color:#fff!important;font-size:15px!important}
+  .avam-home-cta .avam-home-knob{width:42px!important;height:42px!important}
+  .avam-home-hero{
+    position:absolute!important;inset:0!important;
+    display:flex!important;flex-direction:column!important;
+    justify-content:flex-end!important;
+    padding:0 22px 190px!important;
+    z-index:5!important;
+  }
+  .avam-home-eyebrow{
+    position:static!important;
+    color:rgba(255,255,255,.78)!important;
+    font-size:14px!important;
+    margin:0 0 14px!important;
+  }
+  .avam-home-hero h1{
+    position:static!important;
+    width:auto!important;
+    color:#fff!important;
+    font-size:clamp(42px,12vw,66px)!important;
+    line-height:1.15!important;
+    letter-spacing:-.075em!important;
+    margin:0!important;
+  }
+  .avam-home-tagrow{
+    position:static!important;
+    margin-top:18px!important;
+    gap:11px!important;
+    align-items:flex-start!important;
+  }
+  .avam-home-play{width:42px!important;height:42px!important;flex:none!important}
+  .avam-home-tagrow span{
+    color:rgba(255,255,255,.88)!important;
+    font-size:16px!important;
+    line-height:1.8!important;
+  }
+  .avam-home-search{
+    position:static!important;
+    width:100%!important;height:56px!important;
+    margin-top:18px!important;
+    background:rgba(255,253,248,.97)!important;
+  }
+  .avam-home-search input{font-size:14px!important;color:var(--avam-ink)!important}
+  .avam-home-search input[name="city"],.avam-home-search-sep{display:none!important}
+  .avam-home-search button{
+    height:44px!important;min-width:78px!important;
+    padding:0 16px!important;font-size:13px!important;
+  }
+  .avam-home-panel{display:none!important}
+  .avam-home-stats{
+    left:22px!important;right:22px!important;bottom:100px!important;
+    z-index:6!important;
+  }
+  .avam-home-num{font-size:42px!important;color:#fff!important}
+  .avam-home-label{font-size:12px!important;color:rgba(255,255,255,.78)!important}
+  .avam-home-slash{height:48px!important;margin:0 20px!important;background:rgba(255,255,255,.28)!important}
+  .avam-home-meet{
+    left:22px!important;right:22px!important;bottom:22px!important;
+    width:auto!important;height:58px!important;z-index:8!important;
+    background:rgba(250,247,240,.96)!important;
+  }
+  .avam-home-meet b{font-size:14px!important}
+  .avam-home-meet .avam-home-knob{width:42px!important;height:42px!important;right:7px!important;top:7px!important}
+}
+@media(max-width:420px){
+  .avam-home-hero{padding-bottom:188px!important}
+  .avam-home-stats{bottom:96px!important}
+  .avam-home-meet{bottom:18px!important}
+  .avam-home-search{height:54px!important}
+  .avam-home-search button{min-width:72px!important;padding-inline:12px!important}
+}
+
+/* General controls: no microscopic UI anywhere. */
+.avam-btn,.avam-dash-primary,.avam-auth-btn{
+  min-height:52px!important;
+  padding:0 24px!important;
+  border-radius:14px!important;
+  font-size:15px!important;
+  font-weight:650!important;
+}
+.avam-field input,.avam-field textarea,.avam-field select{
+  min-height:54px!important;
+  font-size:16px!important;
+}
+.avam-field textarea{min-height:200px!important}
+.avam-search-form input,.avam-search-form button{
+  min-height:54px!important;font-size:16px!important;
+}
+@media(max-width:640px){
+  .avam-container{width:calc(100% - 32px)!important}
+  .avam-header-inner{min-height:72px!important}
+  .avam-nav a{min-height:46px!important;padding-inline:11px!important;font-size:13px!important}
+  .avam-nav .avam-header-cta{min-width:112px!important}
+  .avam-page{padding-block:34px 54px!important}
+  .avam-btn,.avam-dash-primary,.avam-auth-btn{width:100%;min-height:54px!important}
+}
