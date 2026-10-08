@@ -67,62 +67,49 @@ $extras=[
   </section>
 
   <div class="avam-reading-layout">
+  <main class="avam-reading-body">
 
-    <aside class="avam-reading-rail">
-      <div class="avam-reading-rail-card">
-        <span>این صفحه برای</span>
-        <strong>یادآوری و روایت</strong>
-        <small><?php echo esc_html($published); ?></small>
-      </div>
-
-      <div class="avam-reading-quick-actions">
-        <button type="button" data-share>
-          <span>↗</span> اشتراک‌گذاری
-        </button>
-        <button type="button" data-copy>
-          <span>⌁</span> کپی لینک
-        </button>
-        <button type="button" onclick="window.print()">
-          <span>⌁</span> چاپ یادبود
-        </button>
-      </div>
-    </aside>
-
-    <main class="avam-reading-body">
-
-      <section class="avam-reading-story">
+    <section class="avam-reading-story avam-accordion is-open">
+      <button class="avam-accordion-trigger" type="button" aria-expanded="true">
         <span class="avam-reading-index">۰۱ / روایت</span>
-        <h2>روایت زندگی</h2>
+        <span class="avam-accordion-title">روایت زندگی</span>
+        <span class="avam-accordion-icon" aria-hidden="true">+</span>
+      </button>
+      <div class="avam-accordion-panel">
         <div class="avam-reading-richtext"><?php the_content(); ?></div>
-      </section>
+      </div>
+    </section>
 
-      <?php $i=2; foreach($extras as $item): if(!$item[1]) continue; ?>
-        <section class="avam-reading-section">
-          <span class="avam-reading-index">
-            <?php echo esc_html(str_pad((string)$i,2,'0',STR_PAD_LEFT).' / یاد'); ?>
-          </span>
-          <h2><?php echo esc_html($item[0]); ?></h2>
+    <?php $i=2; foreach($extras as $item): if(!$item[1]) continue; ?>
+      <section class="avam-reading-section avam-accordion">
+        <button class="avam-accordion-trigger" type="button" aria-expanded="false">
+          <span class="avam-reading-index"><?php echo esc_html(str_pad((string)$i,2,'0',STR_PAD_LEFT).' / یاد'); ?></span>
+          <span class="avam-accordion-title"><?php echo esc_html($item[0]); ?></span>
+          <span class="avam-accordion-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="avam-accordion-panel">
           <p class="avam-reading-section-intro"><?php echo esc_html($item[2]); ?></p>
           <div class="avam-reading-richtext"><?php echo wpautop(esc_html($item[1])); ?></div>
-        </section>
-      <?php $i++; endforeach; ?>
+        </div>
+      </section>
+    <?php $i++; endforeach; ?>
 
-      <?php if(comments_open() || get_comments_number()): ?>
-        <section class="avam-reading-comments">
-          <span class="avam-reading-index">۰<?php echo esc_html($i); ?> / پیام‌ها</span>
-          <h2>پیام‌های یادبود</h2>
-          <?php comments_template(); ?>
-        </section>
+    <section class="avam-reading-comments">
+      <span class="avam-reading-index">پیام‌های یادبود</span>
+      <h2>دعا و خاطره</h2>
+      <?php if(comments_open() || get_comments_number()): comments_template(); else: ?>
+        <div class="avam-social-comments-empty">هنوز پیامی ثبت نشده است. اولین دعا یا خاطره را شما بنویسید.</div>
       <?php endif; ?>
+    </section>
 
-      <footer class="avam-reading-end">
-        <span>✦</span>
-        <p>نام‌ها می‌مانند؛<br>وقتی روایت‌ها را نگه می‌داریم.</p>
-        <a href="<?php echo esc_url(avam_memorials_url()); ?>">بازگشت به یادبودها</a>
-      </footer>
+    <footer class="avam-reading-end">
+      <span>✦</span>
+      <p>نام‌ها می‌مانند؛<br>وقتی روایت‌ها را نگه می‌داریم.</p>
+      <a href="<?php echo esc_url(avam_memorials_url()); ?>">بازگشت به یادبودها</a>
+    </footer>
 
-    </main>
-  </div>
+  </main>
+</div>
 </article>
 
 <script>
