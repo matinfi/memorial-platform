@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.6.4
+ * Version: 1.6.5
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -38,8 +38,8 @@ final class AVAM_Core {
  }
 
  public static function assets(){
-  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.6.4');
-  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'],'1.6.4',true);
+  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.6.5');
+  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'],'1.6.5',true);
   wp_localize_script('avam-plugin','AVAM',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_front'),'account'=>avam_account_url()]);
  }
 
@@ -77,19 +77,19 @@ JS;
  }
 
  public static function login(){
-  if(is_user_logged_in()) return '<div class="avam-card"><p>شما وارد شده‌اید.</p><a class="avam-btn" href="'.esc_url(avam_account_url()).'">حساب من</a></div>';
+  if(is_user_logged_in()){ wp_safe_redirect(avam_account_url()); exit; }
   $err=isset($_GET['avam_error'])?sanitize_text_field(wp_unslash($_GET['avam_error'])):'';
-  ob_start(); ?><div class="avam-card avam-auth-card"><h1>ورود به آرامگاه</h1><p class="avam-auth-lead">برای مدیریت یادبودها و روایت‌های شما.</p><?php if($err):?><div class="avam-notice avam-error"><?php echo esc_html($err);?></div><?php endif;?><form class="avam-form" method="post"><div class="avam-field"><label>نام کاربری یا ایمیل</label><input name="log" autocomplete="username" required></div><div class="avam-field"><label>رمز عبور</label><input type="password" name="pwd" autocomplete="current-password" required></div><?php wp_nonce_field('avam_login','avam_nonce');?><input type="hidden" name="avam_action" value="login"><button class="avam-btn avam-auth-btn" type="submit">ورود</button></form><p class="avam-auth-foot">حساب ندارید؟ <a href="<?php echo esc_url(avam_register_url());?>">ساخت حساب</a></p></div><?php return ob_get_clean();
+  ob_start(); ?><div class="avam-card avam-auth-card"><h1>ورود به آرامگاه</h1><p class="avam-auth-lead">برای مدیریت یادبودها و روایت‌های شما.</p><?php if($err):?><div class="avam-notice avam-error"><?php echo esc_html($err);?></div><?php endif;?><form class="avam-form" method="post"><div class="avam-field"><label>نام کاربری یا ایمیل</label><input name="log" autocomplete="username" required></div><div class="avam-field"><label>رمز عبور</label><input type="password" name="pwd" autocomplete="current-password" required></div><?php wp_nonce_field('avam_login','avam_nonce');?><input type="hidden" name="avam_action" value="login"><input type="hidden" name="redirect_to" value="<?php echo esc_attr(isset($_GET['redirect_to']) ? wp_validate_redirect(wp_unslash($_GET['redirect_to']),avam_account_url()) : avam_account_url()); ?>"><button class="avam-btn avam-auth-btn" type="submit">ورود</button></form><p class="avam-auth-foot">حساب ندارید؟ <a href="<?php echo esc_url(avam_register_url());?>">ساخت حساب</a></p></div><?php return ob_get_clean();
  }
 
  public static function register(){
-  if(is_user_logged_in()) return '<div class="avam-card"><p>حساب شما فعال است.</p><a class="avam-btn" href="'.esc_url(avam_account_url()).'">حساب من</a></div>';
+  if(is_user_logged_in()){ wp_safe_redirect(avam_account_url()); exit; }
   $err=isset($_GET['avam_error'])?sanitize_text_field(wp_unslash($_GET['avam_error'])):'';
-  ob_start(); ?><div class="avam-card avam-auth-card"><h1>ساخت حساب</h1><p class="avam-auth-lead">یک فضای شخصی برای نگه‌داری یادها بسازید.</p><?php if($err):?><div class="avam-notice avam-error"><?php echo esc_html($err);?></div><?php endif;?><form class="avam-form" method="post"><div class="avam-field"><label>نام نمایشی</label><input name="display_name" required></div><div class="avam-field"><label>ایمیل</label><input type="email" name="email" autocomplete="email" required></div><div class="avam-field"><label>رمز عبور</label><input type="password" name="password" minlength="8" autocomplete="new-password" required></div><?php wp_nonce_field('avam_register','avam_nonce');?><input type="hidden" name="avam_action" value="register"><button class="avam-btn avam-auth-btn" type="submit">ایجاد حساب</button></form><p class="avam-auth-foot">حساب دارید؟ <a href="<?php echo esc_url(avam_login_url());?>">ورود</a></p></div><?php return ob_get_clean();
+  ob_start(); ?><div class="avam-card avam-auth-card"><h1>ساخت حساب</h1><p class="avam-auth-lead">یک فضای شخصی برای نگه‌داری یادها بسازید.</p><?php if($err):?><div class="avam-notice avam-error"><?php echo esc_html($err);?></div><?php endif;?><form class="avam-form" method="post"><div class="avam-field"><label>نام نمایشی</label><input name="display_name" required></div><div class="avam-field"><label>ایمیل</label><input type="email" name="email" autocomplete="email" required></div><div class="avam-field"><label>رمز عبور</label><input type="password" name="password" minlength="8" autocomplete="new-password" required></div><?php wp_nonce_field('avam_register','avam_nonce');?><input type="hidden" name="avam_action" value="register"><input type="hidden" name="redirect_to" value="<?php echo esc_attr(isset($_GET['redirect_to']) ? wp_validate_redirect(wp_unslash($_GET['redirect_to']),avam_account_url()) : avam_account_url()); ?>"><button class="avam-btn avam-auth-btn" type="submit">ایجاد حساب</button></form><p class="avam-auth-foot">حساب دارید؟ <a href="<?php echo esc_url(avam_login_url());?>">ورود</a></p></div><?php return ob_get_clean();
  }
 
  public static function account(){
-  if(!is_user_logged_in()) return '<div class="avam-card"><p>برای مشاهده حساب خود ابتدا وارد شوید.</p><a class="avam-btn" href="'.esc_url(avam_login_url()).'">ورود</a></div>';
+  if(!is_user_logged_in()){ wp_safe_redirect(add_query_arg('redirect_to',rawurlencode(avam_account_url()),avam_login_url())); exit; }
   $uid=get_current_user_id();
   $user=wp_get_current_user();
   $posts=get_posts(['post_type'=>self::CPT,'author'=>$uid,'posts_per_page'=>50,'post_status'=>['publish','draft','pending'],'orderby'=>'date','order'=>'DESC']);
@@ -247,18 +247,19 @@ JS;
   if(!isset($_POST['avam_nonce']))return;
   $nonce=sanitize_text_field(wp_unslash($_POST['avam_nonce']));$action=sanitize_key($_POST['avam_action']);
   if($action==='login'&&wp_verify_nonce($nonce,'avam_login')){
+   $redirect=isset($_POST['redirect_to']) ? wp_validate_redirect(wp_unslash($_POST['redirect_to']),avam_account_url()) : avam_account_url();
    $login=sanitize_text_field(wp_unslash($_POST['log']??''));
    if(is_email($login)){$email_user=get_user_by('email',$login);if($email_user)$login=$email_user->user_login;}
    $u=wp_signon(['user_login'=>$login,'user_password'=>$_POST['pwd']??'','remember'=>true],is_ssl());
    if(is_wp_error($u)){wp_safe_redirect(add_query_arg('avam_error',rawurlencode('نام کاربری یا رمز عبور نادرست است.'),avam_login_url()));exit;}
-   wp_safe_redirect(avam_account_url());exit;
+   wp_safe_redirect($redirect);exit;
   }
   if($action==='register'&&wp_verify_nonce($nonce,'avam_register')){
    $email=sanitize_email(wp_unslash($_POST['email']??''));$name=sanitize_text_field(wp_unslash($_POST['display_name']??''));$pass=$_POST['password']??'';
    if(!is_email($email)||email_exists($email)||strlen($pass)<8){wp_safe_redirect(add_query_arg('avam_error',rawurlencode('اطلاعات ثبت‌نام معتبر نیست.'),avam_register_url()));exit;}
    $base=sanitize_user(strtok($email,'@'));$login=$base;$i=1;while(username_exists($login))$login=$base.$i++;
    $uid=wp_create_user($login,$pass,$email);if(is_wp_error($uid)){wp_safe_redirect(avam_register_url());exit;}
-   wp_update_user(['ID'=>$uid,'display_name'=>$name]);wp_set_auth_cookie($uid,true);wp_safe_redirect(avam_account_url());exit;
+   wp_update_user(['ID'=>$uid,'display_name'=>$name]);wp_set_auth_cookie($uid,true);$redirect=isset($_POST['redirect_to']) ? wp_validate_redirect(wp_unslash($_POST['redirect_to']),avam_account_url()) : avam_account_url();wp_safe_redirect($redirect);exit;
   }
  }
 
