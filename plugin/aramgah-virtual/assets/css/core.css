@@ -1175,3 +1175,115 @@
   .avam-ref-panel{padding:15px}
   .avam-ref-table-panel{padding:15px}
 }
+
+
+/* =========================================================
+   Mobile dashboard navigation — v1.6.4
+   ========================================================= */
+.avam-mobile-menu-toggle,
+.avam-mobile-menu-backdrop{display:none}
+
+@media(max-width:760px){
+  body.avam-mobile-nav-open{overflow:hidden}
+  .avam-dashboard-reference{position:relative}
+  .avam-dashboard-reference .avam-mobile-menu-toggle{
+    position:absolute;
+    z-index:1002;
+    top:14px;
+    right:16px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-height:38px;
+    padding:0 12px;
+    border:1px solid #e7e8ef;
+    border-radius:9px;
+    background:#fff;
+    color:#252a35;
+    box-shadow:0 5px 18px rgba(30,35,55,.07);
+    font:700 10px/1 var(--avam-font-sans);
+    cursor:pointer;
+  }
+  .avam-dashboard-reference .avam-mobile-menu-toggle span{
+    font-size:16px;
+    line-height:1;
+    color:#5d59df;
+  }
+  .avam-dashboard-reference .avam-mobile-menu-toggle b{font-weight:700}
+  .avam-dashboard-reference .avam-mobile-menu-backdrop{
+    position:fixed;
+    z-index:1003;
+    inset:0;
+    display:block;
+    background:rgba(18,22,34,.28);
+    backdrop-filter:blur(2px);
+  }
+  .avam-dashboard-reference .avam-mobile-menu-backdrop[hidden]{display:none}
+  .avam-dashboard-reference .avam-dash-sidebar{
+    position:fixed;
+    z-index:1004;
+    top:0;
+    right:0;
+    bottom:0;
+    left:auto;
+    width:min(286px,84vw);
+    height:100dvh;
+    display:flex;
+    flex-direction:column;
+    box-sizing:border-box;
+    padding:22px 16px 18px;
+    border:0;
+    border-left:1px solid #e8eaf0;
+    border-radius:0;
+    transform:translateX(105%);
+    transition:transform .24s ease;
+    box-shadow:-16px 0 40px rgba(24,30,48,.12);
+    overflow-y:auto;
+  }
+  .avam-dashboard-reference.mobile-menu-open .avam-dash-sidebar{
+    transform:translateX(0);
+  }
+  .avam-dashboard-reference .avam-dash-sidebar .avam-dash-brand{
+    padding-bottom:22px;
+  }
+  .avam-dashboard-reference .avam-dash-sidebar .avam-dash-nav{
+    display:flex;
+    flex-direction:column;
+  }
+  .avam-dashboard-reference .avam-dash-sidebar-foot{
+    margin-top:auto;
+  }
+  .avam-dashboard-reference .avam-dash-main{
+    padding-top:0;
+  }
+  .avam-dashboard-reference .avam-ref-topbar{
+    min-height:72px;
+    padding-right:16px;
+    padding-left:16px;
+  }
+  .avam-dashboard-reference .avam-ref-search{
+    width:calc(100% - 118px);
+    margin-right:112px;
+  }
+  .avam-dashboard-reference .avam-ref-user{
+    display:none;
+  }
+  .avam-dashboard-reference .avam-ref-heading{
+    padding-top:8px;
+  }
+}
+
+@media(max-width:480px){
+  .avam-dashboard-reference .avam-mobile-menu-toggle{
+    top:12px;
+    right:12px;
+    min-height:36px;
+    padding-inline:10px;
+  }
+  .avam-dashboard-reference .avam-mobile-menu-toggle b{font-size:9px}
+  .avam-dashboard-reference .avam-ref-search{
+    width:calc(100% - 104px);
+    margin-right:96px;
+  }
+}
