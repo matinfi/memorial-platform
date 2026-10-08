@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.6.2
+ * Version: 1.6.3
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -38,7 +38,7 @@ final class AVAM_Core {
  }
 
  public static function assets(){
-  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.6.2');
+  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.6.3');
   wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'],'1.5.0',true);
   wp_localize_script('avam-plugin','AVAM',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_front'),'account'=>avam_account_url()]);
  }
@@ -121,7 +121,7 @@ JS;
       </div>
     </aside>
 
-    <main class="avam-dash-main">
+    <div class="avam-dash-main">
       <div class="avam-ref-topbar">
         <form class="avam-ref-search" action="<?php echo esc_url($memorials); ?>" method="get" role="search">
           <span aria-hidden="true">⌕</span>
@@ -202,7 +202,7 @@ JS;
           <div class="avam-ref-empty"><div>♡</div><h3>هنوز یادبودی نساخته‌اید</h3><p>اولین یادبود را بسازید و نام، تصویر و روایت عزیزتان را در یک صفحه ماندگار نگه دارید.</p><a class="avam-dash-primary" href="<?php echo esc_url($create); ?>">ساخت اولین یادبود</a></div>
         <?php endif; ?>
       </section>
-    </main>
+    </div>
   </section>
   <?php return ob_get_clean();
  }
