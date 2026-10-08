@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.6.3
+ * Version: 1.6.4
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -38,8 +38,8 @@ final class AVAM_Core {
  }
 
  public static function assets(){
-  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.6.3');
-  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'],'1.5.0',true);
+  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[],'1.6.4');
+  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'],'1.6.4',true);
   wp_localize_script('avam-plugin','AVAM',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_front'),'account'=>avam_account_url()]);
  }
 
@@ -105,7 +105,9 @@ JS;
   $total_h=round(($total/$max_status)*132);
   ob_start(); ?>
   <section class="avam-dashboard avam-dashboard-reference" dir="rtl">
-    <aside class="avam-dash-sidebar">
+    <button class="avam-mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="avam-account-sidebar"><span>☰</span><b>منوی پنل</b></button>
+    <div class="avam-mobile-menu-backdrop" hidden></div>
+    <aside class="avam-dash-sidebar" id="avam-account-sidebar">
       <a class="avam-dash-brand" href="<?php echo esc_url(home_url('/')); ?>">
         <span class="avam-dash-brand-mark">آ</span>
         <span><b>آرامگاه مجازی</b><small>فضای شخصی شما</small></span>
