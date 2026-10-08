@@ -1532,3 +1532,369 @@
 .avam-result{border-radius:20px!important;padding:24px!important;border:1px solid #ded8cd!important;background:#fffdf9!important}
 @media(max-width:760px){.avam-auth-card,.avam-create-card,.avam-card,.avam-search-page{border-radius:18px!important}.avam-auth-card{padding:24px 18px!important}.avam-auth-card h1,.avam-create-card h1{font-size:32px!important}.avam-auth-lead{font-size:15px!important}.avam-search-form{grid-template-columns:1fr!important;padding:10px!important}.avam-search-form button{width:100%!important}.avam-result{padding:18px!important}}
 @media(max-width:420px){.avam-auth-card{padding:20px 15px!important}.avam-auth-card h1,.avam-create-card h1{font-size:29px!important}.avam-field input,.avam-field textarea,.avam-field select{font-size:15px!important}}
+
+/* =========================================================
+   Premium Dark User Panel v2.0.0
+   Same visual language as memorial detail
+   ========================================================= */
+
+.avam-dashboard,
+.avam-dashboard-reference{
+  --panel-bg:#0b0d10;
+  --panel-surface:#161922;
+  --panel-surface-2:#1a1d24;
+  --panel-border:#232733;
+  --panel-gold:#d4af37;
+  --panel-gold-soft:rgba(212,175,55,.11);
+  --panel-text:#f0f2f5;
+  --panel-muted:#9ca3af;
+  --panel-caption:#6b7280;
+  background:
+    radial-gradient(circle at 75% 0,rgba(212,175,55,.045),transparent 28%),
+    #0b0d10!important;
+  color:var(--panel-text)!important;
+}
+
+.avam-dashboard .avam-dash-sidebar,
+.avam-dashboard-reference .avam-dash-sidebar{
+  background:rgba(15,17,21,.94)!important;
+  border-color:var(--panel-border)!important;
+  box-shadow:18px 0 50px rgba(0,0,0,.24);
+  backdrop-filter:blur(20px);
+}
+
+.avam-dashboard .avam-dash-brand b,
+.avam-dashboard .avam-dash-brand small,
+.avam-dashboard-reference .avam-dash-brand b,
+.avam-dashboard-reference .avam-dash-brand small{
+  color:var(--panel-text)!important;
+}
+
+.avam-dashboard .avam-dash-brand small,
+.avam-dashboard-reference .avam-dash-brand small{
+  color:var(--panel-caption)!important;
+}
+
+.avam-dashboard .avam-dash-brand-mark,
+.avam-dashboard-reference .avam-dash-brand-mark{
+  background:linear-gradient(145deg,#e5c85c,#d4af37)!important;
+  color:#17130a!important;
+  box-shadow:0 10px 30px rgba(212,175,55,.12)!important;
+}
+
+.avam-dashboard .avam-dash-nav,
+.avam-dashboard-reference .avam-dash-nav{
+  border-color:var(--panel-border)!important;
+}
+
+.avam-dashboard .avam-dash-nav a,
+.avam-dashboard-reference .avam-dash-nav a{
+  color:var(--panel-muted)!important;
+  border-radius:12px!important;
+}
+
+.avam-dashboard .avam-dash-nav a:hover,
+.avam-dashboard-reference .avam-dash-nav a:hover{
+  color:var(--panel-text)!important;
+  background:#1a1d24!important;
+}
+
+.avam-dashboard .avam-dash-nav a.is-active,
+.avam-dashboard-reference .avam-dash-nav a.is-active{
+  color:var(--panel-text)!important;
+  background:linear-gradient(90deg,rgba(212,175,55,.12),rgba(212,175,55,.045))!important;
+  box-shadow:inset 0 0 0 1px rgba(212,175,55,.12);
+}
+
+.avam-dashboard .avam-dash-nav a.is-active:before,
+.avam-dashboard-reference .avam-dash-nav a.is-active:before{
+  background:var(--panel-gold)!important;
+}
+
+.avam-dashboard .avam-nav-icon,
+.avam-dashboard-reference .avam-nav-icon{
+  color:#737b87!important;
+}
+
+.avam-dashboard .avam-dash-nav a.is-active .avam-nav-icon,
+.avam-dashboard-reference .avam-dash-nav a.is-active .avam-nav-icon{
+  color:var(--panel-gold)!important;
+}
+
+.avam-dashboard .avam-dash-sidebar-foot,
+.avam-dashboard-reference .avam-dash-sidebar-foot{
+  border-color:var(--panel-border)!important;
+}
+
+.avam-dashboard .avam-dash-user-mini>span,
+.avam-dashboard-reference .avam-dash-user-mini>span{
+  background:#242831!important;
+  color:var(--panel-gold)!important;
+}
+
+.avam-dashboard .avam-dash-user-mini strong,
+.avam-dashboard-reference .avam-dash-user-mini strong{
+  color:var(--panel-text)!important;
+}
+
+.avam-dashboard .avam-dash-user-mini small,
+.avam-dashboard-reference .avam-dash-user-mini small{
+  color:var(--panel-caption)!important;
+}
+
+.avam-dashboard .avam-dash-logout,
+.avam-dashboard-reference .avam-dash-logout{
+  color:#9f777d!important;
+}
+
+.avam-dashboard .avam-dash-logout:hover,
+.avam-dashboard-reference .avam-dash-logout:hover{
+  background:rgba(239,68,68,.08)!important;
+}
+
+.avam-dashboard .avam-dash-main,
+.avam-dashboard-reference .avam-dash-main{
+  background:transparent!important;
+}
+
+.avam-dashboard .avam-dash-kicker,
+.avam-dashboard-reference .avam-dash-kicker,
+.avam-dashboard .avam-section-head>a,
+.avam-dashboard-reference .avam-section-head>a{
+  color:var(--panel-gold)!important;
+}
+
+.avam-dashboard .avam-dash-topbar h1,
+.avam-dashboard .avam-section-head h2,
+.avam-dashboard-reference .avam-dash-topbar h1,
+.avam-dashboard-reference .avam-section-head h2{
+  color:var(--panel-text)!important;
+}
+
+.avam-dashboard .avam-dash-topbar p,
+.avam-dashboard-reference .avam-dash-topbar p,
+.avam-dashboard .avam-section-head>div>span,
+.avam-dashboard-reference .avam-section-head>div>span{
+  color:var(--panel-muted)!important;
+}
+
+.avam-dashboard .avam-dash-primary,
+.avam-dashboard-reference .avam-dash-primary{
+  background:linear-gradient(135deg,#e5c85c,#d4af37)!important;
+  border-color:#d4af37!important;
+  color:#17130a!important;
+  box-shadow:0 10px 28px rgba(212,175,55,.13)!important;
+}
+
+.avam-dashboard .avam-dash-primary:hover,
+.avam-dashboard-reference .avam-dash-primary:hover{
+  background:linear-gradient(135deg,#f0d774,#dcb83e)!important;
+}
+
+.avam-dashboard .avam-dash-stats article,
+.avam-dashboard-reference .avam-ref-stats article,
+.avam-dashboard .avam-dash-memorial,
+.avam-dashboard-reference .avam-ref-table-panel,
+.avam-dashboard-reference .avam-ref-panel,
+.avam-dashboard .avam-dash-info-card,
+.avam-dashboard .avam-dash-profile{
+  background:linear-gradient(145deg,#161922,#13161d)!important;
+  border-color:var(--panel-border)!important;
+  box-shadow:0 10px 30px rgba(0,0,0,.32)!important;
+  color:var(--panel-text)!important;
+}
+
+.avam-dashboard .avam-dash-stats article:hover,
+.avam-dashboard-reference .avam-ref-stats article:hover,
+.avam-dashboard .avam-dash-memorial:hover{
+  border-color:rgba(212,175,55,.24)!important;
+  box-shadow:0 14px 38px rgba(0,0,0,.42)!important;
+}
+
+.avam-dashboard .avam-stat-icon,
+.avam-dashboard-reference .avam-ref-stat-icon{
+  background:var(--panel-gold-soft)!important;
+  color:var(--panel-gold)!important;
+}
+
+.avam-dashboard .avam-stat-icon.is-green,
+.avam-dashboard .avam-stat-icon.is-blue{
+  background:rgba(255,255,255,.055)!important;
+  color:#b5bdc8!important;
+}
+
+.avam-dashboard .avam-dash-stats small,
+.avam-dashboard-reference .avam-ref-stats small,
+.avam-dashboard .avam-dash-stats em,
+.avam-dashboard-reference .avam-ref-stats em{
+  color:var(--panel-caption)!important;
+}
+
+.avam-dashboard .avam-dash-stats strong,
+.avam-dashboard-reference .avam-ref-stats strong{
+  color:var(--panel-text)!important;
+}
+
+.avam-dashboard .avam-dash-memorial-photo,
+.avam-dashboard-reference .avam-ref-person-photo{
+  background:#20242d!important;
+  color:var(--panel-gold)!important;
+}
+
+.avam-dashboard .avam-dash-status,
+.avam-dashboard-reference .avam-ref-status{
+  color:var(--panel-caption)!important;
+}
+
+.avam-dashboard .avam-dash-status.is-published,
+.avam-dashboard-reference .avam-ref-status.is-published{
+  color:#8eaa98!important;
+}
+
+.avam-dashboard .avam-dash-memorial h3,
+.avam-dashboard-reference .avam-ref-person strong{
+  color:var(--panel-text)!important;
+}
+
+.avam-dashboard .avam-dash-memorial p,
+.avam-dashboard .avam-dash-memorial small,
+.avam-dashboard-reference .avam-ref-table td,
+.avam-dashboard-reference .avam-ref-table th{
+  color:var(--panel-muted)!important;
+  border-color:var(--panel-border)!important;
+}
+
+.avam-dashboard .avam-dash-memorial-actions a,
+.avam-dashboard .avam-dash-memorial-actions button,
+.avam-dashboard-reference .avam-ref-actions a,
+.avam-dashboard-reference .avam-ref-actions button{
+  border-color:var(--panel-border)!important;
+  background:#1c2028!important;
+  color:var(--panel-muted)!important;
+}
+
+.avam-dashboard .avam-dash-memorial-actions a:hover,
+.avam-dashboard .avam-dash-memorial-actions button:hover,
+.avam-dashboard-reference .avam-ref-actions a:hover,
+.avam-dashboard-reference .avam-ref-actions button:hover{
+  border-color:rgba(212,175,55,.28)!important;
+  color:var(--panel-text)!important;
+  background:#20242d!important;
+}
+
+.avam-dashboard .avam-action-view{
+  background:var(--panel-gold)!important;
+  color:#17130a!important;
+  border-color:var(--panel-gold)!important;
+}
+
+.avam-dashboard .avam-action-delete{
+  color:#d68e96!important;
+  background:#1c181c!important;
+}
+
+.avam-dashboard .avam-dash-empty{
+  background:rgba(22,25,34,.7)!important;
+  border-color:var(--panel-border)!important;
+}
+
+.avam-dashboard .avam-dash-empty h3{
+  color:var(--panel-text)!important;
+}
+
+.avam-dashboard .avam-dash-empty p{
+  color:var(--panel-muted)!important;
+}
+
+.avam-dashboard .avam-empty-mark{
+  background:var(--panel-gold-soft)!important;
+  color:var(--panel-gold)!important;
+}
+
+.avam-dashboard .avam-info-icon{
+  background:var(--panel-gold-soft)!important;
+  color:var(--panel-gold)!important;
+}
+
+.avam-dashboard .avam-dash-info-card p,
+.avam-dashboard .avam-dash-profile p{
+  color:var(--panel-muted)!important;
+}
+
+.avam-dashboard .avam-dash-info-card>a{
+  color:var(--panel-gold)!important;
+}
+
+.avam-dashboard .avam-profile-avatar{
+  background:#242831!important;
+  color:var(--panel-gold)!important;
+}
+
+.avam-dashboard .avam-dash-profile h3{
+  color:var(--panel-text)!important;
+}
+
+.avam-dashboard .avam-dash-profile>a{
+  color:#b17b84!important;
+}
+
+.avam-dashboard .avam-dash-mobile-nav{
+  background:#0f1115!important;
+  border-color:var(--panel-border)!important;
+}
+
+@media(max-width:760px){
+  .avam-dashboard,
+  .avam-dashboard-reference{
+    background:#0b0d10!important;
+  }
+
+  .avam-dashboard .avam-dash-main,
+  .avam-dashboard-reference .avam-dash-main{
+    padding:78px 14px 42px!important;
+  }
+
+  .avam-dashboard .avam-dash-topbar,
+  .avam-dashboard-reference .avam-dash-topbar{
+    margin-bottom:26px;
+  }
+
+  .avam-dashboard .avam-dash-topbar h1,
+  .avam-dashboard-reference .avam-dash-topbar h1{
+    font-size:30px;
+  }
+
+  .avam-dashboard .avam-dash-stats,
+  .avam-dashboard-reference .avam-ref-stats{
+    gap:9px;
+    margin-bottom:30px;
+  }
+
+  .avam-dashboard .avam-dash-stats article,
+  .avam-dashboard-reference .avam-ref-stats article{
+    min-height:88px;
+    padding:13px;
+    border-radius:14px;
+  }
+
+  .avam-dashboard .avam-dash-memorial{
+    grid-template-columns:52px minmax(0,1fr);
+    padding:12px;
+  }
+
+  .avam-dashboard .avam-dash-memorial-photo{
+    width:52px;
+    height:52px;
+  }
+
+  .avam-dashboard .avam-dash-memorial-actions{
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .avam-dashboard .avam-dash-memorial-actions a,
+  .avam-dashboard .avam-dash-memorial-actions button{
+    width:100%;
+  }
+}
