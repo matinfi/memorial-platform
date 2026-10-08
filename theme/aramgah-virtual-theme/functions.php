@@ -12,7 +12,7 @@ function avam_theme_assets(){
  $accent=sanitize_hex_color(get_option('avam_accent_color','#a67c50')) ?: '#a67c50';
  wp_add_inline_style('avam-style',':root{--ink:'.$primary.';--cta:'.$primary.';--accent:'.$accent.';--c-primary:'.$primary.';--c-accent:'.$accent.';}');
  wp_enqueue_script('avam-main',get_template_directory_uri().'/assets/js/main.js',[], '2.0.0', true);
- if(is_singular('avam_memorial')) wp_enqueue_style('avam-memorial-view',get_template_directory_uri().'/assets/css/memorial-view.css',['avam-style'],'2.1.0');
+ if(is_singular('avam_memorial')) wp_enqueue_style('avam-memorial-view',get_template_directory_uri().'/assets/css/memorial-view.css',['avam-style'],'2.3.0');
 }
 add_action('wp_enqueue_scripts','avam_theme_assets');
 function avam_body_classes($classes){$classes[]='avam-shell';return $classes;} add_filter('body_class','avam_body_classes');
