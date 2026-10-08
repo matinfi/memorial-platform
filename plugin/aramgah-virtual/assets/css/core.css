@@ -1318,3 +1318,100 @@
   .avam-dashboard-reference .avam-ref-actions a,
   .avam-dashboard-reference .avam-ref-actions button{font-size:13px}
 }
+
+/* =========================================================
+   Global responsive sizing pass — v1.6.6
+   Readable desktop UI + comfortable touch targets.
+   ========================================================= */
+.avam-card,.avam-auth-card,.avam-create-card,.avam-search-page,.avam-dashboard{
+  font-size:16px;
+}
+.avam-field label{font-size:15px}
+.avam-field input,.avam-field textarea,.avam-field select{min-height:50px;font-size:15px;padding:12px 16px}
+.avam-field textarea{min-height:190px}
+.avam-btn,.avam-dash-primary{min-height:50px;padding-inline:24px;font-size:15px}
+.avam-notice{font-size:14px}
+.avam-auth-lead{font-size:16px}
+.avam-auth-foot{font-size:14px}
+.avam-search-hero>span{font-size:14px}
+.avam-search-hero p{font-size:16px;line-height:1.9}
+.avam-search-form input{min-height:52px;font-size:15px}
+.avam-search-form button{min-height:52px;font-size:15px;padding-inline:28px}
+.avam-result h2{font-size:22px}
+.avam-result span{font-size:14px}
+
+/* Dashboard reference: replace the overly small reference scale on real screens. */
+@media(min-width:1051px){
+  .avam-dashboard-reference .avam-dash-sidebar{padding:30px 22px 22px}
+  .avam-dashboard-reference .avam-dash-brand{min-height:54px;padding-bottom:30px;gap:13px}
+  .avam-dashboard-reference .avam-dash-brand-mark{width:44px;height:44px;flex-basis:44px;font-size:21px}
+  .avam-dashboard-reference .avam-dash-brand b{font-size:17px}
+  .avam-dashboard-reference .avam-dash-brand small{font-size:11px}
+  .avam-dashboard-reference .avam-dash-nav{padding-top:26px;gap:7px}
+  .avam-dashboard-reference .avam-dash-nav a{min-height:50px;padding-inline:14px;font-size:14px;gap:12px}
+  .avam-dashboard-reference .avam-nav-icon{font-size:18px;width:22px}
+  .avam-dashboard-reference .avam-dash-logout{min-height:46px;font-size:13px}
+  .avam-dashboard-reference .avam-ref-topbar{min-height:82px}
+  .avam-dashboard-reference .avam-ref-search{height:44px;padding-inline:13px}
+  .avam-dashboard-reference .avam-ref-search input{font-size:14px}
+  .avam-dashboard-reference .avam-ref-user{gap:11px}
+  .avam-dashboard-reference .avam-ref-avatar{width:38px;height:38px;border-radius:11px;font-size:12px}
+  .avam-dashboard-reference .avam-ref-user strong{font-size:14px}
+  .avam-dashboard-reference .avam-ref-user small{font-size:10px}
+  .avam-dashboard-reference .avam-ref-icon{width:38px;height:38px;font-size:17px}
+  .avam-dashboard-reference .avam-ref-heading{min-height:116px}
+  .avam-dashboard-reference .avam-ref-heading>div>span{font-size:11px}
+  .avam-dashboard-reference .avam-ref-heading h1{font-size:30px}
+  .avam-dashboard-reference .avam-dash-primary{min-height:48px;min-width:168px;font-size:14px;padding-inline:18px}
+  .avam-dashboard-reference .avam-ref-stats{gap:18px}
+  .avam-dashboard-reference .avam-ref-stats article{min-height:104px;padding:18px;gap:14px;border-radius:14px}
+  .avam-dashboard-reference .avam-ref-stat-icon{width:44px;height:44px;flex-basis:44px;font-size:20px}
+  .avam-dashboard-reference .avam-ref-stats small{font-size:11px}
+  .avam-dashboard-reference .avam-ref-stats strong{font-size:25px}
+  .avam-dashboard-reference .avam-ref-stats em{font-size:10px}
+  .avam-dashboard-reference .avam-ref-chart-grid{gap:18px}
+  .avam-dashboard-reference .avam-ref-panel{padding:22px 22px 18px;border-radius:14px}
+  .avam-dashboard-reference .avam-ref-panel-head h2{font-size:18px}
+  .avam-dashboard-reference .avam-ref-panel-head>div>span{font-size:10px}
+  .avam-dashboard-reference .avam-ref-filter{min-height:32px;padding-inline:11px;font-size:10px}
+  .avam-dashboard-reference .avam-ref-linechart{min-height:230px}
+  .avam-dashboard-reference .avam-ref-linechart svg{height:175px}
+  .avam-dashboard-reference .avam-ref-ylabels,.avam-dashboard-reference .avam-ref-xlabels{font-size:10px}
+  .avam-dashboard-reference .avam-ref-barchart{height:230px}
+  .avam-dashboard-reference .avam-ref-bars{height:210px}
+  .avam-dashboard-reference .avam-ref-bars strong{font-size:12px}
+  .avam-dashboard-reference .avam-ref-bars small{font-size:10px}
+  .avam-dashboard-reference .avam-ref-table-panel{padding:22px;border-radius:14px}
+  .avam-dashboard-reference .avam-ref-table th{font-size:11px;padding:13px 10px}
+  .avam-dashboard-reference .avam-ref-table td{font-size:13px;padding:14px 10px}
+  .avam-dashboard-reference .avam-ref-person strong{font-size:14px}
+  .avam-dashboard-reference .avam-ref-person-photo{width:38px;height:38px;flex-basis:38px;border-radius:10px}
+  .avam-dashboard-reference .avam-ref-status{font-size:11px}
+  .avam-dashboard-reference .avam-ref-actions{gap:5px}
+  .avam-dashboard-reference .avam-ref-actions a,.avam-dashboard-reference .avam-ref-actions button{width:34px;height:34px;font-size:15px;border-radius:9px}
+}
+
+/* Tablet and mobile: never let controls become tiny. */
+@media(max-width:1050px){
+  .avam-btn,.avam-dash-primary{min-height:48px;font-size:14px}
+  .avam-field label{font-size:14px}
+  .avam-field input,.avam-field textarea,.avam-field select{font-size:15px}
+}
+@media(max-width:760px){
+  .avam-card{padding:24px 20px}
+  .avam-auth-card h1{font-size:clamp(28px,8vw,38px)}
+  .avam-dashboard-reference .avam-mobile-menu-toggle{min-height:44px;padding-inline:14px;font-size:12px}
+  .avam-dashboard-reference .avam-mobile-menu-toggle span{font-size:18px}
+  .avam-dashboard-reference .avam-ref-heading h1{font-size:22px}
+  .avam-dashboard-reference .avam-ref-stats small{font-size:10px}
+  .avam-dashboard-reference .avam-ref-stats strong{font-size:20px}
+  .avam-dashboard-reference .avam-ref-stats em{font-size:9px}
+  .avam-dashboard-reference .avam-ref-panel-head h2{font-size:15px}
+  .avam-dashboard-reference .avam-ref-table td{font-size:11px}
+}
+@media(max-width:480px){
+  .avam-card{padding:20px 16px}
+  .avam-btn,.avam-dash-primary{min-height:48px}
+  .avam-search-form{grid-template-columns:1fr}
+  .avam-search-form button{width:100%}
+}
