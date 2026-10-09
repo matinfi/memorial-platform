@@ -79,7 +79,7 @@ final class AVAM_Features {
   return $approved;
  }
  public static function exclude_private_from_public_queries($query) {
-  if (is_admin() || !$query->is_main_query() || !($query->is_post_type_archive('avam_memorial') || $query->is_search())) return;
+  if (is_admin() || !$query->is_main_query() || !$query->is_post_type_archive('avam_memorial')) return;
   $existing=$query->get('meta_query'); if (!is_array($existing)) $existing=[];
   $existing[]=['relation'=>'OR',['key'=>'avam_visibility','compare'=>'NOT EXISTS'],['key'=>'avam_visibility','value'=>'private','compare'=>'!=']];
   $query->set('meta_query',$existing);
