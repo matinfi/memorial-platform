@@ -24,13 +24,13 @@ jQuery(function($){
  });
 });
 
-/* Mobile account dashboard navigation — v1.6.4 */
+/* Single global sidebar navigation — only the outer application shell owns the mobile menu. */
 jQuery(function($){
- const dashboard=$('.avam-dashboard-reference');
+ const dashboard=$('.avam-unified-shell').first();
  if(!dashboard.length)return;
- const toggle=dashboard.find('.avam-mobile-menu-toggle');
- const sidebar=dashboard.find('.avam-dash-sidebar');
- const backdrop=dashboard.find('.avam-mobile-menu-backdrop');
+ const toggle=dashboard.children('.avam-mobile-menu-toggle');
+ const sidebar=dashboard.children('.avam-dash-sidebar');
+ const backdrop=dashboard.children('.avam-mobile-menu-backdrop');
  const closeMenu=function(){
    dashboard.removeClass('mobile-menu-open');
    toggle.attr('aria-expanded','false');
@@ -98,7 +98,11 @@ jQuery(function($){
   const root=doc.querySelector('#main')||doc.body;
   if(doc.querySelector('.avam-unified-shell')){
    const unified=doc.querySelector('#main.avam-unified-content');
-   if(unified)return unified.innerHTML;
+   if(unified){
+    const accountMain=unified.querySelector('.avam-dashboard-reference:not(.avam-unified-shell) > .avam-dash-main');
+    if(accountMain)return accountMain.innerHTML;
+    return unified.innerHTML;
+   }
   }
   const dash=root.querySelector('.avam-dashboard-reference:not(.avam-unified-shell) .avam-dash-main');
   if(dash)return dash.innerHTML;
@@ -110,7 +114,6 @@ jQuery(function($){
  window.avamPanelNavigate=function(url,replace){
   if(busy)return;
   const destination=new URL(url,location.href);
-  if(typeof AVAM!=='undefined' && AVAM.account && destination.pathname===new URL(AVAM.account,location.href).pathname){window.location.href=url;return;}
   busy=true;
   const shell=document.querySelector('.avam-dashboard-reference');
   const main=shell&&(shell.classList.contains('avam-unified-shell')?shell.querySelector('.avam-unified-content'):shell.querySelector('.avam-dash-main'));
@@ -121,7 +124,6 @@ jQuery(function($){
    .then(res=>{if(!res.ok)throw new Error('request failed');return res.text();})
    .then(html=>{
     const doc=new DOMParser().parseFromString(html,'text/html');
-    if(doc.querySelector('.avam-dashboard-reference:not(.avam-unified-shell)'))throw new Error('switch to account layout');
     doc.querySelectorAll('link[rel="stylesheet"]').forEach(link=>{if(link.href.includes('memorial-view.css')&&!document.querySelector('link[href="'+link.href+'"]'))document.head.appendChild(link.cloneNode(true));});
     const content=targetContent(doc);
     if(!content.trim())throw new Error('empty response');
