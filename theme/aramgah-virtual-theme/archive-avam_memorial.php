@@ -2,7 +2,10 @@
 get_header();
 $q=isset($_GET['q'])?sanitize_text_field(wp_unslash($_GET['q'])):'';
 $city=isset($_GET['city'])?sanitize_text_field(wp_unslash($_GET['city'])):'';
-$args=['post_type'=>'avam_memorial','post_status'=>'publish','posts_per_page'=>12,'paged'=>max(1,get_query_var('paged')),'orderby'=>'date','order'=>'DESC'];
+$sort=isset($_GET['sort'])?sanitize_key(wp_unslash($_GET['sort'])):'newest';
+$order_map=['newest'=>['date','DESC'],'oldest'=>['date','ASC'],'name'=>['title','ASC']];
+[$orderby,$order]=$order_map[$sort]??$order_map['newest'];
+$args=['post_type'=>'avam_memorial','post_status'=>'publish','posts_per_page'=>12,'paged'=>max(1,get_query_var('paged')),'orderby'=>$orderby,'order'=>$order,'meta_query'=>['relation'=>'AND',['relation'=>'OR',['key'=>'avam_visibility','compare'=>'NOT EXISTS'],['key'=>'avam_visibility','value'=>'private','compare'=>'!=']]]];
 if($q)$args['s']=$q;
 if($city)$args['meta_query']=[['key'=>'avam_city','value'=>$city,'compare'=>'LIKE']];
 $memorials=new WP_Query($args);
@@ -16,6 +19,7 @@ $memorials=new WP_Query($args);
       <form class="avam-archive-search" method="get">
         <label><span>نام متوفی</span><input name="q" value="<?php echo esc_attr($q); ?>" placeholder="جستجوی نام"></label>
         <label><span>شهر</span><input name="city" value="<?php echo esc_attr($city); ?>" placeholder="مثلاً تهران"></label>
+        <label><span>مرتب‌سازی</span><select name="sort"><option value="newest" <?php selected($sort,'newest'); ?>>جدیدترین</option><option value="oldest" <?php selected($sort,'oldest'); ?>>قدیمی‌ترین</option><option value="name" <?php selected($sort,'name'); ?>>نام (الفبا)</option></select></label>
         <button type="submit">جستجو</button>
       </form>
     </div>
