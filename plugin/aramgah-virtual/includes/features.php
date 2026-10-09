@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) exit;
 final class AVAM_Features {
  public static function init() {
   add_action('init',[__CLASS__,'ensure_pages'],20);
+  add_action('pre_get_posts',[__CLASS__,'exclude_private_from_public_queries']);
   add_action('admin_menu',[__CLASS__,'admin_menu'],30);
   add_action('admin_init',[__CLASS__,'register_settings']);
   add_filter('pre_comment_approved',[__CLASS__,'moderate_comments'],20,2);
@@ -74,6 +75,12 @@ final class AVAM_Features {
   set_transient($key,1,max(10,min(300,absint(get_option('avam_rate_limit_seconds',30)))));
   if (get_option('avam_comments_require_moderation','1')==='1' && !current_user_can('moderate_comments')) return 0;
   return $approved;
+ }
+ public static function exclude_private_from_public_queries($query) {
+  if (is_admin() || !$query->is_main_query() || !($query->is_post_type_archive('avam_memorial') || $query->is_search())) return;
+  $existing=$query->get('meta_query'); if (!is_array($existing)) $existing=[];
+  $existing[]=['relation'=>'OR',['key'=>'avam_visibility','compare'=>'NOT EXISTS'],['key'=>'avam_visibility','value'=>'private','compare'=>'!=']];
+  $query->set('meta_query',$existing);
  }
  public static function protect_private_memorial() {
   if (!is_singular('avam_memorial')) return;
