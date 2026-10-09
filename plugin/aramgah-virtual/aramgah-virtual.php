@@ -272,30 +272,34 @@ JS;
   $save_status=sanitize_key(wp_unslash($_POST['save_status']??'publish')); $save_status=$save_status==='draft'?'draft':'publish';
   if(mb_strlen($title)>160)wp_send_json_error(['message'=>'نام یادبود بیش از حد طولانی است.'],422);
   if(mb_strlen($post_content)>50000)wp_send_json_error(['message'=>'متن روایت بیش از حد طولانی است.'],422);
+  if($save_status==='publish' && trim($post_content)==='')wp_send_json_error(['message'=>'برای انتشار، روایت زندگی را وارد کنید یا پیش‌نویس ذخیره کنید.'],422);
+  $timeline_check=sanitize_textarea_field(wp_unslash($_POST['timeline']??'')); if(mb_strlen($timeline_check)>12000)wp_send_json_error(['message'=>'خط زمانی بیش از حد طولانی است.'],422);
+  if(!empty($_FILES['image']['name'])){
+   if(!empty($_FILES['image']['error']) && (int)$_FILES['image']['error']!==UPLOAD_ERR_OK)wp_send_json_error(['message'=>'آپلود تصویر ناموفق بود.'],422);
+   if((int)($_FILES['image']['size']??0)>8*1024*1024)wp_send_json_error(['message'=>'حجم تصویر باید کمتر از ۸ مگابایت باشد.'],422);
+   $check=wp_check_filetype_and_ext($_FILES['image']['tmp_name'],$_FILES['image']['name']); if(empty($check['type'])||!in_array($check['type'],['image/jpeg','image/png','image/webp'],true))wp_send_json_error(['message'=>'فقط تصویر JPG، PNG یا WebP مجاز است.'],422);
+  }
+  if(!empty($_FILES['gallery']['name']) && is_array($_FILES['gallery']['name'])){
+   if(count($_FILES['gallery']['name'])>10)wp_send_json_error(['message'=>'حداکثر ۱۰ تصویر برای گالری مجاز است.'],422);
+   foreach($_FILES['gallery']['name'] as $i=>$name){if(!$name)continue; if((int)($_FILES['gallery']['error'][$i]??UPLOAD_ERR_NO_FILE)!==UPLOAD_ERR_OK)wp_send_json_error(['message'=>'آپلود یکی از تصاویر گالری ناموفق بود.'],422); if((int)($_FILES['gallery']['size'][$i]??0)>8*1024*1024)wp_send_json_error(['message'=>'حجم هر تصویر گالری باید کمتر از ۸ مگابایت باشد.'],422); $check=wp_check_filetype_and_ext($_FILES['gallery']['tmp_name'][$i],$name); if(empty($check['type'])||!in_array($check['type'],['image/jpeg','image/png','image/webp'],true))wp_send_json_error(['message'=>'گالری فقط تصویر JPG، PNG یا WebP می‌پذیرد.'],422); }
+  }
   if($edit_id){$existing=get_post($edit_id);if(!$existing||$existing->post_type!==self::CPT||(int)$existing->post_author!==get_current_user_id())wp_send_json_error(['message'=>'دسترسی به این یادبود مجاز نیست.'],403);$id=wp_update_post(['ID'=>$edit_id,'post_title'=>$title,'post_content'=>$post_content,'post_status'=>$save_status],true);}else{$id=wp_insert_post(['post_type'=>self::CPT,'post_status'=>$save_status,'post_title'=>$title,'post_content'=>$post_content,'post_author'=>get_current_user_id()],true);}
   if(is_wp_error($id))wp_send_json_error(['message'=>'ذخیره انجام نشد.'],500);
   foreach(['city','birth','death'] as $k)update_post_meta($id,'avam_'.$k,sanitize_textarea_field(wp_unslash($_POST[$k]??'')));
-  $timeline=sanitize_textarea_field(wp_unslash($_POST['timeline']??'')); if(mb_strlen($timeline)>12000)wp_send_json_error(['message'=>'خط زمانی بیش از حد طولانی است.'],422); update_post_meta($id,'avam_timeline',$timeline);
+  $timeline=$timeline_check; update_post_meta($id,'avam_timeline',$timeline);
   $visibility=sanitize_key(wp_unslash($_POST['visibility']??'public')); update_post_meta($id,'avam_visibility',in_array($visibility,['public','private'],true)?$visibility:'public');
   if(!empty($_FILES['image']['name'])){
-   $checked=wp_check_filetype_and_ext($_FILES['image']['tmp_name'],$_FILES['image']['name']);
-   if(empty($checked['type']) || !in_array($checked['type'],['image/jpeg','image/png','image/webp'],true))wp_send_json_error(['message'=>'فقط تصویر JPG، PNG یا WebP مجاز است.'],422);
-   if(!empty($_FILES['image']['error']) && (int)$_FILES['image']['error']!==UPLOAD_ERR_OK)wp_send_json_error(['message'=>'آپلود تصویر ناموفق بود.'],422);
-   if(!empty($_FILES['image']['size']) && (int)$_FILES['image']['size']>8*1024*1024)wp_send_json_error(['message'=>'حجم تصویر باید کمتر از ۸ مگابایت باشد.'],422);
-   require_once ABSPATH.'wp-admin/includes/file.php';require_once ABSPATH.'wp-admin/includes/media.php';require_once ABSPATH.'wp-admin/includes/image.php';
+      require_once ABSPATH.'wp-admin/includes/file.php';require_once ABSPATH.'wp-admin/includes/media.php';require_once ABSPATH.'wp-admin/includes/image.php';
    $att=media_handle_upload('image',$id);
    if(is_wp_error($att))wp_send_json_error(['message'=>'تصویر قابل ذخیره‌سازی نبود.'],422);
    set_post_thumbnail($id,$att);
   }
   if(!empty($_FILES['gallery']['name']) && is_array($_FILES['gallery']['name'])){
    $gallery_ids=[]; $total_files=count($_FILES['gallery']['name']);
-   if($total_files>10)wp_send_json_error(['message'=>'حداکثر ۱۰ تصویر برای گالری مجاز است.'],422);
    require_once ABSPATH.'wp-admin/includes/file.php';require_once ABSPATH.'wp-admin/includes/media.php';require_once ABSPATH.'wp-admin/includes/image.php';
    for($i=0;$i<$total_files;$i++){
     if(empty($_FILES['gallery']['name'][$i]))continue;
-    if((int)($_FILES['gallery']['size'][$i]??0)>8*1024*1024)wp_send_json_error(['message'=>'حجم هر تصویر گالری باید کمتر از ۸ مگابایت باشد.'],422);
     $single=['name'=>$_FILES['gallery']['name'][$i],'type'=>$_FILES['gallery']['type'][$i],'tmp_name'=>$_FILES['gallery']['tmp_name'][$i],'error'=>$_FILES['gallery']['error'][$i],'size'=>$_FILES['gallery']['size'][$i]];
-    $checked=wp_check_filetype_and_ext($single['tmp_name'],$single['name']); if(empty($checked['type'])||!in_array($checked['type'],['image/jpeg','image/png','image/webp'],true))wp_send_json_error(['message'=>'گالری فقط تصویر JPG، PNG یا WebP می‌پذیرد.'],422);
     $_FILES['avam_gallery_single']=$single; $gallery_att=media_handle_upload('avam_gallery_single',$id); unset($_FILES['avam_gallery_single']);
     if(is_wp_error($gallery_att))wp_send_json_error(['message'=>'یکی از تصاویر گالری ذخیره نشد.'],422); $gallery_ids[]=(int)$gallery_att;
    }
