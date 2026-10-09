@@ -97,3 +97,54 @@ body:has(.avam-unified-shell){background:#f2f5f3;color:#172236;font-family:"Vazi
  .avam-unified-actions{display:grid}
  .avam-unified-actions>a{width:100%}
 }
+
+/* Account dashboard: nest its content inside the global shell without duplicating navigation. */
+.avam-unified-content>.avam-dashboard-reference:not(.avam-unified-shell){display:block!important;width:100%!important;min-height:0!important;margin:0!important;padding:0!important;background:transparent!important}
+.avam-unified-content>.avam-dashboard-reference:not(.avam-unified-shell)>.avam-dash-sidebar,
+.avam-unified-content>.avam-dashboard-reference:not(.avam-unified-shell)>.avam-mobile-menu-toggle,
+.avam-unified-content>.avam-dashboard-reference:not(.avam-unified-shell)>.avam-mobile-menu-backdrop{display:none!important}
+.avam-unified-content>.avam-dashboard-reference:not(.avam-unified-shell)>.avam-dash-main{display:block!important;width:100%!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important;background:transparent!important}
+.avam-unified-content>.avam-dashboard-reference:not(.avam-unified-shell) .avam-ref-topbar{display:none!important}
+.avam-unified-content .avam-ref-heading{margin-top:8px}
+.avam-unified-content .avam-ref-chart-grid,.avam-unified-content .avam-ref-stats,.avam-unified-content .avam-ref-table-panel{animation:avamPanelEnter .65s cubic-bezier(.2,.7,.2,1) both}
+.avam-unified-content .avam-ref-chart-grid{animation-delay:.08s}
+.avam-unified-content .avam-ref-table-panel{animation-delay:.16s}
+.avam-unified-content .avam-ref-linechart svg path{stroke-dasharray:1100;stroke-dashoffset:1100;animation:avamChartDraw 1.8s .25s ease-out forwards}
+.avam-unified-content .avam-ref-linechart svg path:first-of-type{stroke-dasharray:none;stroke-dashoffset:0;animation:avamChartFill 1.2s .3s ease-out both}
+.avam-unified-content .avam-ref-linechart svg circle{transform-box:fill-box;transform-origin:center;animation:avamChartPulse 2s 1.4s ease-in-out infinite}
+.avam-unified-content .avam-ref-bars i{transform-origin:bottom;animation:avamBarRise .9s cubic-bezier(.2,.7,.2,1) both}
+.avam-unified-content .avam-ref-bars>div:nth-child(2) i{animation-delay:.08s}
+.avam-unified-content .avam-ref-bars>div:nth-child(3) i{animation-delay:.16s}
+.avam-unified-content .avam-ref-bars>div:nth-child(4) i{animation-delay:.24s}
+@keyframes avamPanelEnter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes avamChartDraw{to{stroke-dashoffset:0}}
+@keyframes avamChartFill{from{opacity:0}to{opacity:1}}
+@keyframes avamChartPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
+@keyframes avamBarRise{from{transform:scaleY(.08);opacity:.3}to{transform:scaleY(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.avam-unified-content *{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+/* Robust mobile navigation for both the global panel and the legacy dashboard content. */
+@media(max-width:760px){
+ .avam-unified-shell{display:block!important;width:100%;overflow-x:clip}
+ .avam-unified-shell>.avam-dash-sidebar{position:fixed!important;right:0!important;left:auto!important;top:0!important;bottom:0!important;width:min(300px,88vw)!important;height:100dvh!important;max-height:100dvh!important;min-height:0!important;transform:translateX(110%);transition:transform .25s ease;overflow-y:auto;overscroll-behavior:contain}
+ .avam-unified-shell.mobile-menu-open>.avam-dash-sidebar{transform:translateX(0)}
+ .avam-unified-shell .avam-mobile-menu-toggle{right:14px!important;left:auto!important;bottom:14px!important;z-index:80!important}
+ .avam-unified-shell .avam-mobile-menu-backdrop:not([hidden]){position:fixed!important;inset:0!important;z-index:70!important;display:block!important;background:rgba(18,29,24,.48)!important;backdrop-filter:blur(2px)}
+ body.avam-mobile-nav-open{overflow:hidden}
+ .avam-unified-main{width:100%;padding:0 12px 18px!important}
+ .avam-unified-main>.avam-ref-topbar{gap:10px;min-width:0}
+ .avam-unified-search{min-width:0;flex:1}
+ .avam-unified-search input{min-width:0;width:100%;font-size:13px}
+ .avam-unified-main .avam-ref-user{flex:0 0 auto;gap:6px}
+ .avam-unified-content{width:100%;min-width:0;overflow-wrap:anywhere}
+ .avam-unified-content>.avam-dashboard-reference:not(.avam-unified-shell) .avam-ref-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .avam-unified-content>.avam-dashboard-reference:not(.avam-unified-shell) .avam-ref-chart-grid{grid-template-columns:minmax(0,1fr)}
+ .avam-unified-content>.avam-dashboard-reference:not(.avam-unified-shell) .avam-ref-table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+ .avam-unified-content>.avam-dashboard-reference:not(.avam-unified-shell) .avam-ref-table{min-width:650px}
+ .avam-unified-content .avam-ref-heading{align-items:flex-start;gap:12px;flex-wrap:wrap}
+ .avam-unified-content .avam-ref-heading h1{font-size:25px}
+}
+@media(max-width:420px){
+ .avam-unified-content>.avam-dashboard-reference:not(.avam-unified-shell) .avam-ref-stats{grid-template-columns:minmax(0,1fr)}
+ .avam-unified-content .avam-ref-heading .avam-dash-primary{width:100%;justify-content:center}
+ .avam-unified-content .avam-ref-panel,.avam-unified-content .avam-ref-table-panel{padding:14px!important}
+}
