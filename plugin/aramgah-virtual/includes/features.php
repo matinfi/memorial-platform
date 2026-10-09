@@ -58,7 +58,7 @@ final class AVAM_Features {
  }
  public static function comments_open_for_memorial($open,$post_id) {
   if (get_post_type($post_id)!=='avam_memorial') return $open;
-  return get_option('avam_comments_enabled','1')==='1' ? $open : false;
+  return get_option('avam_comments_enabled','1')==='1' ? true : false;
  }
  public static function comment_form_defaults($defaults) {
   $defaults['title_reply']='دعایی یا خاطره‌ای بنویسید';
