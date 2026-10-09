@@ -7,7 +7,7 @@ $order_map=['newest'=>['date','DESC'],'oldest'=>['date','ASC'],'name'=>['title',
 [$orderby,$order]=$order_map[$sort]??$order_map['newest'];
 $args=['post_type'=>'avam_memorial','post_status'=>'publish','posts_per_page'=>12,'paged'=>max(1,get_query_var('paged')),'orderby'=>$orderby,'order'=>$order,'meta_query'=>['relation'=>'AND',['relation'=>'OR',['key'=>'avam_visibility','compare'=>'NOT EXISTS'],['key'=>'avam_visibility','value'=>'private','compare'=>'!=']]]];
 if($q)$args['s']=$q;
-if($city)$args['meta_query']=[['key'=>'avam_city','value'=>$city,'compare'=>'LIKE']];
+if($city)$args['meta_query'][]=['key'=>'avam_city','value'=>$city,'compare'=>'LIKE'];
 $memorials=new WP_Query($args);
 ?>
 <div class="avam-archive-page" dir="rtl">
