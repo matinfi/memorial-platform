@@ -1003,3 +1003,18 @@ body:has(.avam-memorial-content-view){
 .avam-reading-body > .avam-reading-section{
   border-bottom:0;
 }
+
+
+/* Timeline and memory gallery */
+.avam-reading-timeline,.avam-reading-gallery{margin:48px 0}
+.avam-reading-timeline h2,.avam-reading-gallery h2{margin:10px 0 24px}
+.avam-reading-timeline ol{list-style:none;margin:0;padding:0 22px 0 0;border-right:1px solid rgba(212,175,55,.35)}
+.avam-reading-timeline li{position:relative;padding:0 22px 24px 0}
+.avam-reading-timeline li:before{content:"";position:absolute;right:-5px;top:8px;width:9px;height:9px;border-radius:50%;background:#d4af37;box-shadow:0 0 0 5px rgba(212,175,55,.12)}
+.avam-reading-timeline time{font-size:13px;color:#d4af37}
+.avam-reading-timeline li p{margin:5px 0 0;line-height:1.9}
+.avam-reading-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.avam-reading-gallery-grid a{display:block;overflow:hidden;border-radius:14px;aspect-ratio:1;background:#161922}
+.avam-reading-gallery-grid img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+.avam-reading-gallery-grid a:hover img{transform:scale(1.04)}
+@media(max-width:600px){.avam-reading-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
