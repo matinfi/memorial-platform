@@ -64,6 +64,12 @@ $intro=get_option('avam_single_intro','روایتی برای ماندن و به 
       <div class="avam-reading-richtext"><?php the_content(); ?></div>
     </section>
 
+    <div class="avam-memorial-actions" aria-label="همراهی با یادبود">
+      <button type="button" data-avam-react="candle" data-id="<?php echo esc_attr(get_the_ID()); ?>">🕯️ روشن کردن شمع <span data-count><?php echo esc_html((int)get_post_meta(get_the_ID(),'avam_candle_count',true)); ?></span></button>
+      <button type="button" data-avam-react="flower" data-id="<?php echo esc_attr(get_the_ID()); ?>">🌷 تقدیم گل <span data-count><?php echo esc_html((int)get_post_meta(get_the_ID(),'avam_flower_count',true)); ?></span></button>
+      <button type="button" data-avam-report data-id="<?php echo esc_attr(get_the_ID()); ?>">گزارش محتوا</button>
+    </div>
+
     <section class="avam-reading-comments">
       <span class="avam-reading-index">پیام‌های یادبود</span>
       <h2>دعا و خاطره</h2>
