@@ -188,13 +188,14 @@ JS;
               $city=get_post_meta($p->ID,'avam_city',true);
               $status=$p->post_status==='publish'?'منتشر شده':($p->post_status==='draft'?'پیش‌نویس':'در انتظار بررسی');
               $edit=add_query_arg('edit',(int)$p->ID,$create);
+              $view=$p->post_status==='publish'?get_permalink($p):get_preview_post_link($p);
             ?>
               <tr>
                 <td><div class="avam-ref-person"><span class="avam-ref-person-photo"><?php $thumb=get_the_post_thumbnail_url($p->ID,'thumbnail'); if($thumb): ?><img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($p->post_title); ?>"><?php else: ?>♡<?php endif; ?></span><strong><?php echo esc_html($p->post_title); ?></strong></div></td>
                 <td><?php echo esc_html($city ?: '—'); ?></td>
                 <td><?php echo esc_html(get_the_date('j F Y',$p)); ?></td>
                 <td><span class="avam-ref-status <?php echo $p->post_status==='publish'?'is-published':''; ?>"><i></i><?php echo esc_html($status); ?></span></td>
-                <td><div class="avam-ref-actions"><a href="<?php echo esc_url(get_permalink($p)); ?>" aria-label="مشاهده">◉</a><a href="<?php echo esc_url($edit); ?>" aria-label="ویرایش">✎</a><button type="button" class="avam-action-delete" data-id="<?php echo esc_attr($p->ID); ?>" aria-label="حذف">×</button></div></td>
+                <td><div class="avam-ref-actions"><a href="<?php echo esc_url($view); ?>" aria-label="پیش‌نمایش یا مشاهده">◉</a><a href="<?php echo esc_url($edit); ?>" aria-label="ویرایش">✎</a><button type="button" class="avam-action-delete" data-id="<?php echo esc_attr($p->ID); ?>" aria-label="حذف">×</button></div></td>
               </tr>
             <?php endforeach; ?>
             </tbody>
@@ -235,11 +236,12 @@ JS;
  public static function search(){
   $q=isset($_GET['q'])?sanitize_text_field(wp_unslash($_GET['q'])):'';
   $city=isset($_GET['city'])?sanitize_text_field(wp_unslash($_GET['city'])):'';
-  $args=['post_type'=>self::CPT,'post_status'=>'publish','posts_per_page'=>24,'orderby'=>'date','order'=>'DESC'];
+  $sort=isset($_GET['sort'])?sanitize_key(wp_unslash($_GET['sort'])):'newest';$sorts=['newest'=>['date','DESC'],'oldest'=>['date','ASC'],'name'=>['title','ASC']];[$orderby,$order]=$sorts[$sort]??$sorts['newest'];
+  $args=['post_type'=>self::CPT,'post_status'=>'publish','posts_per_page'=>24,'paged'=>max(1,get_query_var('paged')),'orderby'=>$orderby,'order'=>$order,'meta_query'=>['relation'=>'AND',['relation'=>'OR',['key'=>'avam_visibility','compare'=>'NOT EXISTS'],['key'=>'avam_visibility','value'=>'private','compare'=>'!=']]]];
   if($q) $args['s']=$q;
   if($city) $args['meta_query']=[['key'=>'avam_city','value'=>$city,'compare'=>'LIKE']];
   $query=new WP_Query($args);
-  ob_start();?><section class="avam-search-page"><div class="avam-search-hero"><span>آرامگاه مجازی</span><h1>جستجوی یادبودها</h1><p>نام متوفی یا شهر را جستجو کنید.</p><form class="avam-search-form" method="get" action="<?php echo esc_url(avam_memorials_url());?>"><input name="q" value="<?php echo esc_attr($q);?>" placeholder="نام متوفی"><input name="city" value="<?php echo esc_attr($city);?>" placeholder="شهر"><button type="submit">جستجو</button></form></div><div class="avam-results"><?php if($query->have_posts()):while($query->have_posts()):$query->the_post();$cid=get_post_meta(get_the_ID(),'avam_city',true);?><a class="avam-result" href="<?php the_permalink();?>"><?php if(has_post_thumbnail()):?><img src="<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID(),'medium'));?>" alt=""><?php endif;?><div><h2><?php the_title();?></h2><?php if($cid):?><span><?php echo esc_html($cid);?></span><?php endif;?></div></a><?php endwhile;else:?><div class="avam-no-results">یادبودی با این مشخصات پیدا نشد.</div><?php endif;wp_reset_postdata();?></div></section><?php return ob_get_clean();
+  ob_start();?><section class="avam-search-page"><div class="avam-search-hero"><span>آرامگاه مجازی</span><h1>جستجوی یادبودها</h1><p>نام متوفی یا شهر را جستجو کنید.</p><form class="avam-search-form" method="get" action="<?php echo esc_url(avam_memorials_url());?>"><input name="q" value="<?php echo esc_attr($q);?>" placeholder="نام متوفی"><input name="city" value="<?php echo esc_attr($city);?>" placeholder="شهر"><select name="sort" aria-label="مرتب‌سازی"><option value="newest" <?php selected($sort,'newest'); ?>>جدیدترین</option><option value="oldest" <?php selected($sort,'oldest'); ?>>قدیمی‌ترین</option><option value="name" <?php selected($sort,'name'); ?>>نام</option></select><button type="submit">جستجو</button></form></div><div class="avam-results"><?php if($query->have_posts()):while($query->have_posts()):$query->the_post();$cid=get_post_meta(get_the_ID(),'avam_city',true);?><a class="avam-result" href="<?php the_permalink();?>"><?php if(has_post_thumbnail()):?><img src="<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID(),'medium'));?>" alt=""><?php endif;?><div><h2><?php the_title();?></h2><?php if($cid):?><span><?php echo esc_html($cid);?></span><?php endif;?></div></a><?php endwhile; echo '<nav class="avam-archive-pagination">'.wp_kses_post(paginate_links(['total'=>$query->max_num_pages,'current'=>max(1,get_query_var('paged')),'type'=>'list'])).'</nav>'; else:?><div class="avam-no-results">یادبودی با این مشخصات پیدا نشد.</div><?php endif;wp_reset_postdata();?></div></section><?php return ob_get_clean();
  }
 
  public static function handle_auth(){
