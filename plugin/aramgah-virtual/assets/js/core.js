@@ -60,3 +60,30 @@ jQuery(function($){
   form.trigger('submit');
  });
 });
+
+/* Accessible four-step memorial creation wizard */
+jQuery(function($){
+ const form=$('#avam-create-form'); if(!form.length)return;
+ const sections=form.find('.avam-form-section'); if(sections.length<2)return;
+ let active=0;
+ form.addClass('avam-wizard-enabled');
+ const progress=$('<div class="avam-wizard-progress" role="status" aria-live="polite"></div>');
+ const nav=$('<div class="avam-wizard-nav"><button type="button" class="avam-wizard-prev">مرحله قبل</button><span class="avam-wizard-count"></span><button type="button" class="avam-wizard-next">مرحله بعد</button></div>');
+ form.prepend(progress); form.find('.avam-form-submit').before(nav);
+ function render(){
+  sections.each(function(i){$(this).toggle(i===active);});
+  progress.empty();
+  sections.each(function(i){const label=$(this).find('.avam-form-section-title strong').first().text()||('مرحله '+(i+1));progress.append($('<span>').toggleClass('is-current',i===active).text((i+1)+' · '+label));});
+  nav.find('.avam-wizard-prev').prop('disabled',active===0);
+  nav.find('.avam-wizard-next').toggle(active<sections.length-1);
+  nav.find('.avam-wizard-count').text('مرحله '+(active+1)+' از '+sections.length);
+  form.find('.avam-form-submit').toggle(active===sections.length-1);
+ }
+ nav.on('click','.avam-wizard-prev',function(){if(active>0){active--;render();form[0].scrollIntoView({behavior:'smooth',block:'start'});}});
+ nav.on('click','.avam-wizard-next',function(){
+  const fields=sections.eq(active).find('input[required],textarea[required],select[required]');
+  let valid=true; fields.each(function(){if(!this.checkValidity()){this.reportValidity();valid=false;return false;}});
+  if(valid&&active<sections.length-1){active++;render();form[0].scrollIntoView({behavior:'smooth',block:'start'});}
+ });
+ render();
+});
