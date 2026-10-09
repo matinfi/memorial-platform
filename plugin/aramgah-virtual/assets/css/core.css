@@ -1898,3 +1898,24 @@
     width:100%;
   }
 }
+
+
+/* v1.9 feature layer */
+.avam-reading-comments .comment-list{list-style:none;padding:0;display:grid;gap:16px}
+.avam-reading-comments .comment-body{padding:18px;border:1px solid rgba(212,175,55,.16);border-radius:16px;background:rgba(255,255,255,.025)}
+.avam-reading-comments .comment-author{display:flex;align-items:center;gap:10px;font-weight:700}
+.avam-reading-comments .comment-author .avatar{width:36px;height:36px;border-radius:50%;object-fit:cover}
+.avam-reading-comments .comment-author cite{font-style:normal}
+.avam-reading-comments .comment-metadata{font-size:12px;opacity:.65;margin:5px 0 10px}
+.avam-reading-comments .comment-content{line-height:2;overflow-wrap:anywhere}
+.avam-reading-comments .reply a{font-size:13px;color:#d4af37}
+.avam-reading-comments .comment-respond{margin-top:26px;padding:22px;border-radius:18px;background:rgba(255,255,255,.025);border:1px solid rgba(212,175,55,.13)}
+.avam-reading-comments .comment-respond label{display:block;margin-bottom:8px}
+.avam-reading-comments .comment-respond input:not([type=submit]),.avam-reading-comments .comment-respond textarea,.avam-profile-settings input,.avam-profile-settings select{width:100%;box-sizing:border-box;border:1px solid rgba(212,175,55,.2);border-radius:12px;background:#101319;color:#f0f2f5;padding:12px}
+.avam-reading-comments .comment-respond .form-submit input{border:0;background:#d4af37;color:#151515;border-radius:999px;padding:12px 24px;cursor:pointer}
+.avam-memorial-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px auto 34px}
+.avam-memorial-actions button{border:1px solid rgba(212,175,55,.24);background:rgba(255,255,255,.035);color:#f0f2f5;border-radius:999px;padding:10px 16px;cursor:pointer}
+.avam-memorial-actions button.is-active{border-color:#d4af37;color:#d4af37}
+.avam-profile-settings{max-width:760px;margin:32px auto;padding:clamp(20px,4vw,42px)}
+.avam-profile-settings hr{border:0;border-top:1px solid rgba(128,128,128,.22);margin:30px 0}
+@media(max-width:600px){.avam-reading-comments .comment-respond{padding:16px}.avam-reading-comments .comment-body{padding:14px}}
