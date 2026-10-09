@@ -1,17 +1,19 @@
 jQuery(function($){
- const f=$('#avam-create-form');
- if(f.length){
-  f.on('submit',function(e){
-   e.preventDefault();
-   const fd=new FormData(this);fd.append('action','avam_save_memorial');fd.append('nonce',AVAM.nonce);fd.append('save_status',f.data('saveStatus')||'publish');
-   const b=f.find('button[type=submit]');b.prop('disabled',true).addClass('is-loading');
-   $.ajax({url:AVAM.ajax,type:'POST',data:fd,processData:false,contentType:false}).done(function(r){
-    if(r.success){$('#avam-create-notice').text(r.data?.message||'ذخیره شد.').addClass('avam-notice');window.location.href=r.data.url;}
-    else $('#avam-create-notice').text(r.data?.message||'خطا در ذخیره اطلاعات').addClass('avam-notice avam-error');
-   }).fail(function(){$('#avam-create-notice').html('<div class="avam-notice avam-error">ارتباط با سرور برقرار نشد.</div>');}).always(function(){b.prop('disabled',false).removeClass('is-loading');});
-  });
- }
- $('.avam-action-delete').on('click',function(){
+ $(document).on('submit','#avam-create-form',function(e){
+  e.preventDefault();
+  const f=$(this),fd=new FormData(this);
+  fd.append('action','avam_save_memorial');fd.append('nonce',AVAM.nonce);fd.append('save_status',f.data('saveStatus')||'publish');
+  const b=f.find('button[type=submit]'),notice=$('#avam-create-notice');
+  b.prop('disabled',true).addClass('is-loading');notice.removeClass('avam-error avam-notice').text('');
+  $.ajax({url:AVAM.ajax,type:'POST',data:fd,processData:false,contentType:false}).done(function(r){
+   if(r.success){
+    notice.text(r.data?.message||'ذخیره شد.').addClass('avam-notice');
+    if(typeof window.avamPanelNavigate==='function')window.avamPanelNavigate(r.data.url||AVAM.account,true);
+    else window.location.href=r.data.url;
+   }else notice.text(r.data?.message||'خطا در ذخیره اطلاعات').addClass('avam-notice avam-error');
+  }).fail(function(xhr){notice.text(xhr.responseJSON?.data?.message||'ارتباط با سرور برقرار نشد.').addClass('avam-notice avam-error');}).always(function(){b.prop('disabled',false).removeClass('is-loading');});
+ });
+ $(document).on('click','.avam-action-delete',function(){
   const b=$(this),id=b.data('id');
   if(!id||!window.confirm('این یادبود برای همیشه حذف شود؟ این عمل قابل بازگشت نیست.'))return;
   b.prop('disabled',true).text('در حال حذف...');
@@ -87,3 +89,53 @@ jQuery(function($){
  });
  render();
 });
+
+
+/* AJAX navigation inside the account app shell. */
+(function($){
+ let busy=false;
+ function targetContent(doc){
+  const root=doc.querySelector('#main')||doc.body;
+  const dash=root.querySelector('.avam-dashboard-reference .avam-dash-main');
+  if(dash)return dash.innerHTML;
+  const selectors=['.avam-create-card','.avam-profile-settings','.avam-archive-page','.avam-auth-card','.avam-card','.avam-page'];
+  for(const selector of selectors){const el=root.querySelector(selector);if(el)return el.outerHTML;}
+  return root.innerHTML;
+ }
+ window.avamPanelNavigate=function(url,replace){
+  if(busy)return; busy=true;
+  const shell=document.querySelector('.avam-dashboard-reference');
+  const main=shell&&shell.querySelector('.avam-dash-main');
+  if(!main){busy=false;window.location.href=url;return;}
+  shell.classList.add('avam-panel-loading');
+  const old=main.innerHTML;
+  fetch(url,{credentials:'same-origin',headers:{'X-Requested-With':'XMLHttpRequest'}})
+   .then(res=>{if(!res.ok)throw new Error('request failed');return res.text();})
+   .then(html=>{
+    const doc=new DOMParser().parseFromString(html,'text/html');
+    const content=targetContent(doc);
+    if(!content.trim())throw new Error('empty response');
+    main.innerHTML=content;
+    const title=doc.querySelector('title');if(title)document.title=title.textContent;
+    if(replace)history.replaceState({avamPanel:true},'',url);else history.pushState({avamPanel:true},'',url);
+    main.scrollIntoView({behavior:'smooth',block:'start'});
+    shell.classList.remove('avam-panel-loading');
+    busy=false;
+   }).catch(()=>{
+    main.innerHTML=old;shell.classList.remove('avam-panel-loading');busy=false;window.location.href=url;
+   });
+ };
+ $(document).on('click','.avam-dashboard-reference .avam-dash-sidebar a, .avam-dashboard-reference .avam-ref-topbar a, .avam-dashboard-reference .avam-ref-table-panel a, .avam-dashboard-reference .avam-dash-main .avam-create-back, .avam-dashboard-reference .avam-dash-main .avam-profile-settings a',function(e){
+  const a=this,href=a.href;
+  if(!href||a.target||a.hasAttribute('download')||a.classList.contains('avam-dash-logout')||a.getAttribute('href')==='#')return;
+  const u=new URL(href,location.href);
+  if(u.origin!==location.origin)return;
+  e.preventDefault();window.avamPanelNavigate(href,false);
+ });
+ $(document).on('submit','.avam-dashboard-reference .avam-ref-search, .avam-dashboard-reference .avam-archive-search',function(e){
+  e.preventDefault();const data=new FormData(this),url=new URL(this.action||location.href,location.href);
+  for(const [k,v] of data.entries()){if(String(v).trim())url.searchParams.set(k,v);else url.searchParams.delete(k);}
+  window.avamPanelNavigate(url.href,false);
+ });
+ window.addEventListener('popstate',function(){if(document.querySelector('.avam-dashboard-reference'))window.avamPanelNavigate(location.href,true);});
+})(jQuery);
