@@ -8,7 +8,7 @@ jQuery(function($){
   $.ajax({url:AVAM.ajax,type:'POST',data:fd,processData:false,contentType:false}).done(function(r){
    if(r.success){
     notice.text(r.data?.message||'ذخیره شد.').addClass('avam-notice');
-    if(typeof window.avamPanelNavigate==='function')window.avamPanelNavigate(r.data.url||AVAM.account,true);
+    if(typeof window.avamPanelNavigate==='function')window.avamPanelNavigate(AVAM.account,true);
     else window.location.href=r.data.url;
    }else notice.text(r.data?.message||'خطا در ذخیره اطلاعات').addClass('avam-notice avam-error');
   }).fail(function(xhr){notice.text(xhr.responseJSON?.data?.message||'ارتباط با سرور برقرار نشد.').addClass('avam-notice avam-error');}).always(function(){b.prop('disabled',false).removeClass('is-loading');});
@@ -98,6 +98,7 @@ jQuery(function($){
   const root=doc.querySelector('#main')||doc.body;
   const dash=root.querySelector('.avam-dashboard-reference .avam-dash-main');
   if(dash)return dash.innerHTML;
+  const memorial=root.querySelector('.avam-memorial-content-view');if(memorial)return memorial.outerHTML;
   const selectors=['.avam-create-card','.avam-profile-settings','.avam-archive-page','.avam-auth-card','.avam-card','.avam-page'];
   for(const selector of selectors){const el=root.querySelector(selector);if(el)return el.outerHTML;}
   return root.innerHTML;
@@ -113,6 +114,7 @@ jQuery(function($){
    .then(res=>{if(!res.ok)throw new Error('request failed');return res.text();})
    .then(html=>{
     const doc=new DOMParser().parseFromString(html,'text/html');
+    doc.querySelectorAll('link[rel="stylesheet"]').forEach(link=>{if(link.href.includes('memorial-view.css')&&!document.querySelector('link[href="'+link.href+'"]'))document.head.appendChild(link.cloneNode(true));});
     const content=targetContent(doc);
     if(!content.trim())throw new Error('empty response');
     main.innerHTML=content;
@@ -125,7 +127,7 @@ jQuery(function($){
     main.innerHTML=old;shell.classList.remove('avam-panel-loading');busy=false;window.location.href=url;
    });
  };
- $(document).on('click','.avam-dashboard-reference .avam-dash-sidebar a, .avam-dashboard-reference .avam-ref-topbar a, .avam-dashboard-reference .avam-ref-table-panel a, .avam-dashboard-reference .avam-dash-main .avam-create-back, .avam-dashboard-reference .avam-dash-main .avam-profile-settings a',function(e){
+ $(document).on('click','.avam-dashboard-reference .avam-dash-sidebar a, .avam-dashboard-reference .avam-ref-topbar a, .avam-dashboard-reference .avam-ref-table-panel a, .avam-dashboard-reference .avam-archive-page a, .avam-dashboard-reference .avam-dash-main .avam-create-back, .avam-dashboard-reference .avam-dash-main .avam-profile-settings a',function(e){
   const a=this,href=a.href;
   if(!href||a.target||a.hasAttribute('download')||a.classList.contains('avam-dash-logout')||a.getAttribute('href')==='#')return;
   const u=new URL(href,location.href);
