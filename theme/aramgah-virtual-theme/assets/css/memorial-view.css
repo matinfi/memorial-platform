@@ -1018,3 +1018,5 @@ body:has(.avam-memorial-content-view){
 .avam-reading-gallery-grid img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
 .avam-reading-gallery-grid a:hover img{transform:scale(1.04)}
 @media(max-width:600px){.avam-reading-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.avam-reading-story-empty{padding:22px;border:1px dashed rgba(212,175,55,.25);border-radius:16px;color:#b9bdc5;line-height:1.9}
