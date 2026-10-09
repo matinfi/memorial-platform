@@ -1,5 +1,5 @@
 </main>
-<?php if (!is_page('account')): ?>
+<?php if (true): ?>
   </div>
 </div>
 <footer class="avam-footer avam-unified-footer">
