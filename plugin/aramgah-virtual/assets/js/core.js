@@ -96,7 +96,11 @@ jQuery(function($){
  let busy=false;
  function targetContent(doc){
   const root=doc.querySelector('#main')||doc.body;
-  const dash=root.querySelector('.avam-dashboard-reference .avam-dash-main');
+  if(doc.querySelector('.avam-unified-shell')){
+   const unified=doc.querySelector('#main.avam-unified-content');
+   if(unified)return unified.innerHTML;
+  }
+  const dash=root.querySelector('.avam-dashboard-reference:not(.avam-unified-shell) .avam-dash-main');
   if(dash)return dash.innerHTML;
   const memorial=root.querySelector('.avam-memorial-content-view');if(memorial)return memorial.outerHTML;
   const selectors=['.avam-create-card','.avam-profile-settings','.avam-archive-page','.avam-auth-card','.avam-card','.avam-page'];
@@ -104,9 +108,12 @@ jQuery(function($){
   return root.innerHTML;
  }
  window.avamPanelNavigate=function(url,replace){
-  if(busy)return; busy=true;
+  if(busy)return;
+  const destination=new URL(url,location.href);
+  if(typeof AVAM!=='undefined' && AVAM.account && destination.pathname===new URL(AVAM.account,location.href).pathname){window.location.href=url;return;}
+  busy=true;
   const shell=document.querySelector('.avam-dashboard-reference');
-  const main=shell&&shell.querySelector('.avam-dash-main');
+  const main=shell&&(shell.classList.contains('avam-unified-shell')?shell.querySelector('.avam-unified-content'):shell.querySelector('.avam-dash-main'));
   if(!main){busy=false;window.location.href=url;return;}
   shell.classList.add('avam-panel-loading');
   const old=main.innerHTML;
@@ -114,6 +121,7 @@ jQuery(function($){
    .then(res=>{if(!res.ok)throw new Error('request failed');return res.text();})
    .then(html=>{
     const doc=new DOMParser().parseFromString(html,'text/html');
+    if(doc.querySelector('.avam-dashboard-reference:not(.avam-unified-shell)'))throw new Error('switch to account layout');
     doc.querySelectorAll('link[rel="stylesheet"]').forEach(link=>{if(link.href.includes('memorial-view.css')&&!document.querySelector('link[href="'+link.href+'"]'))document.head.appendChild(link.cloneNode(true));});
     const content=targetContent(doc);
     if(!content.trim())throw new Error('empty response');
@@ -127,7 +135,7 @@ jQuery(function($){
     main.innerHTML=old;shell.classList.remove('avam-panel-loading');busy=false;window.location.href=url;
    });
  };
- $(document).on('click','.avam-dashboard-reference .avam-dash-sidebar a, .avam-dashboard-reference .avam-ref-topbar a, .avam-dashboard-reference .avam-ref-table-panel a, .avam-dashboard-reference .avam-archive-page a, .avam-dashboard-reference .avam-dash-main .avam-create-back, .avam-dashboard-reference .avam-dash-main .avam-profile-settings a',function(e){
+ $(document).on('click','.avam-dashboard-reference .avam-dash-sidebar a, .avam-dashboard-reference .avam-ref-topbar a, .avam-dashboard-reference .avam-ref-table-panel a, .avam-dashboard-reference .avam-archive-page a, .avam-dashboard-reference .avam-dash-main .avam-create-back, .avam-dashboard-reference .avam-dash-main .avam-profile-settings a, .avam-unified-shell .avam-unified-content a',function(e){
   const a=this,href=a.href;
   if(!href||a.target||a.hasAttribute('download')||a.classList.contains('avam-dash-logout')||a.getAttribute('href')==='#')return;
   const u=new URL(href,location.href);
