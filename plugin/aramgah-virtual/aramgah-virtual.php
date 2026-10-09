@@ -31,7 +31,7 @@ final class AVAM_Core {
  public static function register_cpt(){
   register_post_type(self::CPT,[
    'labels'=>['name'=>'یادبودها','singular_name'=>'یادبود','add_new'=>'یادبود جدید','add_new_item'=>'افزودن یادبود','edit_item'=>'ویرایش یادبود','menu_name'=>'یادبودها'],
-   'public'=>true,'show_in_rest'=>true,'has_archive'=>'memorials','rewrite'=>['slug'=>'memorial','with_front'=>false],
+   'public'=>true,'exclude_from_search'=>true,'show_in_rest'=>true,'has_archive'=>'memorials','rewrite'=>['slug'=>'memorial','with_front'=>false],
    'supports'=>['title','editor','thumbnail','author','comments'],'menu_icon'=>'dashicons-heart','capability_type'=>'post','map_meta_cap'=>true
   ]);
  }
