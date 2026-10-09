@@ -8,7 +8,7 @@
 </head>
 <body <?php body_class(); ?>>
 <a class="avam-skip" href="#main">پرش به محتوا</a>
-<?php if (is_page('account')): ?>
+<?php if (false): ?>
   <main id="main">
 <?php else:
   $avam_memorials_url = function_exists('avam_memorials_url') ? avam_memorials_url() : home_url('/memorials/');
