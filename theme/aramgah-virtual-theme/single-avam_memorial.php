@@ -64,6 +64,35 @@ $intro=get_option('avam_single_intro','روایتی برای ماندن و به 
       <div class="avam-reading-richtext"><?php the_content(); ?></div>
     </section>
 
+    <?php
+      $timeline_raw=get_post_meta(get_the_ID(),'avam_timeline',true);
+      $timeline_lines=array_filter(array_map('trim',preg_split('/\r\n|\r|\n/',$timeline_raw)));
+      $gallery_ids=get_post_meta(get_the_ID(),'avam_gallery_ids',true);
+      if(!is_array($gallery_ids))$gallery_ids=[];
+    ?>
+    <?php if($timeline_lines): ?>
+      <section class="avam-reading-timeline">
+        <span class="avam-reading-index">لحظه‌های ماندگار</span>
+        <h2>خط زمانی زندگی</h2>
+        <ol>
+          <?php foreach($timeline_lines as $line): $parts=array_map('trim',explode('|',$line,2)); ?>
+            <li><time><?php echo esc_html($parts[0]??''); ?></time><p><?php echo esc_html($parts[1]??$parts[0]??''); ?></p></li>
+          <?php endforeach; ?>
+        </ol>
+      </section>
+    <?php endif; ?>
+    <?php if($gallery_ids): ?>
+      <section class="avam-reading-gallery">
+        <span class="avam-reading-index">تصاویر</span>
+        <h2>گالری یادها</h2>
+        <div class="avam-reading-gallery-grid">
+          <?php foreach(array_slice($gallery_ids,0,10) as $attachment_id): $gallery_url=wp_get_attachment_image_url(absint($attachment_id),'large'); if(!$gallery_url)continue; ?>
+            <a href="<?php echo esc_url(wp_get_attachment_url(absint($attachment_id))); ?>" target="_blank" rel="noopener"><img loading="lazy" src="<?php echo esc_url($gallery_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>"></a>
+          <?php endforeach; ?>
+        </div>
+      </section>
+    <?php endif; ?>
+
     <div class="avam-memorial-actions" aria-label="همراهی با یادبود">
       <button type="button" data-avam-react="candle" data-id="<?php echo esc_attr(get_the_ID()); ?>">🕯️ روشن کردن شمع <span data-count><?php echo esc_html((int)get_post_meta(get_the_ID(),'avam_candle_count',true)); ?></span></button>
       <button type="button" data-avam-react="flower" data-id="<?php echo esc_attr(get_the_ID()); ?>">🌷 تقدیم گل <span data-count><?php echo esc_html((int)get_post_meta(get_the_ID(),'avam_flower_count',true)); ?></span></button>
