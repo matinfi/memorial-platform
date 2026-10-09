@@ -1919,3 +1919,16 @@
 .avam-profile-settings{max-width:760px;margin:32px auto;padding:clamp(20px,4vw,42px)}
 .avam-profile-settings hr{border:0;border-top:1px solid rgba(128,128,128,.22);margin:30px 0}
 @media(max-width:600px){.avam-reading-comments .comment-respond{padding:16px}.avam-reading-comments .comment-body{padding:14px}}
+
+
+/* Step-by-step memorial creation */
+.avam-wizard-progress{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}
+.avam-wizard-progress span{padding:8px 12px;border:1px solid rgba(128,128,128,.25);border-radius:999px;font-size:12px;opacity:.65}
+.avam-wizard-progress span.is-current{opacity:1;border-color:var(--accent,#ad875c);color:var(--accent,#ad875c);background:rgba(173,135,92,.08)}
+.avam-wizard-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:20px 0}
+.avam-wizard-nav button{border:1px solid rgba(128,128,128,.3);border-radius:999px;padding:10px 18px;background:transparent;color:inherit;cursor:pointer}
+.avam-wizard-nav button:disabled{opacity:.35;cursor:not-allowed}
+.avam-wizard-nav .avam-wizard-next{background:var(--ink,#2c3531);color:#fff}
+.avam-wizard-count{font-size:13px;opacity:.7}
+.avam-reminder-optin{display:flex;align-items:center;gap:10px;margin:16px 0}
+.avam-reminder-optin input{width:auto}
