@@ -21,6 +21,8 @@ final class AVAM_Features {
   add_shortcode('avam_profile_settings',[__CLASS__,'profile']);
   add_action('template_redirect',[__CLASS__,'protect_private_memorial']);
   add_action('wp_enqueue_scripts',[__CLASS__,'assets']);
+  add_action('avam_daily_anniversary_check',[__CLASS__,'send_anniversary_reminders']);
+  if (!wp_next_scheduled('avam_daily_anniversary_check')) wp_schedule_event(time()+300,'daily','avam_daily_anniversary_check');
  }
  public static function ensure_pages() {
   foreach ([['profile','تنظیمات حساب','[avam_profile_settings]']] as $page) {
@@ -134,7 +136,35 @@ final class AVAM_Features {
     }
    }
   }
-  ob_start(); ?><section class="avam-card avam-profile-settings" dir="rtl"><h1>تنظیمات حساب</h1><p>اطلاعات نمایشی و امنیت حساب خود را مدیریت کنید.</p><?php echo $notice; ?><form method="post" class="avam-form"><input type="hidden" name="avam_profile_action" value="profile"><?php wp_nonce_field('avam_profile_'.$uid,'avam_profile_nonce'); ?><div class="avam-field"><label>نام نمایشی</label><input name="display_name" required maxlength="80" value="<?php echo esc_attr($user->display_name); ?>"></div><div class="avam-field"><label>ایمیل</label><input type="email" name="email" required value="<?php echo esc_attr($user->user_email); ?>"></div><button class="avam-btn" type="submit">ذخیره پروفایل</button></form><hr><h2>تغییر رمز عبور</h2><form method="post" class="avam-form"><input type="hidden" name="avam_profile_action" value="password"><?php wp_nonce_field('avam_profile_'.$uid,'avam_profile_nonce'); ?><div class="avam-field"><label>رمز فعلی</label><input type="password" name="current_password" autocomplete="current-password" required></div><div class="avam-field"><label>رمز جدید</label><input type="password" name="new_password" minlength="10" autocomplete="new-password" required></div><div class="avam-field"><label>تکرار رمز جدید</label><input type="password" name="confirm_password" minlength="10" autocomplete="new-password" required></div><button class="avam-btn" type="submit">تغییر رمز</button></form></section><?php return ob_get_clean();
+  ob_start(); ?><section class="avam-card avam-profile-settings" dir="rtl"><h1>تنظیمات حساب</h1><p>اطلاعات نمایشی و امنیت حساب خود را مدیریت کنید.</p><?php echo $notice; ?><form method="post" class="avam-form"><input type="hidden" name="avam_profile_action" value="profile"><?php wp_nonce_field('avam_profile_'.$uid,'avam_profile_nonce'); ?><div class="avam-field"><label>نام نمایشی</label><input name="display_name" required maxlength="80" value="<?php echo esc_attr($user->display_name); ?>"></div><div class="avam-field"><label>ایمیل</label><input type="email" name="email" required value="<?php echo esc_attr($user->user_email); ?>"></div><label class="avam-reminder-optin"><input type="checkbox" name="anniversary_reminders" value="1" <?php checked(get_user_meta($uid,'avam_anniversary_reminders',true),'1'); ?>> یادآوری سالانه سالگرد درگذشت از طریق ایمیل</label><button class="avam-btn" type="submit">ذخیره پروفایل</button></form><hr><h2>تغییر رمز عبور</h2><form method="post" class="avam-form"><input type="hidden" name="avam_profile_action" value="password"><?php wp_nonce_field('avam_profile_'.$uid,'avam_profile_nonce'); ?><div class="avam-field"><label>رمز فعلی</label><input type="password" name="current_password" autocomplete="current-password" required></div><div class="avam-field"><label>رمز جدید</label><input type="password" name="new_password" minlength="10" autocomplete="new-password" required></div><div class="avam-field"><label>تکرار رمز جدید</label><input type="password" name="confirm_password" minlength="10" autocomplete="new-password" required></div><button class="avam-btn" type="submit">تغییر رمز</button></form></section><?php return ob_get_clean();
  }
+ public static function send_anniversary_reminders() {
+  $today=current_time('timestamp'); $jalali=self::gregorian_to_jalali((int)wp_date('Y',$today),(int)wp_date('n',$today),(int)wp_date('j',$today));
+  $posts=get_posts(['post_type'=>'avam_memorial','post_status'=>'publish','numberposts'=>-1,'meta_query'=>[['key'=>'avam_visibility','value'=>'private','compare'=>'!=']]]);
+  foreach($posts as $post) {
+   $owner=(int)$post->post_author; if(get_user_meta($owner,'avam_anniversary_reminders',true)!=='1')continue;
+   $raw=(string)get_post_meta($post->ID,'avam_death',true); $raw=strtr($raw,['۰'=>'0','۱'=>'1','۲'=>'2','۳'=>'3','۴'=>'4','۵'=>'5','۶'=>'6','۷'=>'7','۸'=>'8','۹'=>'9','٠'=>'0','١'=>'1','٢'=>'2','٣'=>'3','٤'=>'4','٥'=>'5','٦'=>'6','٧'=>'7','٨'=>'8','٩'=>'9','-'=>'/','.'=>'/']);
+   if(!preg_match('/^(13|14|15)\d{2}\/(\d{1,2})\/(\d{1,2})$/',$raw,$m))continue;
+   if((int)$m[2]!==$jalali[1]||(int)$m[3]!==$jalali[2])continue;
+   $year=(int)$jalali[0]; if((int)get_post_meta($post->ID,'avam_last_anniversary_email_year',true)===$year)continue;
+   $user=get_userdata($owner); if(!$user||!is_email($user->user_email))continue;
+   $subject='یادآوری سالگرد درگذشت — '.get_the_title($post->ID);
+   $message="امروز سالگرد درگذشت عزیزتان است.\n\nبرای مرور روایت و یادهای ثبت‌شده می‌توانید به صفحه یادبود سر بزنید:\n".get_permalink($post->ID)."\n\nبرای توقف این یادآوری‌ها، از بخش تنظیمات حساب آن را غیرفعال کنید.";
+   if(wp_mail($user->user_email,$subject,$message))update_post_meta($post->ID,'avam_last_anniversary_email_year',$year);
+  }
+ }
+ private static function gregorian_to_jalali($gy,$gm,$gd) {
+  $gdm=[0,31,59,90,120,151,181,212,243,273,304,334];
+  if($gy>1600){$jy=979;$gy-=1600;}else{$jy=0;$gy-=621;}
+  $gy2=$gm>2?$gy+1:$gy;
+  $days=365*$gy+intdiv($gy2+3,4)-intdiv($gy2+99,100)+intdiv($gy2+399,400)-80+$gd+$gdm[$gm-1];
+  $jy+=33*intdiv($days,12053);$days%=12053;
+  $jy+=4*intdiv($days,1461);$days%=1461;
+  if($days>365){$jy+=intdiv($days-1,365);$days=($days-1)%365;}
+  if($days<186){$jm=1+intdiv($days,31);$jd=1+$days%31;}
+  else{$jm=7+intdiv($days-186,30);$jd=1+($days-186)%30;}
+  return [$jy,$jm,$jd];
+ }
+
 }
 AVAM_Features::init();
