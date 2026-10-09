@@ -3,11 +3,11 @@ jQuery(function($){
  if(f.length){
   f.on('submit',function(e){
    e.preventDefault();
-   const fd=new FormData(this);fd.append('action','avam_save_memorial');fd.append('nonce',AVAM.nonce);
+   const fd=new FormData(this);fd.append('action','avam_save_memorial');fd.append('nonce',AVAM.nonce);fd.append('save_status',f.data('saveStatus')||'publish');
    const b=f.find('button[type=submit]');b.prop('disabled',true).addClass('is-loading');
    $.ajax({url:AVAM.ajax,type:'POST',data:fd,processData:false,contentType:false}).done(function(r){
-    if(r.success){$('#avam-create-notice').html('<div class="avam-notice">یادبود با موفقیت ذخیره شد. در حال انتقال...</div>');window.location.href=r.data.url;}
-    else $('#avam-create-notice').html('<div class="avam-notice avam-error">'+(r.data?.message||'خطا در ذخیره اطلاعات')+'</div>');
+    if(r.success){$('#avam-create-notice').text(r.data?.message||'ذخیره شد.').addClass('avam-notice');window.location.href=r.data.url;}
+    else $('#avam-create-notice').text(r.data?.message||'خطا در ذخیره اطلاعات').addClass('avam-notice avam-error');
    }).fail(function(){$('#avam-create-notice').html('<div class="avam-notice avam-error">ارتباط با سرور برقرار نشد.</div>');}).always(function(){b.prop('disabled',false).removeClass('is-loading');});
   });
  }
@@ -49,5 +49,14 @@ jQuery(function($){
  });
  $(window).on('resize',function(){
    if(window.innerWidth>760 && dashboard.hasClass('mobile-menu-open'))closeMenu();
+ });
+});
+
+/* Save draft/publish intent without relying on submit-button serialization. */
+jQuery(function($){
+ $(document).on('click','#avam-create-form [data-save-status]',function(){
+  const form=$('#avam-create-form');
+  form.data('saveStatus',$(this).data('save-status'));
+  form.trigger('submit');
  });
 });
