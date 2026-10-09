@@ -92,7 +92,6 @@ final class AVAM_Features {
   }
  }
  public static function assets() {
-  if (!is_singular('avam_memorial')) return;
   wp_enqueue_script('avam-features',plugins_url('../assets/js/features.js',__FILE__),['jquery'],'1.0.0',true);
   wp_localize_script('avam-features','AVAM_FEATURES',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_features')]);
  }
