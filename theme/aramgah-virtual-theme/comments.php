@@ -9,7 +9,9 @@ if (post_password_required()) return;
    <?php wp_list_comments(['style'=>'ol','short_ping'=>true,'avatar_size'=>40,'max_depth'=>4]); ?>
   </ol>
   <?php the_comments_navigation(); ?>
- <?php elseif (!comments_open()): ?>
+ <?php elseif (comments_open()): ?>
+  <p class="avam-social-comments-empty">هنوز پیامی ثبت نشده است. اولین دعا یا خاطره را شما بنویسید.</p>
+ <?php else: ?>
   <p class="no-comments">ثبت پیام برای این یادبود بسته است.</p>
  <?php endif; ?>
  <?php if (comments_open()) comment_form(); ?>
