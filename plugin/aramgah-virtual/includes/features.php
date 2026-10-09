@@ -54,7 +54,7 @@ final class AVAM_Features {
  }
  private static function setting_checkbox($key,$label) {
   $default=($key==='avam_comments_enabled')?'1':'1';
-  echo '<p><label><input type="checkbox" name="'.esc_attr($key).'" value="1" '.checked(get_option($key,$default),'1',false).'> '.esc_html($label).'</label></p>';
+  echo '<p><label><input type="hidden" name="'.esc_attr($key).'" value="0"><input type="checkbox" name="'.esc_attr($key).'" value="1" '.checked(get_option($key,$default),'1',false).'> '.esc_html($label).'</label></p>';
  }
  public static function comments_open_for_memorial($open,$post_id) {
   if (get_post_type($post_id)!=='avam_memorial') return $open;
