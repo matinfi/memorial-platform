@@ -1,0 +1,99 @@
+/* Unified site shell: use the existing account dashboard as the shared application frame. */
+body:has(.avam-unified-shell){background:#f2f5f3;color:#172236;font-family:"Vazirmatn","Noto Sans Arabic",Tahoma,sans-serif;overflow-x:hidden}
+.avam-unified-shell{display:grid!important;grid-template-columns:260px minmax(0,1fr);gap:0!important;width:100%;min-height:100vh;background:#f2f5f3;direction:rtl}
+.avam-unified-shell>.avam-dash-sidebar{position:sticky!important;top:0;align-self:start;width:260px!important;height:100vh;min-height:100vh;max-height:100vh;overflow-y:auto;z-index:30}
+.avam-unified-main{display:flex!important;flex-direction:column;min-width:0;min-height:100vh;padding:0 30px 18px!important;background:#f5f7f6}
+.avam-unified-main>.avam-ref-topbar{position:sticky;top:0;z-index:20;min-height:84px;padding:16px 0!important;margin:0 0 8px!important;background:rgba(245,247,246,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(203,213,209,.65)}
+.avam-unified-search{max-width:560px}
+.avam-unified-content{display:block!important;flex:1;min-width:0;width:100%;max-width:1480px;margin:0 auto;padding:16px 0 32px!important;background:transparent!important}
+.avam-unified-content>.avam-page,.avam-unified-content>.avam-archive-page,.avam-unified-content>.avam-memorial-content-view,.avam-unified-content>.avam-create-card,.avam-unified-content>.avam-profile-settings{max-width:100%;margin-left:auto;margin-right:auto}
+.avam-unified-footer{max-width:none!important;margin:0!important;padding:16px 30px!important;background:#f5f7f6;border-top:1px solid #e0e7e3;color:#647267;font-size:12px}
+.avam-unified-footer>.avam-container{max-width:1480px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.avam-unified-footer nav{display:flex;gap:18px;flex-wrap:wrap}
+.avam-unified-home{display:grid;gap:24px}
+.avam-unified-welcome{position:relative;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:250px;padding:clamp(24px,4vw,48px);overflow:hidden;border:1px solid rgba(255,255,255,.85);border-radius:24px;background:linear-gradient(125deg,#e5ece6 0%,#f7f3ea 58%,#eadfd1 100%);box-shadow:0 14px 36px rgba(30,50,42,.06)}
+.avam-unified-welcome:after{content:"";position:absolute;left:-65px;bottom:-150px;width:340px;height:340px;border:1px solid rgba(144,113,78,.18);border-radius:50%;box-shadow:0 0 0 28px rgba(255,255,255,.13),0 0 0 58px rgba(255,255,255,.1);pointer-events:none}
+.avam-unified-welcome-copy{position:relative;z-index:1;max-width:740px}
+.avam-unified-eyebrow,.avam-unified-section-head>div>span{display:block;color:#8b6846;font-size:12px;font-weight:700;letter-spacing:.02em}
+.avam-unified-welcome h1{margin:12px 0 10px;color:#1e3029;font:600 clamp(28px,3.3vw,44px)/1.45 "Noto Serif Arabic","Vazirmatn",serif;letter-spacing:-.035em}
+.avam-unified-welcome p{max-width:620px;margin:0;color:#5d6c64;font-size:14px;line-height:2}
+.avam-unified-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.avam-unified-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border:1px solid #d3dcd5;border-radius:12px;background:rgba(255,255,255,.65);color:#34463d;font-size:13px;font-weight:600}
+.avam-unified-welcome-mark{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:0 0 175px;width:175px;height:175px;border:1px solid rgba(255,255,255,.9);border-radius:50%;background:rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 12px 30px rgba(65,76,64,.06);backdrop-filter:blur(8px)}
+.avam-unified-welcome-mark span{color:#566f5e;font-family:"Noto Serif Arabic",serif;font-size:72px;line-height:1}
+.avam-unified-welcome-mark i{margin-top:10px;color:#68776d;font-size:10px;font-style:normal}
+.avam-unified-home-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.avam-unified-home-stats article{display:flex;align-items:center;gap:15px;min-height:96px;padding:20px;border:1px solid #e1e8e3;border-radius:18px;background:rgba(255,255,255,.88);box-shadow:0 5px 18px rgba(30,50,42,.035)}
+.avam-unified-stat-icon{display:flex;align-items:center;justify-content:center;flex:0 0 46px;width:46px;height:46px;border-radius:14px;background:#edf2ed;color:#7d684e;font-size:25px}
+.avam-unified-home-stats article strong,.avam-unified-home-stats article div>span{display:block}
+.avam-unified-home-stats article strong{color:#263a30;font-size:17px;font-weight:700}
+.avam-unified-home-stats article div>span{margin-top:5px;color:#7c8980;font-size:11px}
+.avam-unified-recent{padding:26px;border:1px solid #e1e8e3;border-radius:20px;background:rgba(255,255,255,.82);box-shadow:0 5px 18px rgba(30,50,42,.035)}
+.avam-unified-section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+.avam-unified-section-head h2{margin:5px 0 0;color:#26382f;font-size:23px;font-weight:650}
+.avam-unified-section-head>a{color:#607967;font-size:12px;font-weight:700;white-space:nowrap}
+.avam-unified-memorial-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.avam-unified-memorial-card{display:block;min-width:0;overflow:hidden;border:1px solid #e4e9e5;border-radius:16px;background:#fff;color:inherit;transition:transform .2s ease,box-shadow .2s ease}
+.avam-unified-memorial-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(30,50,42,.09)}
+.avam-unified-memorial-image{display:flex;align-items:center;justify-content:center;height:150px;overflow:hidden;background:linear-gradient(145deg,#edf1ec,#f6f0e6);color:#a38a6b;font-size:42px}
+.avam-unified-memorial-image img{width:100%;height:100%;object-fit:cover}
+.avam-unified-memorial-info{padding:16px}
+.avam-unified-memorial-info small{color:#a17b55;font-size:10px}
+.avam-unified-memorial-info h3{overflow:hidden;margin:7px 0;color:#27392f;font-size:16px;text-overflow:ellipsis;white-space:nowrap}
+.avam-unified-memorial-info p{margin:0;color:#879188;font-size:11px}
+.avam-unified-empty{padding:32px 16px;text-align:center;color:#6d7d72}
+.avam-unified-empty>span{font-size:34px;color:#b39b7d}
+.avam-unified-empty h3{margin:8px 0;color:#33463a}
+.avam-unified-empty p{font-size:13px}
+.avam-unified-empty a{display:inline-flex;margin-top:8px;padding:10px 16px;border-radius:10px;background:#263c31;color:#fff;font-size:12px}
+.avam-unified-content .avam-archive-page{padding:0!important}
+.avam-unified-content .avam-archive-hero{margin:0 0 24px!important;border-radius:22px}
+.avam-unified-content .avam-archive-hero>.avam-container{padding:28px!important}
+.avam-unified-content .avam-archive-results{padding:0 4px!important}
+.avam-unified-content .avam-memorial-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.avam-unified-content .avam-page{padding:0!important}
+.avam-unified-content .avam-page>.avam-container{max-width:100%;padding:0!important}
+.avam-unified-content .avam-page .avam-card{margin:0}
+.avam-unified-shell .avam-mobile-menu-toggle{display:none}
+.avam-unified-shell .avam-mobile-menu-backdrop{display:none}
+.avam-unified-shell.avam-panel-loading .avam-unified-content{opacity:.55;pointer-events:none;transition:opacity .15s ease}
+@media(max-width:1100px){
+ .avam-unified-shell{grid-template-columns:230px minmax(0,1fr)}
+ .avam-unified-shell>.avam-dash-sidebar{width:230px!important}
+ .avam-unified-main{padding-right:22px!important;padding-left:22px!important}
+ .avam-unified-memorial-grid,.avam-unified-content .avam-memorial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .avam-unified-welcome-mark{flex-basis:130px;width:130px;height:130px}
+ .avam-unified-welcome-mark span{font-size:56px}
+}
+@media(max-width:760px){
+ .avam-unified-shell{display:block!important;min-height:100vh}
+ .avam-unified-shell>.avam-dash-sidebar{position:fixed!important;top:0;right:0;bottom:0;width:min(290px,86vw)!important;height:100dvh;min-height:0;max-height:none;transform:translateX(105%);transition:transform .24s ease;box-shadow:-15px 0 40px rgba(20,35,28,.14)}
+ .avam-unified-shell.mobile-menu-open>.avam-dash-sidebar{transform:translateX(0)}
+ .avam-unified-shell .avam-mobile-menu-toggle{position:fixed;right:12px;bottom:14px;z-index:50;display:flex;align-items:center;gap:8px;min-height:46px;padding:0 15px;border:0;border-radius:14px;background:#243b30;color:#fff;box-shadow:0 8px 24px rgba(20,35,28,.22);font:600 12px "Vazirmatn",sans-serif}
+ .avam-unified-shell .avam-mobile-menu-backdrop:not([hidden]){position:fixed;inset:0;z-index:29;display:block;background:rgba(19,30,25,.42)}
+ .avam-unified-main{min-height:100vh;padding:0 14px 16px!important}
+ .avam-unified-main>.avam-ref-topbar{min-height:72px;padding:12px 0!important}
+ .avam-unified-main .avam-ref-user>div{display:none}
+ .avam-unified-search{max-width:none}
+ .avam-unified-content{padding-top:12px!important}
+ .avam-unified-welcome{min-height:0;padding:24px 20px;border-radius:18px}
+ .avam-unified-welcome-mark{display:none}
+ .avam-unified-welcome h1{font-size:28px}
+ .avam-unified-welcome p{font-size:13px}
+ .avam-unified-home-stats{grid-template-columns:1fr;gap:10px}
+ .avam-unified-home-stats article{min-height:74px;padding:14px}
+ .avam-unified-recent{padding:18px 14px}
+ .avam-unified-section-head h2{font-size:20px}
+ .avam-unified-memorial-grid,.avam-unified-content .avam-memorial-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .avam-unified-memorial-image{height:115px}
+ .avam-unified-memorial-info{padding:11px}
+ .avam-unified-memorial-info h3{font-size:13px}
+ .avam-unified-footer{padding:14px!important}
+ .avam-unified-footer>.avam-container{display:grid;gap:10px}
+}
+@media(max-width:420px){
+ .avam-unified-memorial-grid,.avam-unified-content .avam-memorial-grid{grid-template-columns:1fr}
+ .avam-unified-memorial-image{height:165px}
+ .avam-unified-actions{display:grid}
+ .avam-unified-actions>a{width:100%}
+}
