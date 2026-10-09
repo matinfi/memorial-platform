@@ -34,14 +34,14 @@ jQuery(function($){
  const closeMenu=function(){
    dashboard.removeClass('mobile-menu-open');
    toggle.attr('aria-expanded','false');
-   backdrop.attr('hidden',true);
+   backdrop.prop('hidden',true);
    $('body').removeClass('avam-mobile-nav-open');
  };
  toggle.on('click',function(){
    const open=!dashboard.hasClass('mobile-menu-open');
    dashboard.toggleClass('mobile-menu-open',open);
    toggle.attr('aria-expanded',open?'true':'false');
-   backdrop.attr('hidden',!open);
+   backdrop.prop('hidden',!open);
    $('body').toggleClass('avam-mobile-nav-open',open);
  });
  backdrop.on('click',closeMenu);
