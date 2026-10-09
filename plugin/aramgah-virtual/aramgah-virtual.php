@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.9.4
+ * Version: 1.9.5
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -37,9 +37,9 @@ final class AVAM_Core {
  }
 
  public static function assets(){
-  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[], '1.9.4');
-  wp_enqueue_style('avam-unified-shell',plugins_url('assets/css/unified-shell.css',__FILE__),['avam-plugin'],'1.9.4');
-  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'], '1.9.4',true);
+  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[], '1.9.5');
+  wp_enqueue_style('avam-unified-shell',plugins_url('assets/css/unified-shell.css',__FILE__),['avam-plugin'],'1.9.5');
+  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'], '1.9.5',true);
   wp_localize_script('avam-plugin','AVAM',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_front'),'account'=>avam_account_url()]);
  }
 
@@ -317,13 +317,13 @@ JS;
  }
 
  public static function meta_boxes(){
-  add_meta_box('avam_details','جزئیات یادبود',function($post){wp_nonce_field('avam_meta','avam_meta_nonce');foreach(['city'=>'شهر','birth'=>'تولد','death'=>'درگذشت'] as $k=>$label){$v=get_post_meta($post->ID,'avam_'.$k,true);if(in_array($k,['will','letter','memory','prayer'],true))echo '<p><label>'.$label.'</label><textarea style="width:100%;min-height:120px" name="avam_'.$k.'">'.esc_textarea($v).'</textarea></p>';else echo '<p><label>'.$label.'</label><input style="width:100%" name="avam_'.$k.'" value="'.esc_attr($v).'"></p>';}} ,self::CPT,'normal','high');
+  add_meta_box('avam_details','جزئیات یادبود',function($post){wp_nonce_field('avam_meta','avam_meta_nonce');foreach(['city'=>'شهر','birth'=>'تولد','death'=>'درگذشت'] as $k=>$label){$v=get_post_meta($post->ID,'avam_'.$k,true);echo '<p><label>'.$label.'</label><input style="width:100%" name="avam_'.$k.'" value="'.esc_attr($v).'"></p>';}$visibility=get_post_meta($post->ID,'avam_visibility',true)?:'public';echo '<p><label for="avam_visibility"><strong>حریم خصوصی</strong></label><select id="avam_visibility" name="avam_visibility" style="width:100%"><option value="public" '.selected($visibility,'public',false).'>عمومی — قابل نمایش در جستجو</option><option value="private" '.selected($visibility,'private',false).'>خصوصی — فقط مالک و مدیر</option></select></p>';},self::CPT,'normal','high');
  }
 
  public static function save_meta($post_id){
   if(!isset($_POST['avam_meta_nonce'])||!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['avam_meta_nonce'])),'avam_meta'))return;
   if(defined('DOING_AUTOSAVE')&&DOING_AUTOSAVE)return;if(!current_user_can('edit_post',$post_id))return;
-  foreach(['city','birth','death'] as $k)if(isset($_POST['avam_'.$k]))update_post_meta($post_id,'avam_'.$k,sanitize_textarea_field(wp_unslash($_POST['avam_'.$k])));
+  foreach(['city','birth','death'] as $k)if(isset($_POST['avam_'.$k]))update_post_meta($post_id,'avam_'.$k,sanitize_textarea_field(wp_unslash($_POST['avam_'.$k])));if(isset($_POST['avam_visibility']))update_post_meta($post_id,'avam_visibility',in_array(sanitize_key(wp_unslash($_POST['avam_visibility'])),['public','private'],true)?sanitize_key(wp_unslash($_POST['avam_visibility'])):'public');
  }
 
  public static function protect_admin(){if(is_admin()&&!current_user_can('manage_options')&&!wp_doing_ajax()){wp_safe_redirect(home_url('/'));exit;}}
