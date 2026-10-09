@@ -61,7 +61,7 @@ $intro=get_option('avam_single_intro','روایتی برای ماندن و به 
     <section class="avam-reading-story">
       <span class="avam-reading-index">۰۱ / روایت</span>
       <h2 class="avam-accordion-title">روایت زندگی</h2>
-      <div class="avam-reading-richtext"><?php the_content(); ?></div>
+      <?php if(trim(wp_strip_all_tags(get_the_content()))!==''): ?><div class="avam-reading-richtext"><?php the_content(); ?></div><?php else: ?><p class="avam-reading-story-empty">هنوز روایتی برای این یادبود ثبت نشده است.</p><?php endif; ?>
     </section>
 
     <?php
