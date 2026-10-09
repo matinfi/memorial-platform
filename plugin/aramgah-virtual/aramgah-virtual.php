@@ -239,7 +239,7 @@ JS;
   $sort=isset($_GET['sort'])?sanitize_key(wp_unslash($_GET['sort'])):'newest';$sorts=['newest'=>['date','DESC'],'oldest'=>['date','ASC'],'name'=>['title','ASC']];[$orderby,$order]=$sorts[$sort]??$sorts['newest'];
   $args=['post_type'=>self::CPT,'post_status'=>'publish','posts_per_page'=>24,'paged'=>max(1,get_query_var('paged')),'orderby'=>$orderby,'order'=>$order,'meta_query'=>['relation'=>'AND',['relation'=>'OR',['key'=>'avam_visibility','compare'=>'NOT EXISTS'],['key'=>'avam_visibility','value'=>'private','compare'=>'!=']]]];
   if($q) $args['s']=$q;
-  if($city) $args['meta_query']=[['key'=>'avam_city','value'=>$city,'compare'=>'LIKE']];
+  if($city) $args['meta_query'][]=['key'=>'avam_city','value'=>$city,'compare'=>'LIKE'];
   $query=new WP_Query($args);
   ob_start();?><section class="avam-search-page"><div class="avam-search-hero"><span>آرامگاه مجازی</span><h1>جستجوی یادبودها</h1><p>نام متوفی یا شهر را جستجو کنید.</p><form class="avam-search-form" method="get" action="<?php echo esc_url(avam_memorials_url());?>"><input name="q" value="<?php echo esc_attr($q);?>" placeholder="نام متوفی"><input name="city" value="<?php echo esc_attr($city);?>" placeholder="شهر"><select name="sort" aria-label="مرتب‌سازی"><option value="newest" <?php selected($sort,'newest'); ?>>جدیدترین</option><option value="oldest" <?php selected($sort,'oldest'); ?>>قدیمی‌ترین</option><option value="name" <?php selected($sort,'name'); ?>>نام</option></select><button type="submit">جستجو</button></form></div><div class="avam-results"><?php if($query->have_posts()):while($query->have_posts()):$query->the_post();$cid=get_post_meta(get_the_ID(),'avam_city',true);?><a class="avam-result" href="<?php the_permalink();?>"><?php if(has_post_thumbnail()):?><img src="<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID(),'medium'));?>" alt=""><?php endif;?><div><h2><?php the_title();?></h2><?php if($cid):?><span><?php echo esc_html($cid);?></span><?php endif;?></div></a><?php endwhile; echo '<nav class="avam-archive-pagination">'.wp_kses_post(paginate_links(['total'=>$query->max_num_pages,'current'=>max(1,get_query_var('paged')),'type'=>'list'])).'</nav>'; else:?><div class="avam-no-results">یادبودی با این مشخصات پیدا نشد.</div><?php endif;wp_reset_postdata();?></div></section><?php return ob_get_clean();
  }
@@ -407,7 +407,7 @@ register_activation_hook(__FILE__,function(){
  }
  flush_rewrite_rules();
 });
-register_deactivation_hook(__FILE__,function(){flush_rewrite_rules();});
+register_deactivation_hook(__FILE__,function(){wp_clear_scheduled_hook('avam_daily_anniversary_check');flush_rewrite_rules();});
 AVAM_Core::init();
 add_action('init',function(){
  $visual_version=get_option('avam_visual_version','0');
