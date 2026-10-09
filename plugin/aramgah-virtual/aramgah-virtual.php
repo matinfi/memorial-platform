@@ -212,7 +212,7 @@ JS;
  public static function create(){
   if(!is_user_logged_in()) return '<div class="avam-card"><p>برای ساخت یادبود ابتدا وارد شوید.</p><a class="avam-btn" href="'.esc_url(avam_login_url()).'">ورود</a></div>';
   $edit_id=isset($_GET['edit'])?absint($_GET['edit']):0;$editing=false;$data=[];
-  if($edit_id){$p=get_post($edit_id);if($p&&$p->post_type===self::CPT&&(int)$p->post_author===get_current_user_id()){$editing=true;$data=['title'=>$p->post_title,'content'=>$p->post_content];foreach(['city','birth','death','visibility'] as $k)$data[$k]=get_post_meta($edit_id,'avam_'.$k,true);}}
+  if($edit_id){$p=get_post($edit_id);if($p&&$p->post_type===self::CPT&&(int)$p->post_author===get_current_user_id()){$editing=true;$data=['title'=>$p->post_title,'content'=>$p->post_content];foreach(['city','birth','death','visibility','timeline'] as $k)$data[$k]=get_post_meta($edit_id,'avam_'.$k,true);}}
   $val=function($k)use($data){return esc_textarea($data[$k]??'');};
   ob_start(); ?>
   <div class="avam-card avam-create-card">
@@ -223,9 +223,9 @@ JS;
       <div class="avam-form-section"><div class="avam-form-section-title"><span>01</span><div><strong>اطلاعات اصلی</strong><small>مشخصات پایه عزیز شما</small></div></div>
         <div class="avam-form-grid"><div class="avam-field"><label>نام و نام خانوادگی متوفی</label><input name="title" value="<?php echo $val('title'); ?>" required></div><div class="avam-field"><label>شهر</label><input name="city" value="<?php echo $val('city'); ?>" placeholder="مثلاً تهران"></div><div class="avam-field"><label>تاریخ تولد</label><input name="birth" value="<?php echo $val('birth'); ?>" placeholder="مثلاً ۱۳۳۵/۰۳/۱۰"></div><div class="avam-field"><label>تاریخ درگذشت</label><input name="death" value="<?php echo $val('death'); ?>" placeholder="مثلاً ۱۴۰۴/۰۸/۲۱"></div></div>
       </div>
-      <div class="avam-form-section"><div class="avam-form-section-title"><span>02</span><div><strong>روایت زندگی</strong><small>داستانی که باید ماندگار بماند</small></div></div><div class="avam-field"><label>روایت زندگی</label><textarea name="content" required placeholder="از زندگی، شخصیت، لحظه‌های مهم و چیزهایی که دوست دارید دیگران بدانند بنویسید..."><?php echo $val('content'); ?></textarea></div></div>
+      <div class="avam-form-section"><div class="avam-form-section-title"><span>02</span><div><strong>روایت زندگی</strong><small>داستانی که باید ماندگار بماند</small></div></div><div class="avam-field"><label>روایت زندگی</label><textarea name="content" required placeholder="از زندگی، شخصیت، لحظه‌های مهم و چیزهایی که دوست دارید دیگران بدانند بنویسید..."><?php echo $val('content'); ?></textarea></div></div>\n      <div class="avam-form-section"><div class="avam-form-section-title"><span>03</span><div><strong>خط زمانی زندگی</strong><small>هر رویداد را در یک خط با قالب «تاریخ | رویداد» بنویسید</small></div></div><div class="avam-field"><label>رویدادهای مهم زندگی (اختیاری)</label><textarea name="timeline" placeholder="۱۳۳۵/۰۳/۱۰ | تولد\n۱۳۵۸/۰۲/۲۰ | آغاز زندگی مشترک\n۱۴۰۴/۰۸/۲۱ | درگذشت"><?php echo $val('timeline'); ?></textarea></div></div>
       
-      <div class="avam-form-section"><div class="avam-form-section-title"><span>03</span><div><strong>تصویر و حریم خصوصی</strong><small>تصویر و دسترسی به یادبود را انتخاب کنید</small></div></div><div class="avam-upload"><input type="file" name="image" accept="image/jpeg,image/png,image/webp"><div><strong><?php echo $editing?'تغییر تصویر یادبود':'افزودن تصویر'; ?></strong><small>JPG، PNG یا WebP — حداکثر ۸ مگابایت</small></div><span>↑</span></div><div class="avam-field"><label>حریم خصوصی</label><select name="visibility"><option value="public" <?php selected($data['visibility']??'public','public'); ?>>عمومی — در جستجو نمایش داده شود</option><option value="private" <?php selected($data['visibility']??'public','private'); ?>>خصوصی — فقط مالک و مدیر سایت</option></select></div></div>
+      <div class="avam-form-section"><div class="avam-form-section-title"><span>03</span><div><strong>تصویر و حریم خصوصی</strong><small>تصویر و دسترسی به یادبود را انتخاب کنید</small></div></div><div class="avam-upload"><input type="file" name="image" accept="image/jpeg,image/png,image/webp"><div><strong><?php echo $editing?'تغییر تصویر یادبود':'افزودن تصویر'; ?></strong><small>JPG، PNG یا WebP — حداکثر ۸ مگابایت</small></div><span>↑</span></div><div class="avam-field"><label>گالری تصاویر (اختیاری)</label><input type="file" name="gallery[]" accept="image/jpeg,image/png,image/webp" multiple><small>تا ۱۰ تصویر، هر تصویر حداکثر ۸ مگابایت</small></div><div class="avam-field"><label>حریم خصوصی</label><select name="visibility"><option value="public" <?php selected($data['visibility']??'public','public'); ?>>عمومی — در جستجو نمایش داده شود</option><option value="private" <?php selected($data['visibility']??'public','private'); ?>>خصوصی — فقط مالک و مدیر سایت</option></select></div></div>
       <div class="avam-form-submit"><a class="avam-create-back" href="<?php echo esc_url(avam_account_url()); ?>">انصراف</a><button class="avam-dash-primary" type="button" data-save-status="draft">ذخیره پیش‌نویس</button><button class="avam-dash-primary" type="button" data-save-status="publish"><?php echo $editing?'ذخیره تغییرات':'انتشار یادبود'; ?><span>←</span></button></div>
     </form>
   </div>
@@ -273,6 +273,7 @@ JS;
   if($edit_id){$existing=get_post($edit_id);if(!$existing||$existing->post_type!==self::CPT||(int)$existing->post_author!==get_current_user_id())wp_send_json_error(['message'=>'دسترسی به این یادبود مجاز نیست.'],403);$id=wp_update_post(['ID'=>$edit_id,'post_title'=>$title,'post_content'=>$post_content,'post_status'=>$save_status],true);}else{$id=wp_insert_post(['post_type'=>self::CPT,'post_status'=>$save_status,'post_title'=>$title,'post_content'=>$post_content,'post_author'=>get_current_user_id()],true);}
   if(is_wp_error($id))wp_send_json_error(['message'=>'ذخیره انجام نشد.'],500);
   foreach(['city','birth','death'] as $k)update_post_meta($id,'avam_'.$k,sanitize_textarea_field(wp_unslash($_POST[$k]??'')));
+  $timeline=sanitize_textarea_field(wp_unslash($_POST['timeline']??'')); if(mb_strlen($timeline)>12000)wp_send_json_error(['message'=>'خط زمانی بیش از حد طولانی است.'],422); update_post_meta($id,'avam_timeline',$timeline);
   $visibility=sanitize_key(wp_unslash($_POST['visibility']??'public')); update_post_meta($id,'avam_visibility',in_array($visibility,['public','private'],true)?$visibility:'public');
   if(!empty($_FILES['image']['name'])){
    $checked=wp_check_filetype_and_ext($_FILES['image']['tmp_name'],$_FILES['image']['name']);
@@ -283,6 +284,20 @@ JS;
    $att=media_handle_upload('image',$id);
    if(is_wp_error($att))wp_send_json_error(['message'=>'تصویر قابل ذخیره‌سازی نبود.'],422);
    set_post_thumbnail($id,$att);
+  }
+  if(!empty($_FILES['gallery']['name']) && is_array($_FILES['gallery']['name'])){
+   $gallery_ids=[]; $total_files=count($_FILES['gallery']['name']);
+   if($total_files>10)wp_send_json_error(['message'=>'حداکثر ۱۰ تصویر برای گالری مجاز است.'],422);
+   require_once ABSPATH.'wp-admin/includes/file.php';require_once ABSPATH.'wp-admin/includes/media.php';require_once ABSPATH.'wp-admin/includes/image.php';
+   for($i=0;$i<$total_files;$i++){
+    if(empty($_FILES['gallery']['name'][$i]))continue;
+    if((int)($_FILES['gallery']['size'][$i]??0)>8*1024*1024)wp_send_json_error(['message'=>'حجم هر تصویر گالری باید کمتر از ۸ مگابایت باشد.'],422);
+    $single=['name'=>$_FILES['gallery']['name'][$i],'type'=>$_FILES['gallery']['type'][$i],'tmp_name'=>$_FILES['gallery']['tmp_name'][$i],'error'=>$_FILES['gallery']['error'][$i],'size'=>$_FILES['gallery']['size'][$i]];
+    $checked=wp_check_filetype_and_ext($single['tmp_name'],$single['name']); if(empty($checked['type'])||!in_array($checked['type'],['image/jpeg','image/png','image/webp'],true))wp_send_json_error(['message'=>'گالری فقط تصویر JPG، PNG یا WebP می‌پذیرد.'],422);
+    $_FILES['avam_gallery_single']=$single; $gallery_att=media_handle_upload('avam_gallery_single',$id); unset($_FILES['avam_gallery_single']);
+    if(is_wp_error($gallery_att))wp_send_json_error(['message'=>'یکی از تصاویر گالری ذخیره نشد.'],422); $gallery_ids[]=(int)$gallery_att;
+   }
+   if($gallery_ids){$old=get_post_meta($id,'avam_gallery_ids',true);if(!is_array($old))$old=[];update_post_meta($id,'avam_gallery_ids',array_values(array_unique(array_merge($old,$gallery_ids))));}
   }
   $url=$save_status==='draft'?get_preview_post_link($id):get_permalink($id);
   wp_send_json_success(['url'=>$url?:get_permalink($id),'id'=>(int)$id,'status'=>$save_status,'message'=>$save_status==='draft'?'پیش‌نویس ذخیره شد.':'یادبود منتشر شد.']);
