@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.10.6
+ * Version: 1.11.0
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -37,7 +37,7 @@ final class AVAM_Core {
  }
 
  public static function assets(){
-  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[], '1.10.6');
+  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[], '1.11.0');
   wp_enqueue_style('avam-unified-shell',plugins_url('assets/css/unified-shell.css',__FILE__),['avam-plugin'],'1.10.6');
   wp_enqueue_style('avam-archive-mobile-fixes',plugins_url('assets/css/archive-mobile-fixes.css',__FILE__),['avam-unified-shell'],'1.10.6');
   wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'], '1.10.6',true);
@@ -316,7 +316,7 @@ JS;
  public static function protect_admin(){if(is_admin()&&!current_user_can('manage_options')&&!wp_doing_ajax()){wp_safe_redirect(home_url('/'));exit;}}
  public static function hide_admin_bar(){if(!current_user_can('manage_options'))show_admin_bar(false);}
 
- public static function admin_menu(){add_options_page('تنظیمات آرامگاه مجازی','آرامگاه مجازی','manage_options','avam-settings',[__CLASS__,'settings_page']);}
+ public static function admin_menu(){add_options_page('مرکز کنترل آرامگاه مجازی','آرامگاه مجازی','manage_options','avam-settings',['AVAM_Admin_Center','render']);}
 
  public static function settings(){
   $text_fields=[
@@ -396,6 +396,7 @@ register_activation_hook(__FILE__,function(){
  flush_rewrite_rules();
 });
 register_deactivation_hook(__FILE__,function(){wp_clear_scheduled_hook('avam_daily_anniversary_check');flush_rewrite_rules();});
+require_once __DIR__.'/includes/admin-center.php';
 AVAM_Core::init();
 add_action('init',function(){
  $visual_version=get_option('avam_visual_version','0');
