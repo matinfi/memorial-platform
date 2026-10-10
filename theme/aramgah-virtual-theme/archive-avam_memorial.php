@@ -17,10 +17,10 @@ $memorials=new WP_Query($args);
       <h1><?php echo esc_html(get_option('avam_search_title','یادبودها')); ?></h1>
       <p><?php echo esc_html(get_option('avam_search_intro','نام متوفی یا شهر را جستجو کنید.')); ?></p>
       <form class="avam-archive-search" method="get">
-        <label><span>نام متوفی</span><input name="q" value="<?php echo esc_attr($q); ?>" placeholder="جستجوی نام"></label>
+        <input type="hidden" name="q" value="<?php echo esc_attr($q); ?>">
         <label><span>شهر</span><input name="city" value="<?php echo esc_attr($city); ?>" placeholder="مثلاً تهران"></label>
         <label><span>مرتب‌سازی</span><select name="sort"><option value="newest" <?php selected($sort,'newest'); ?>>جدیدترین</option><option value="oldest" <?php selected($sort,'oldest'); ?>>قدیمی‌ترین</option><option value="name" <?php selected($sort,'name'); ?>>نام (الفبا)</option></select></label>
-        <button type="submit">جستجو</button>
+        <button type="submit">اعمال فیلترها</button>
       </form>
     </div>
   </section>
