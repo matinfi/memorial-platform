@@ -218,7 +218,7 @@ final class AVAM_Features {
   <section class="avam-card avam-my-comments" dir="rtl">
    <header class="avam-my-comments-head"><div><span>یادگارهای شما</span><h1>دیدگاه‌های من</h1><p>پیام‌ها و دعاهایی که در یادبودها نوشته‌اید؛ پیام‌های در انتظار تأیید فقط برای شما نمایش داده می‌شوند.</p></div><strong><?php echo esc_html(count($visible)); ?> پیام</strong></header>
    <?php if(!$visible): ?>
-    <div class="avam-my-comments-empty"><span aria-hidden="true">♡</span><h2>هنوز پیامی ننوشته‌اید</h2><p>می‌توانید وارد صفحه یک یادبود شوید و دعایی یا خاطره‌ای به یادگار بگذارید.</p><a class="avam-btn" href="<?php echo esc_url(avam_memorials_url()); ?>">مشاهده یادبودها</a></div>
+    <div class="avam-my-comments-empty"><span aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 8.7c0 4.4-8.5 10-8.5 10s-8.5-5.6-8.5-10a4.4 4.4 0 0 1 8.5-1.2 4.4 4.4 0 0 1 8.5 1.2Z"/></svg></span><h2>هنوز پیامی ننوشته‌اید</h2><p>می‌توانید وارد صفحه یک یادبود شوید و دعایی یا خاطره‌ای به یادگار بگذارید.</p><a class="avam-btn" href="<?php echo esc_url(avam_memorials_url()); ?>">مشاهده یادبودها</a></div>
    <?php else: ?>
     <ol class="avam-my-comments-list">
     <?php foreach($visible as $comment):
