@@ -127,13 +127,13 @@ JS;
   <section class="avam-account-dashboard-content" dir="rtl">
     <header class="avam-ref-heading">
         <div><span>فضای شخصی</span><h1>داشبورد</h1></div>
-        <a class="avam-dash-primary" href="<?php echo esc_url($create); ?>"><span>＋</span> ساخت یادبود</a>
+        <a class="avam-dash-primary" href="<?php echo esc_url($create); ?>"><span><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span> ساخت یادبود</a>
       </header>
 
       <section class="avam-ref-stats" aria-label="خلاصه حساب">
         <article><span class="avam-ref-stat-icon"><svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 8.7c0 4.4-8.5 10-8.5 10s-8.5-5.6-8.5-10a4.4 4.4 0 0 1 8.5-1.2 4.4 4.4 0 0 1 8.5 1.2Z"/></svg></span><div><small>مجموع یادبودها</small><strong><?php echo esc_html($total); ?></strong></div><em>همه یادبودها</em></article>
         <article><span class="avam-ref-stat-icon is-green"><svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4.2 4.2L19 6.5"/></svg></span><div><small>یادبودهای منتشرشده</small><strong><?php echo esc_html($published); ?></strong></div><em>قابل مشاهده</em></article>
-        <article><span class="avam-ref-stat-icon is-blue">◷</span><div><small>در حال تکمیل</small><strong><?php echo esc_html($drafts); ?></strong></div><em>پیش‌نویس / بررسی</em></article>
+        <article><span class="avam-ref-stat-icon is-blue"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><small>در حال تکمیل</small><strong><?php echo esc_html($drafts); ?></strong></div><em>پیش‌نویس / بررسی</em></article>
         <article><span class="avam-ref-stat-icon is-terra"><svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/><path d="m19 15 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z"/></svg></span><div><small>آخرین فعالیت</small><strong><?php echo $recent ? esc_html(get_the_date('j M',$recent[0])) : '—'; ?></strong></div><em><?php echo $recent ? 'آخرین یادبود' : 'هنوز فعالیتی نیست'; ?></em></article>
       </section>
 
@@ -183,7 +183,7 @@ JS;
                 <td><?php echo esc_html($city ?: '—'); ?></td>
                 <td><?php echo esc_html(get_the_date('j F Y',$p)); ?></td>
                 <td><span class="avam-ref-status <?php echo $p->post_status==='publish'?'is-published':''; ?>"><i></i><?php echo esc_html($status); ?></span></td>
-                <td><div class="avam-ref-actions"><a href="<?php echo esc_url($view); ?>" aria-label="پیش‌نمایش یا مشاهده">◉</a><a href="<?php echo esc_url($edit); ?>" aria-label="ویرایش"><svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5 4 4"/><path d="m4 20 4.3-.9L19.5 7.9a2.1 2.1 0 0 0-3-3L5.3 16.1 4 20Z"/></svg></a><button type="button" class="avam-action-delete" data-id="<?php echo esc_attr($p->ID); ?>" aria-label="حذف">×</button></div></td>
+                <td><div class="avam-ref-actions"><a href="<?php echo esc_url($view); ?>" aria-label="پیش‌نمایش یا مشاهده">◉</a><a href="<?php echo esc_url($edit); ?>" aria-label="ویرایش"><svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5 4 4"/><path d="m4 20 4.3-.9L19.5 7.9a2.1 2.1 0 0 0-3-3L5.3 16.1 4 20Z"/></svg></a><button type="button" class="avam-action-delete" data-id="<?php echo esc_attr($p->ID); ?>" aria-label="حذف"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="m5 7 1 14h12l1-14"/><path d="M9 7V4h6v3"/></svg></button></div></td>
               </tr>
             <?php endforeach; ?>
             </tbody>
