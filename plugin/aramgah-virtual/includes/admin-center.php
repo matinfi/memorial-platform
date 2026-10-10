@@ -249,7 +249,7 @@ final class AVAM_Admin_Center {
                 echo '<input id="'.esc_attr($id).'" type="url" class="large-text" name="settings['.esc_attr($key).']" value="'.esc_attr($value).'">';
                 break;
             case 'attachment':
-                echo '<input id="'.esc_attr($id).'" type="number" min="0" class="small-text" name="settings['.esc_attr($key).']" value="'.esc_attr($value).'"> <span class="description">شناسه رسانه از کتابخانه وردپرس</span>';
+                echo '<input id="'.esc_attr($id).'" type="number" min="0" class="small-text" name="settings['.esc_attr($key).']" value="'.esc_attr($value).'"> <button type="button" class="button avam-cc-media-pick" data-target="'.esc_attr($id).'" data-type="'.($key==='home_video'?'video':'image').'">انتخاب از کتابخانه رسانه</button> <span class="description">فایل از کتابخانه وردپرس انتخاب می‌شود.</span>';
                 break;
             default:
                 echo '<input id="'.esc_attr($id).'" type="text" class="regular-text" name="settings['.esc_attr($key).']" value="'.esc_attr($value).'">';
@@ -357,7 +357,9 @@ final class AVAM_Admin_Center {
 
     public static function assets($hook) {
         if ($hook !== 'settings_page_avam-settings') return;
+        wp_enqueue_media();
         wp_enqueue_style('avam-control-center', plugins_url('assets/css/admin-control-center.css', dirname(__FILE__)), [], '1.0.0');
+        wp_add_inline_script('jquery-core', "jQuery(function($){$(document).on('click','.avam-cc-media-pick',function(e){e.preventDefault();var b=$(this),target=$('#'+b.data('target')),type=b.data('type');var frame=wp.media({title:'انتخاب رسانه',button:{text:'استفاده از این فایل'},multiple:false,library:{type:type}});frame.on('select',function(){var item=frame.state().get('selection').first().toJSON();target.val(item.id).trigger('change');});frame.open();});});");
     }
 }
 AVAM_Admin_Center::init();
