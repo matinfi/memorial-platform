@@ -382,11 +382,11 @@ JS;
  }
 }
 
-function avam_account_url(){return home_url('/account/');}
+function avam_account_url(){ $s=get_option('avam_control_center',[]); $id=is_array($s)?absint($s['account_page']??0):0; return $id&&get_post_type($id)==='page'?get_permalink($id):home_url('/account/'); }
 function avam_login_url(){return home_url('/login/');}
 function avam_register_url(){return home_url('/register/');}
-function avam_create_url(){return home_url('/create-memorial/');}
-function avam_memorials_url(){ $url=get_post_type_archive_link('avam_memorial'); return $url ? $url : home_url('/memorials/'); }
+function avam_create_url(){ $s=get_option('avam_control_center',[]); $id=is_array($s)?absint($s['create_page']??0):0; return $id&&get_post_type($id)==='page'?get_permalink($id):home_url('/create-memorial/'); }
+function avam_memorials_url(){ $s=get_option('avam_control_center',[]); $id=is_array($s)?absint($s['memorials_page']??0):0; if($id&&get_post_type($id)==='page')return get_permalink($id); $url=get_post_type_archive_link('avam_memorial'); return $url ? $url : home_url('/memorials/'); }
 
 register_activation_hook(__FILE__,function(){
  AVAM_Core::register_cpt();
