@@ -20,13 +20,14 @@ final class AVAM_Features {
   add_action('wp_ajax_avam_report',[__CLASS__,'report']);
   add_action('wp_ajax_nopriv_avam_report',[__CLASS__,'report']);
   add_shortcode('avam_profile_settings',[__CLASS__,'profile']);
+  add_shortcode('avam_my_comments',[__CLASS__,'my_comments']);
   add_action('template_redirect',[__CLASS__,'protect_private_memorial']);
   add_action('wp_enqueue_scripts',[__CLASS__,'assets']);
   add_action('avam_daily_anniversary_check',[__CLASS__,'send_anniversary_reminders']);
   if (!wp_next_scheduled('avam_daily_anniversary_check')) wp_schedule_event(time()+300,'daily','avam_daily_anniversary_check');
  }
  public static function ensure_pages() {
-  foreach ([['profile','تنظیمات حساب','[avam_profile_settings]']] as $page) {
+  foreach ([['profile','تنظیمات حساب','[avam_profile_settings]'],['my-comments','دیدگاه‌های من','[avam_my_comments]']] as $page) {
    if (!get_page_by_path($page[0])) wp_insert_post(['post_title'=>$page[1],'post_name'=>$page[0],'post_content'=>$page[2],'post_status'=>'publish','post_type'=>'page']);
   }
  }
@@ -156,6 +157,47 @@ final class AVAM_Features {
    }
   }
   ob_start(); ?><section class="avam-card avam-profile-settings" dir="rtl"><h1>تنظیمات حساب</h1><p>اطلاعات نمایشی و امنیت حساب خود را مدیریت کنید.</p><?php echo $notice; ?><form method="post" class="avam-form"><input type="hidden" name="avam_profile_action" value="profile"><?php wp_nonce_field('avam_profile_'.$uid,'avam_profile_nonce'); ?><div class="avam-field"><label>نام نمایشی</label><input name="display_name" required maxlength="80" value="<?php echo esc_attr($user->display_name); ?>"></div><div class="avam-field"><label>ایمیل</label><input type="email" name="email" required value="<?php echo esc_attr($user->user_email); ?>"></div><label class="avam-reminder-optin"><input type="checkbox" name="anniversary_reminders" value="1" <?php checked(get_user_meta($uid,'avam_anniversary_reminders',true),'1'); ?>> یادآوری سالانه سالگرد درگذشت از طریق ایمیل</label><button class="avam-btn" type="submit">ذخیره پروفایل</button></form><hr><h2>تغییر رمز عبور</h2><form method="post" class="avam-form"><input type="hidden" name="avam_profile_action" value="password"><?php wp_nonce_field('avam_profile_'.$uid,'avam_profile_nonce'); ?><div class="avam-field"><label>رمز فعلی</label><input type="password" name="current_password" autocomplete="current-password" required></div><div class="avam-field"><label>رمز جدید</label><input type="password" name="new_password" minlength="10" autocomplete="new-password" required></div><div class="avam-field"><label>تکرار رمز جدید</label><input type="password" name="confirm_password" minlength="10" autocomplete="new-password" required></div><button class="avam-btn" type="submit">تغییر رمز</button></form></section><?php return ob_get_clean();
+ }
+ public static function my_comments() {
+  if (!is_user_logged_in()) {
+   return '<section class="avam-card avam-my-comments" dir="rtl"><h1>دیدگاه‌های من</h1><p>برای مشاهده پیام‌هایی که نوشته‌اید، ابتدا وارد حساب شوید.</p><a class="avam-btn" href="'.esc_url(avam_login_url()).'">ورود به حساب</a></section>';
+  }
+  $uid=get_current_user_id();
+  $approved=get_comments(['user_id'=>$uid,'status'=>'approve','number'=>100,'orderby'=>'comment_date_gmt','order'=>'DESC']);
+  $pending=get_comments(['user_id'=>$uid,'status'=>'hold','number'=>100,'orderby'=>'comment_date_gmt','order'=>'DESC']);
+  $comments=array_merge($approved,$pending);
+  usort($comments,function($a,$b){return strcmp($b->comment_date_gmt,$a->comment_date_gmt);});
+  $seen=[]; $visible=[];
+  foreach($comments as $comment) {
+   if(isset($seen[$comment->comment_ID]))continue;
+   $seen[$comment->comment_ID]=true;
+   $post=get_post((int)$comment->comment_post_ID);
+   if(!$post || $post->post_type!=='avam_memorial' || $post->post_status!=='publish')continue;
+   $private=get_post_meta($post->ID,'avam_visibility',true)==='private';
+   if($private && !current_user_can('manage_options') && (int)$post->post_author!==$uid)continue;
+   $visible[]=$comment;
+  }
+  ob_start(); ?>
+  <section class="avam-card avam-my-comments" dir="rtl">
+   <header class="avam-my-comments-head"><div><span>یادگارهای شما</span><h1>دیدگاه‌های من</h1><p>پیام‌ها و دعاهایی که در یادبودها نوشته‌اید؛ پیام‌های در انتظار تأیید فقط برای شما نمایش داده می‌شوند.</p></div><strong><?php echo esc_html(count($visible)); ?> پیام</strong></header>
+   <?php if(!$visible): ?>
+    <div class="avam-my-comments-empty"><span aria-hidden="true">♡</span><h2>هنوز پیامی ننوشته‌اید</h2><p>می‌توانید وارد صفحه یک یادبود شوید و دعایی یا خاطره‌ای به یادگار بگذارید.</p><a class="avam-btn" href="<?php echo esc_url(avam_memorials_url()); ?>">مشاهده یادبودها</a></div>
+   <?php else: ?>
+    <ol class="avam-my-comments-list">
+    <?php foreach($visible as $comment):
+      $post=get_post((int)$comment->comment_post_ID);
+      $is_pending=(string)$comment->comment_approved==='0';
+    ?>
+     <li class="avam-my-comment">
+      <div class="avam-my-comment-meta"><a href="<?php echo esc_url(get_permalink($post).'#comment-'.(int)$comment->comment_ID); ?>"><?php echo esc_html(get_the_title($post)); ?></a><time datetime="<?php echo esc_attr(get_comment_date('c',$comment)); ?>"><?php echo esc_html(get_comment_date('Y/m/d',$comment)); ?></time><span class="avam-comment-status <?php echo $is_pending?'is-pending':'is-published'; ?>"><?php echo $is_pending?'در انتظار تأیید':'منتشر شده'; ?></span></div>
+      <p><?php echo esc_html(wp_trim_words(wp_strip_all_tags($comment->comment_content),45,'…')); ?></p>
+      <a class="avam-my-comment-open" href="<?php echo esc_url(get_permalink($post).'#comment-'.(int)$comment->comment_ID); ?>">مشاهده در یادبود ←</a>
+     </li>
+    <?php endforeach; ?>
+    </ol>
+   <?php endif; ?>
+  </section>
+  <?php return ob_get_clean();
  }
  public static function send_anniversary_reminders() {
   $today=time(); $jalali=self::gregorian_to_jalali((int)wp_date('Y',$today),(int)wp_date('n',$today),(int)wp_date('j',$today));
