@@ -38,6 +38,7 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
       <a href="<?php echo esc_url($avam_memorials_url); ?>"<?php echo is_page() && get_post_field('post_name',get_queried_object_id())==='memorials' ? ' aria-current="page"' : ''; ?>><span class="avam-nav-icon" aria-hidden="true">⌕</span>جست‌وجوی یادبودها</a>
       <?php if (is_user_logged_in()): ?>
         <a href="<?php echo esc_url($avam_account_url); ?>"><span class="avam-nav-icon" aria-hidden="true">▦</span>داشبورد من</a>
+        <a href="<?php echo esc_url(home_url('/my-comments/')); ?>"><span class="avam-nav-icon" aria-hidden="true">☷</span>دیدگاه‌های من</a>
         <a href="<?php echo esc_url($avam_create_url); ?>"><span class="avam-nav-icon" aria-hidden="true">＋</span>ساخت یادبود</a>
         <a href="<?php echo esc_url(home_url('/profile/')); ?>"><span class="avam-nav-icon" aria-hidden="true">⚙</span>تنظیمات حساب</a>
       <?php else: ?>
@@ -46,6 +47,7 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
       <?php endif; ?>
     </nav>
     <div class="avam-dash-sidebar-foot">
+      <button class="avam-theme-toggle" type="button" data-avam-theme-toggle aria-pressed="false"><span aria-hidden="true">☼</span><span data-avam-theme-label>حالت روشن</span></button>
       <?php if (is_user_logged_in()): ?>
         <a class="avam-dash-logout" href="<?php echo esc_url(wp_logout_url(home_url('/'))); ?>"><span aria-hidden="true">↪</span>خروج از حساب</a>
       <?php else: ?>
