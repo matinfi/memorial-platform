@@ -1,7 +1,7 @@
 <?php
 get_header();
 
-$avam_user = wp_get_current_user();
+$avam_cc = get_option('avam_control_center', []); if (!is_array($avam_cc)) $avam_cc = [];\n$avam_user = wp_get_current_user();
 $avam_name = is_user_logged_in() ? ($avam_user->display_name ?: $avam_user->user_login) : '';
 $avam_memorials_url = function_exists('avam_memorials_url') ? avam_memorials_url() : home_url('/memorials/');
 $avam_create_url = is_user_logged_in() ? (function_exists('avam_create_url') ? avam_create_url() : home_url('/create-memorial/')) : (function_exists('avam_register_url') ? avam_register_url() : wp_registration_url());
@@ -12,11 +12,11 @@ $avam_recent = new WP_Query(['post_type'=>'avam_memorial','post_status'=>'publis
 <section class="avam-unified-home" dir="rtl">
   <div class="avam-unified-welcome">
     <div class="avam-unified-welcome-copy">
-      <span class="avam-unified-eyebrow">آرامگاه مجازی</span>
-      <h1><?php echo is_user_logged_in() ? 'خوش آمدید، '.esc_html($avam_name) : 'یادها اینجا می‌مانند.'; ?></h1>
-      <p>فضایی محترمانه برای زنده نگه‌داشتن نام، تصویر و روایت عزیزانی که فراموش نمی‌شوند.</p>
+      <span class="avam-unified-eyebrow"><?php echo esc_html($avam_cc['home_eyebrow'] ?? 'آرامگاه مجازی'); ?></span>
+      <h1><?php echo is_user_logged_in() ? 'خوش آمدید، '.esc_html($avam_name) : ($avam_cc['home_title'] ?? 'یادها اینجا می‌مانند.'); ?></h1>
+      <p><?php echo esc_html($avam_cc['home_subtitle'] ?? 'فضایی محترمانه برای زنده نگه‌داشتن نام، تصویر و روایت عزیزانی که فراموش نمی‌شوند.'); ?></p>
       <div class="avam-unified-actions">
-        <a class="avam-dash-primary" href="<?php echo esc_url($avam_create_url); ?>"><?php echo is_user_logged_in() ? '＋ ساخت یادبود' : '＋ ثبت‌نام و ساخت یادبود'; ?></a>
+        <a class="avam-dash-primary" href="<?php echo esc_url($avam_create_url); ?>"><?php echo is_user_logged_in() ? '＋ '.($avam_cc['home_cta'] ?? 'ساخت یادبود') : '＋ ثبت‌نام و ساخت یادبود'; ?></a>
         <a class="avam-unified-secondary" href="<?php echo esc_url($avam_memorials_url); ?>">⌕ جست‌وجوی یادبودها</a>
       </div>
     </div>
