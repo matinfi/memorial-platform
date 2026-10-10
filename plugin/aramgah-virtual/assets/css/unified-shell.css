@@ -415,3 +415,11 @@ body.avam-theme-light:has(.avam-unified-shell) .avam-unified-welcome-mark{backgr
 .avam-theme-light .avam-my-comment-meta>a,.avam-theme-light .avam-my-comment-open,.avam-theme-light .avam-my-comments-head>div>span{color:#526d5b}
 .avam-theme-light .avam-comment-status.is-pending{background:#f8ecd5;color:#79571d}
 .avam-theme-light .avam-comment-status.is-published{background:#dcefe3;color:#235d3c}
+
+/* AJAX comment feedback */
+.avam-comment-ajax-notice{margin:10px 0;padding:10px 12px;border-radius:10px;font-size:14px;display:none}
+.avam-comment-ajax-notice.is-success,.avam-comment-ajax-notice.is-error{display:block}
+.avam-comment-ajax-notice.is-success{background:rgba(57,135,91,.12);color:var(--avam-text,#dfe8e2);border:1px solid rgba(57,135,91,.35)}
+.avam-comment-ajax-notice.is-error{background:rgba(190,65,65,.12);color:var(--avam-text,#dfe8e2);border:1px solid rgba(190,65,65,.35)}
+[data-avam-react].is-loading{opacity:.7;cursor:wait}
+.avam-search-form input[type="search"]{min-width:0;width:100%}
