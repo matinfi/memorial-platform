@@ -24,6 +24,27 @@ jQuery(function($){
  });
 });
 
+/* Two-theme switcher: dark graphite is the default; the user's choice is persisted locally. */
+jQuery(function($){
+ const body=document.body;
+ const key='avam-panel-theme';
+ let saved='dark';
+ try{saved=localStorage.getItem(key)||'dark';}catch(e){}
+ function applyTheme(theme){
+  const light=theme==='light';
+  body.classList.toggle('avam-theme-light',light);
+  body.classList.toggle('avam-theme-dark',!light);
+  $('[data-avam-theme-toggle]').attr('aria-pressed',light?'true':'false');
+  $('[data-avam-theme-label]').text(light?'حالت تیره':'حالت روشن');
+  $('[data-avam-theme-toggle] [aria-hidden="true"]').text(light?'☾':'☼');
+  try{localStorage.setItem(key,light?'light':'dark');}catch(e){}
+ }
+ applyTheme(saved);
+ $(document).on('click','[data-avam-theme-toggle]',function(){
+  applyTheme(body.classList.contains('avam-theme-light')?'dark':'light');
+ });
+});
+
 /* Single global sidebar navigation — only the outer application shell owns the mobile menu. */
 jQuery(function($){
  const dashboard=$('.avam-unified-shell').first();
