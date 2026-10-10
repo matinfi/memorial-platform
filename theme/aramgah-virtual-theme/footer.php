@@ -18,6 +18,7 @@
         <?php
       }
       ?>
+      <?php if (!empty($avam_cc_footer['privacy_policy_url'])): ?><a href="<?php echo esc_url($avam_cc_footer['privacy_policy_url']); ?>">حریم خصوصی</a><?php endif; ?>
     </nav>
     <?php if (!is_array($avam_cc_footer) || (($avam_cc_footer['footer_copyright'] ?? '1') === '1')): ?>
       <small class="avam-footer-copyright"><?php echo esc_html(is_array($avam_cc_footer) ? ($avam_cc_footer['footer_copyright_text'] ?? 'تمام حقوق محفوظ است.') : 'تمام حقوق محفوظ است.'); ?></small>
