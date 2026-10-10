@@ -1,7 +1,8 @@
 <?php
 get_header();
 
-$avam_cc = get_option('avam_control_center', []); if (!is_array($avam_cc)) $avam_cc = [];\n$avam_user = wp_get_current_user();
+$avam_cc = get_option('avam_control_center', []); if (!is_array($avam_cc)) $avam_cc = [];
+$avam_user = wp_get_current_user();
 $avam_name = is_user_logged_in() ? ($avam_user->display_name ?: $avam_user->user_login) : '';
 $avam_memorials_url = function_exists('avam_memorials_url') ? avam_memorials_url() : home_url('/memorials/');
 $avam_create_url = is_user_logged_in() ? (function_exists('avam_create_url') ? avam_create_url() : home_url('/create-memorial/')) : (function_exists('avam_register_url') ? avam_register_url() : wp_registration_url());
