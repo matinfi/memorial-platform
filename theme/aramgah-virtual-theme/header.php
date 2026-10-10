@@ -40,8 +40,7 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
     <nav class="avam-dash-nav" aria-label="ناوبری اصلی">
       <?php
       $avam_control_settings = get_option('avam_control_center', []);
-      $avam_selected_menu = is_array($avam_control_settings) ? absint($avam_control_settings['primary_menu'] ?? 0) : 0;
-      if (!$avam_selected_menu && is_array($avam_control_settings)) $avam_selected_menu = absint($avam_control_settings['header_menu'] ?? 0);
+      $avam_selected_menu = is_array($avam_control_settings) ? absint($avam_control_settings['header_menu'] ?? ($avam_control_settings['primary_menu'] ?? 0)) : 0;
       if ($avam_selected_menu && wp_get_nav_menu_object($avam_selected_menu)) {
         wp_nav_menu(['menu'=>$avam_selected_menu,'container'=>false,'items_wrap'=>'%3$s','fallback_cb'=>false,'depth'=>2]);
       } else {
