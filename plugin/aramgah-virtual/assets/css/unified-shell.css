@@ -423,3 +423,7 @@ body.avam-theme-light:has(.avam-unified-shell) .avam-unified-welcome-mark{backgr
 .avam-comment-ajax-notice.is-error{background:rgba(190,65,65,.12);color:var(--avam-text,#dfe8e2);border:1px solid rgba(190,65,65,.35)}
 [data-avam-react].is-loading{opacity:.7;cursor:wait}
 .avam-search-form input[type="search"]{min-width:0;width:100%}
+
+
+/* Keep the global search usable on narrow screens; the brand remains in the sidebar. */
+@media(max-width:760px){.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-site-title{display:none}.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-unified-search{flex:1 1 auto;width:100%;max-width:none}}
