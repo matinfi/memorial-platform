@@ -15,6 +15,8 @@ final class AVAM_Features {
   add_filter('pre_comment_approved',[__CLASS__,'moderate_comments'],20,2);
   add_filter('comment_form_defaults',[__CLASS__,'comment_form_defaults']);
   add_filter('comments_open',[__CLASS__,'comments_open_for_memorial'],20,2);
+  add_action('wp_ajax_avam_submit_comment',[__CLASS__,'submit_comment']);
+  add_action('wp_ajax_nopriv_avam_submit_comment',[__CLASS__,'submit_comment']);
   add_action('wp_ajax_avam_react',[__CLASS__,'react']);
   add_action('wp_ajax_nopriv_avam_react',[__CLASS__,'react']);
   add_action('wp_ajax_avam_report',[__CLASS__,'report']);
@@ -68,8 +70,43 @@ final class AVAM_Features {
   $defaults['comment_notes_before']='';
   $defaults['comment_notes_after']='';
   $defaults['logged_in_as']='';
-  $defaults['comment_field']='<p class="comment-form-comment"><label for="comment">پیام شما</label><textarea id="comment" name="comment" rows="5" maxlength="5000" required placeholder="با احترام، خاطره یا دعایی از خود به یادگار بگذارید…"></textarea></p>';
+  $defaults['comment_field']='<p class="comment-form-comment"><label for="comment">پیام شما</label><textarea id="comment" name="comment" rows="5" maxlength="5000" required placeholder="با احترام، خاطره یا دعایی از خود به یادگار بگذارید…"></textarea></p><input type="hidden" name="avam_comment_nonce" value="'.esc_attr(wp_create_nonce('avam_submit_comment')).'"><div class="avam-comment-ajax-notice" role="status" aria-live="polite"></div>';
   return $defaults;
+ }
+ public static function submit_comment() {
+  if (!check_ajax_referer('avam_submit_comment','avam_comment_nonce',false)) wp_send_json_error(['message'=>'نشست شما منقضی شده است؛ صفحه را تازه‌سازی کنید.'],403);
+  $post_id=absint($_POST['comment_post_ID']??0);
+  $post=get_post($post_id);
+  if (!$post || $post->post_type!=='avam_memorial' || $post->post_status!=='publish' || !comments_open($post_id)) wp_send_json_error(['message'=>'ثبت پیام برای این یادبود ممکن نیست.'],422);
+  if (get_post_meta($post_id,'avam_visibility',true)==='private' && !current_user_can('manage_options') && (int)$post->post_author!==get_current_user_id()) wp_send_json_error(['message'=>'دسترسی به این یادبود مجاز نیست.'],404);
+  $content=trim(wp_unslash($_POST['comment']??''));
+  if ($content==='' || mb_strlen($content)>5000) wp_send_json_error(['message'=>'متن پیام باید بین ۱ تا ۵۰۰۰ نویسه باشد.'],422);
+  $user=wp_get_current_user();
+  $author=is_user_logged_in()?$user->display_name:sanitize_text_field(wp_unslash($_POST['author']??''));
+  $email=is_user_logged_in()?$user->user_email:sanitize_email(wp_unslash($_POST['email']??''));
+  if (!$author || !is_email($email)) wp_send_json_error(['message'=>'لطفاً نام و ایمیل معتبر وارد کنید.'],422);
+  $commentdata=[
+   'comment_post_ID'=>$post_id,
+   'comment_content'=>sanitize_textarea_field($content),
+   'comment_parent'=>absint($_POST['comment_parent']??0),
+   'comment_author'=>$author,
+   'comment_author_email'=>$email,
+   'comment_author_url'=>esc_url_raw(wp_unslash($_POST['url']??'')),
+   'user_id'=>get_current_user_id(),
+   'comment_type'=>'comment',
+   'comment_agent'=>sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT']??'')),
+   'comment_author_IP'=>sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR']??'')),
+  ];
+  $comment_id=wp_new_comment(wp_slash($commentdata),true);
+  if (is_wp_error($comment_id)) wp_send_json_error(['message'=>$comment_id->get_error_message()?:'ثبت پیام انجام نشد.'],422);
+  $comment=get_comment($comment_id);
+  if (!$comment || (string)$comment->comment_approved==='spam') wp_send_json_error(['message'=>'این پیام به‌دلیل محدودیت ارسال ثبت نشد. کمی بعد دوباره تلاش کنید.'],429);
+  $pending=(string)$comment->comment_approved!=='1';
+  $html='';
+  if (!$pending) {
+   $html='<li id="comment-'.(int)$comment_id.'" class="comment"><article class="comment-body"><footer class="comment-meta"><b class="fn">'.esc_html(get_comment_author($comment)).'</b></footer><div class="comment-content"><p>'.nl2br(esc_html($comment->comment_content)).'</p></div></article></li>';
+  }
+  wp_send_json_success(['message'=>$pending?'پیام شما ثبت شد و پس از تأیید نمایش داده می‌شود.':'پیام شما با موفقیت منتشر شد.','pending'=>$pending,'html'=>$html,'id'=>(int)$comment_id]);
  }
  public static function moderate_comments($approved,$commentdata) {
   if (empty($commentdata['comment_post_ID']) || get_post_type((int)$commentdata['comment_post_ID'])!=='avam_memorial') return $approved;
