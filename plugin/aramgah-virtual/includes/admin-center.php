@@ -16,6 +16,8 @@ final class AVAM_Admin_Center {
         add_action('wp_body_open', [__CLASS__, 'announcement']);
         add_filter('body_class', [__CLASS__, 'body_classes']);
         add_filter('wp_robots', [__CLASS__, 'robots']);
+        add_filter('wp_lazy_loading_enabled', [__CLASS__, 'lazy_loading'], 10, 2);
+        add_action('init', [__CLASS__, 'performance']);
     }
 
     private static function tabs() {
@@ -142,7 +144,7 @@ final class AVAM_Admin_Center {
             'responsive' => ['موبایل و واکنش‌گرایی', 'موبایل', [
                 ['type'=>'checkbox','key'=>'mobile_search_enabled','label'=>'نمایش جستجو در موبایل','default'=>'1'],
                 ['type'=>'checkbox','key'=>'mobile_menu_enabled','label'=>'نمایش منوی موبایل','default'=>'1'],
-                ['type'=>'select','key'=>'mobile_breakpoint','label'=>'نقطه شکست موبایل','default'=>'760','options'=>['640'=>'۶۴۰ پیکسل','760'=>'۷۶۰ پیکسل','900'=>'۹۰۰ پیکسل']],
+                ['type'=>'select','key'=>'mobile_breakpoint','label'=>'نقطه شکست تنظیمات موبایل','default'=>'760','options'=>['640'=>'۶۴۰ پیکسل','760'=>'۷۶۰ پیکسل','900'=>'۹۰۰ پیکسل'],'description'=>'در این نسخه روی رفتار گزینه‌های موبایل در مرکز کنترل اعمال می‌شود؛ نقاط شکست کلی قالب همچنان از CSS قالب پیروی می‌کنند.'],
                 ['type'=>'checkbox','key'=>'reduce_motion','label'=>'کاهش حرکت‌های تزئینی','default'=>'0']
             ]],
             'accessibility' => ['دسترس‌پذیری', 'دسترس‌پذیری', [
@@ -328,6 +330,23 @@ final class AVAM_Admin_Center {
         return $classes;
     }
 
+    public static function lazy_loading($default, $tag_name) {
+        $s = get_option(self::OPTION, []);
+        return is_array($s) && ($s['lazy_images'] ?? '1') === '0' ? false : $default;
+    }
+
+    public static function performance() {
+        $s = get_option(self::OPTION, []);
+        if (!is_array($s) || ($s['disable_emojis'] ?? '0') !== '1') return;
+        remove_action('wp_head', 'print_emoji_detection_script', 7);
+        remove_action('admin_print_scripts', 'print_emoji_detection_script');
+        remove_action('wp_print_styles', 'print_emoji_styles');
+        remove_action('admin_print_styles', 'print_emoji_styles');
+        remove_filter('the_content_feed', 'wp_staticize_emoji');
+        remove_filter('comment_text_rss', 'wp_staticize_emoji');
+        remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+    }
+
     public static function robots($robots) {
         $s = get_option(self::OPTION, []);
         if (is_array($s) && ($s['seo_search_index'] ?? '1') === '0') {
@@ -354,12 +373,19 @@ final class AVAM_Admin_Center {
         $surface=sanitize_hex_color($s['surface_color']??'#f5f7f6')?:'#f5f7f6';
         $text=sanitize_hex_color($s['text_color']??'#26382f')?:'#26382f';
         $width=min(1800,max(720,absint($s['content_max_width']??1200)));
+        $current_page_id = is_page() ? get_queried_object_id() : 0;
+        if ($current_page_id && absint($s['override_page'] ?? 0) === $current_page_id) {
+            $override_width = $s['override_width'] ?? 'inherit';
+            $width = ['narrow'=>760,'normal'=>1000,'wide'=>1400][$override_width] ?? $width;
+            $accent = sanitize_hex_color($s['override_accent'] ?? '') ?: $accent;
+        }
         $radius=['sharp'=>'4px','medium'=>'12px','round'=>'22px'][$s['corner_style']??'medium']??'12px';
         $shadow=['none'=>'none','soft'=>'0 8px 24px rgba(35,50,42,.06)','strong'=>'0 12px 32px rgba(20,30,25,.16)'][$s['shadow_style']??'soft']??'0 8px 24px rgba(35,50,42,.06)';
         echo '<style id="avam-control-center-css">:root{--ink:'.$primary.';--cta:'.$primary.';--accent:'.$accent.';--c-primary:'.$primary.';--c-accent:'.$accent.';--avam-surface:'.$surface.';--avam-text:'.$text.';--avam-content-max:'.$width.'px;--avam-radius:'.$radius.';--avam-shadow:'.$shadow.'}';
         echo 'body.avam-setting-home-hero-off .avam-unified-welcome,body.avam-setting-home-stats-off .avam-unified-home-stats,body.avam-setting-home-recent-off .avam-unified-recent,body.avam-setting-home-panel-off .avam-unified-welcome-mark,body.avam-setting-header-title-off .avam-site-title,body.avam-setting-header-search-off .avam-unified-search,body.avam-setting-footer-off footer,body.avam-setting-mobile-menu-off .avam-mobile-menu-toggle{display:none!important}';
         echo 'body{background:var(--avam-surface);color:var(--avam-text)}.avam-unified-welcome-mark img,.avam-unified-welcome-mark video{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}.avam-footer-copyright{display:block;margin-top:12px;color:#7a877d;font-size:11px}.avam-setting-sticky-header .avam-site-identity-bar{position:sticky;top:32px;z-index:40}.avam-setting-skip-link-off .avam-skip{display:none!important}.avam-setting-account-dashboard-off .avam-account-dashboard-content{display:none!important}.avam-setting-account-stats-off .avam-ref-stats{display:none!important}.avam-setting-account-recent-off .avam-ref-table-panel{display:none!important}.avam-setting-account-comments-link-off .avam-dash-nav a[href*="my-comments"]{display:none!important}.avam-setting-single-image-off .avam-reading-portrait-wrap,.avam-setting-single-timeline-off .avam-reading-timeline,.avam-setting-single-comments-off .avam-reading-comments,.avam-setting-single-share-off [data-share],.avam-setting-social-off [data-share]{display:none!important}';
-        echo '@media(max-width:760px){body.avam-setting-mobile-search-off .avam-unified-search{display:none!important}}';
+        $mobile_breakpoint = in_array((string)($s['mobile_breakpoint'] ?? '760'), ['640','760','900'], true) ? (int)$s['mobile_breakpoint'] : 760;
+        echo '@media(max-width:'.$mobile_breakpoint.'px){body.avam-setting-mobile-search-off .avam-unified-search{display:none!important}}';
         echo 'body.avam-setting-high-contrast{filter:contrast(1.12)}'body.avam-setting-reduce-motion *,body.avam-setting-reduce-motion *:before,body.avam-setting-reduce-motion *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}';
         echo '.avam-unified-content,.avam-container,.avam-archive-results{max-width:var(--avam-content-max)}.avam-unified-memorial-card,.avam-memorial-card,.avam-card,.avam-ref-panel{border-radius:var(--avam-radius);box-shadow:var(--avam-shadow)}';
         if (($s['a11y_focus_outline']??'1')==='1') echo ':focus-visible{outline:3px solid '.$accent.'!important;outline-offset:3px}';
