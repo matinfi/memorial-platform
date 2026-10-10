@@ -7,16 +7,7 @@
 <?php wp_head(); ?>
 <style>
 /* Shared full-width identity bar; keep its palette aligned with the application panel. */
-.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{
-  box-sizing:border-box;
-  width:calc(100% + 60px);
-  min-height:88px;
-  margin:0 -30px 8px!important;
-  padding:18px 30px!important;
-  background:#f5f7f6;
-  border-bottom:1px solid #e0e7e3;
-  color:#26382f;
-}
+.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{box-sizing:border-box;width:calc(100% + 60px);min-height:88px;margin:0 -30px 8px!important;padding:18px 30px!important;background:#f5f7f6;border-bottom:1px solid #e0e7e3;color:#26382f}
 .avam-site-identity-brand{display:flex;align-items:center;gap:13px;min-width:0;color:inherit;text-decoration:none}
 .avam-site-identity-mark{display:flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:44px;border:1px solid #dce5de;border-radius:14px;background:#e8eee9;color:#526d5b;font-family:inherit;font-size:24px;font-weight:700}
 .avam-site-identity-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
@@ -26,6 +17,7 @@
 .avam-site-identity-bar .avam-ref-user>div{display:flex;flex-direction:column;gap:3px}
 .avam-site-identity-bar .avam-ref-user strong{color:#26382f;font-size:13px;font-weight:700}
 .avam-site-identity-bar .avam-ref-user small{color:#718076;font-size:11px}
+@media(min-width:761px) and (max-width:1100px){.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{width:calc(100% + 44px);margin:0 -22px 8px!important;padding:18px 22px!important}}
 @media(max-width:760px){
  .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{width:calc(100% + 24px);min-height:72px;margin:0 -12px 8px!important;padding:12px!important;gap:12px}
  .avam-site-identity-mark{flex-basis:38px;width:38px;height:38px;border-radius:12px;font-size:21px}
