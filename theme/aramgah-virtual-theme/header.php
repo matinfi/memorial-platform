@@ -58,5 +58,10 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
   <div class="avam-dash-main avam-unified-main">
     <header class="avam-ref-topbar avam-site-identity-bar">
       <span class="avam-site-title">آرامگاه مجازی</span>
+      <form class="avam-unified-search" role="search" method="get" action="<?php echo esc_url($avam_memorials_url); ?>">
+        <label class="screen-reader-text" for="avam-global-search">جست‌وجوی یادبودها</label>
+        <input id="avam-global-search" type="search" name="q" value="<?php echo esc_attr(isset($_GET['q']) ? sanitize_text_field(wp_unslash($_GET['q'])) : ''); ?>" placeholder="جست‌وجو بر اساس نام یا روایت…" autocomplete="off">
+        <button type="submit">جست‌وجو</button>
+      </form>
     </header>
     <main id="main" class="avam-unified-content">
