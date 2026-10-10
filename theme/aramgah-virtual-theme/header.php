@@ -34,6 +34,14 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
       <span><b><?php echo esc_html(is_user_logged_in() ? $avam_display_name : 'آرامگاه مجازی'); ?></b><small><?php echo is_user_logged_in() ? 'فضای شخصی شما' : 'یادها اینجا می‌مانند'; ?></small></span>
     </a>
     <nav class="avam-dash-nav" aria-label="ناوبری اصلی">
+      <?php
+      $avam_control_settings = get_option('avam_control_center', []);
+      $avam_selected_menu = is_array($avam_control_settings) ? absint($avam_control_settings['primary_menu'] ?? 0) : 0;
+      if (!$avam_selected_menu && is_array($avam_control_settings)) $avam_selected_menu = absint($avam_control_settings['header_menu'] ?? 0);
+      if ($avam_selected_menu && wp_get_nav_menu_object($avam_selected_menu)) {
+        wp_nav_menu(['menu'=>$avam_selected_menu,'container'=>false,'items_wrap'=>'%3$s','fallback_cb'=>false,'depth'=>2]);
+      } else {
+        ?>
       <a href="<?php echo esc_url(home_url('/')); ?>"<?php echo is_front_page() ? ' aria-current="page"' : ''; ?>><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"/><path d="M5 9v12h14V9"/><path d="M9 21v-7h6v7"/></svg></span>خانه</a>
       <a href="<?php echo esc_url($avam_memorials_url); ?>"<?php echo is_page() && get_post_field('post_name',get_queried_object_id())==='memorials' ? ' aria-current="page"' : ''; ?>><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg></span>جست‌وجوی یادبودها</a>
       <?php if (is_user_logged_in()): ?>
@@ -45,6 +53,9 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
         <a href="<?php echo esc_url($avam_login_url); ?>"><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h9a7 7 0 0 1 7 7v3"/></svg></span>ورود</a>
         <a href="<?php echo esc_url($avam_register_url); ?>"><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>ثبت‌نام</a>
       <?php endif; ?>
+    <?php
+      }
+      ?>
     </nav>
     <div class="avam-dash-sidebar-foot">
       <button class="avam-theme-toggle" type="button" data-avam-theme-toggle aria-pressed="false"><span aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg></span><span data-avam-theme-label>حالت روشن</span></button>
@@ -57,7 +68,7 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
   </aside>
   <div class="avam-dash-main avam-unified-main">
     <header class="avam-ref-topbar avam-site-identity-bar">
-      <span class="avam-site-title">آرامگاه مجازی</span>
+      <span class="avam-site-title"><?php $avam_cc = get_option('avam_control_center', []); echo esc_html(is_array($avam_cc) ? ($avam_cc['site_title'] ?? 'آرامگاه مجازی') : 'آرامگاه مجازی'); ?></span>
       <form class="avam-unified-search" role="search" method="get" action="<?php echo esc_url($avam_memorials_url); ?>">
         <label class="screen-reader-text" for="avam-global-search">جست‌وجوی یادبودها</label>
         <input id="avam-global-search" type="search" name="q" value="<?php echo esc_attr(isset($_GET['q']) ? sanitize_text_field(wp_unslash($_GET['q'])) : ''); ?>" placeholder="جست‌وجو بر اساس نام یا روایت…" autocomplete="off">
