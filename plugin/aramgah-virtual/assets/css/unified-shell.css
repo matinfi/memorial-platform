@@ -148,3 +148,25 @@ body:has(.avam-unified-shell){background:#f2f5f3;color:#172236;font-family:"Vazi
  .avam-unified-content .avam-ref-heading .avam-dash-primary{width:100%;justify-content:center}
  .avam-unified-content .avam-ref-panel,.avam-unified-content .avam-ref-table-panel{padding:14px!important}
 }
+
+
+/* Canonical shell layout: one navigation rail, one sticky global search, one content region. */
+.avam-unified-shell{isolation:isolate}
+.avam-unified-content>.avam-account-dashboard-content{display:block;width:100%;min-width:0;max-width:none;margin:0;padding:0;background:transparent}
+.avam-account-dashboard-content>.avam-ref-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:8px 0 22px}
+.avam-unified-main>.avam-ref-topbar{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.avam-unified-search{display:flex;align-items:center;gap:10px;width:min(100%,560px);min-height:46px;padding:0 12px;border:1px solid #dfe7e1;border-radius:14px;background:#fff}
+.avam-unified-search input{flex:1;min-width:0;width:100%;border:0;outline:0;background:transparent;color:#26382f;font:inherit}
+.avam-unified-search button{flex:0 0 auto;min-height:32px;padding:0 12px;border:0;border-radius:9px;background:#263c31;color:#fff;font:600 12px inherit;cursor:pointer}
+.avam-unified-shell>.avam-mobile-menu-backdrop{padding:0;border:0;border-radius:0}
+.avam-unified-content>.avam-account-dashboard-content .avam-ref-chart-grid,
+.avam-unified-content>.avam-account-dashboard-content .avam-ref-stats,
+.avam-unified-content>.avam-account-dashboard-content .avam-ref-table-panel{min-width:0}
+@media(max-width:760px){
+ .avam-unified-shell>.avam-mobile-menu-toggle{position:fixed!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;inset:auto 14px 14px auto!important;width:auto!important;height:46px!important;min-width:58px!important;max-width:calc(100vw - 28px)!important;min-height:46px!important;max-height:46px!important;padding:0 15px!important;flex:0 0 auto!important;writing-mode:horizontal-tb!important;white-space:nowrap!important;transform:none!important;box-sizing:border-box!important;z-index:80!important}
+ .avam-unified-shell>.avam-dash-sidebar{width:min(300px,88vw)!important;max-width:88vw!important}
+ .avam-unified-main>.avam-ref-topbar{position:sticky;top:0;display:flex;gap:8px;align-items:center}
+ .avam-unified-search{width:100%;min-width:0;padding:0 8px}
+ .avam-unified-search button{padding:0 8px}
+ .avam-account-dashboard-content>.avam-ref-heading{align-items:flex-start;flex-wrap:wrap}
+}
