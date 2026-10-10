@@ -21,6 +21,10 @@ $avam_login_url = function_exists('avam_login_url') ? avam_login_url() : wp_logi
 $avam_register_url = function_exists('avam_register_url') ? avam_register_url() : wp_registration_url();
 $avam_account_url = function_exists('avam_account_url') ? avam_account_url() : home_url('/account/');
 $avam_create_url = function_exists('avam_create_url') ? avam_create_url() : $avam_register_url;
+$avam_cc_pages = get_option('avam_control_center', []); if (!is_array($avam_cc_pages)) $avam_cc_pages = [];
+$avam_profile_id = absint($avam_cc_pages['profile_page'] ?? 0); $avam_comments_id = absint($avam_cc_pages['comments_page'] ?? 0);
+$avam_profile_url = $avam_profile_id && get_post_type($avam_profile_id)==='page' ? get_permalink($avam_profile_id) : home_url('/profile/');
+$avam_comments_url = $avam_comments_id && get_post_type($avam_comments_id)==='page' ? get_permalink($avam_comments_id) : home_url('/my-comments/');
 $avam_user = wp_get_current_user();
 $avam_display_name = is_user_logged_in() ? ($avam_user->user_login ?: $avam_user->display_name) : 'مهمان گرامی';
 $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 1) : substr($avam_display_name, 0, 1);
