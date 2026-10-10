@@ -21,7 +21,23 @@ $avam_recent = new WP_Query(['post_type'=>'avam_memorial','post_status'=>'publis
         <a class="avam-unified-secondary" href="<?php echo esc_url($avam_memorials_url); ?>">⌕ جست‌وجوی یادبودها</a>
       </div>
     </div>
-    <div class="avam-unified-welcome-mark" aria-hidden="true"><span>آ</span><i>یاد، پیوندی ماندگار است</i></div>
+    <div class="avam-unified-welcome-mark" aria-hidden="true">
+      <?php
+      $avam_media_type = $avam_cc['home_media_type'] ?? 'image';
+      $avam_image_id = absint($avam_cc['home_image'] ?? 0);
+      $avam_video_id = absint($avam_cc['home_video'] ?? 0);
+      $avam_image_url = $avam_image_id ? wp_get_attachment_image_url($avam_image_id, 'large') : '';
+      $avam_video_url = $avam_video_id ? wp_get_attachment_url($avam_video_id) : '';
+      if ($avam_media_type === 'video' && $avam_video_url && strpos((string)get_post_mime_type($avam_video_id), 'video/') === 0) :
+      ?><video autoplay muted loop playsinline<?php if ($avam_image_url): ?> poster="<?php echo esc_url($avam_image_url); ?>"<?php endif; ?>><source src="<?php echo esc_url($avam_video_url); ?>" type="<?php echo esc_attr(get_post_mime_type($avam_video_id)); ?>"></video><?php
+      elseif ($avam_media_type === 'image' && $avam_image_url):
+      ?><img src="<?php echo esc_url($avam_image_url); ?>" alt="تصویر معرفی آرامگاه مجازی" loading="lazy"><?php
+      else:
+      ?><span>آ</span><?php
+      endif;
+      ?>
+      <i>یاد، پیوندی ماندگار است</i>
+    </div>
   </div>
 
   <div class="avam-unified-home-stats">
