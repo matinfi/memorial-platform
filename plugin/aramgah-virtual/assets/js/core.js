@@ -96,14 +96,8 @@ jQuery(function($){
  let busy=false;
  function targetContent(doc){
   const root=doc.querySelector('#main')||doc.body;
-  if(doc.querySelector('.avam-unified-shell')){
-   const unified=doc.querySelector('#main.avam-unified-content');
-   if(unified){
-    const accountMain=unified.querySelector('.avam-dashboard-reference:not(.avam-unified-shell) > .avam-dash-main');
-    if(accountMain)return accountMain.innerHTML;
-    return unified.innerHTML;
-   }
-  }
+  const unified=doc.querySelector('.avam-unified-shell #main.avam-unified-content');
+  if(unified)return unified.innerHTML;
   const dash=root.querySelector('.avam-dashboard-reference:not(.avam-unified-shell) .avam-dash-main');
   if(dash)return dash.innerHTML;
   const memorial=root.querySelector('.avam-memorial-content-view');if(memorial)return memorial.outerHTML;
@@ -115,7 +109,7 @@ jQuery(function($){
   if(busy)return;
   const destination=new URL(url,location.href);
   busy=true;
-  const shell=document.querySelector('.avam-dashboard-reference');
+  const shell=document.querySelector('.avam-unified-shell');
   const main=shell&&(shell.classList.contains('avam-unified-shell')?shell.querySelector('.avam-unified-content'):shell.querySelector('.avam-dash-main'));
   if(!main){busy=false;window.location.href=url;return;}
   shell.classList.add('avam-panel-loading');
@@ -129,8 +123,11 @@ jQuery(function($){
     if(!content.trim())throw new Error('empty response');
     main.innerHTML=content;
     const title=doc.querySelector('title');if(title)document.title=title.textContent;
+    const currentUrl=new URL(url,location.href);
+    const globalSearch=document.querySelector('.avam-unified-search input[name="q"]');
+    if(globalSearch)globalSearch.value=currentUrl.searchParams.get('q')||'';
     if(replace)history.replaceState({avamPanel:true},'',url);else history.pushState({avamPanel:true},'',url);
-    main.scrollIntoView({behavior:'smooth',block:'start'});
+    window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
     shell.classList.remove('avam-panel-loading');
     busy=false;
    }).catch(()=>{
@@ -149,5 +146,5 @@ jQuery(function($){
   for(const [k,v] of data.entries()){if(String(v).trim())url.searchParams.set(k,v);else url.searchParams.delete(k);}
   window.avamPanelNavigate(url.href,false);
  });
- window.addEventListener('popstate',function(){if(document.querySelector('.avam-dashboard-reference'))window.avamPanelNavigate(location.href,true);});
+ window.addEventListener('popstate',function(){if(document.querySelector('.avam-unified-shell'))window.avamPanelNavigate(location.href,true);});
 })(jQuery);
