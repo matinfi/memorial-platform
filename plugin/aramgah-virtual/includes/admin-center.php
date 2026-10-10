@@ -380,7 +380,8 @@ final class AVAM_Admin_Center {
         $accent=sanitize_hex_color($s['accent_color']??get_option('avam_accent_color','#ad875c'))?:'#ad875c';
         $surface=sanitize_hex_color($s['surface_color']??'#f5f7f6')?:'#f5f7f6';
         $text=sanitize_hex_color($s['text_color']??'#26382f')?:'#26382f';
-        $width=min(1800,max(720,absint($s['content_max_width']??1200)));\n        if (($s['default_page_width'] ?? 'normal') !== 'normal') $width = ['narrow'=>760,'wide'=>1400][$s['default_page_width']] ?? $width;
+        $width=min(1800,max(720,absint($s['content_max_width']??1200)));
+        if (($s['default_page_width'] ?? 'normal') !== 'normal') $width = ['narrow'=>760,'wide'=>1400][$s['default_page_width']] ?? $width;
         $current_page_id = is_page() ? get_queried_object_id() : 0;
         if ($current_page_id && absint($s['override_page'] ?? 0) === $current_page_id) {
             $override_width = $s['override_width'] ?? 'inherit';
