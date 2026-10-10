@@ -36,7 +36,7 @@ jQuery(function($){
   body.classList.toggle('avam-theme-dark',!light);
   $('[data-avam-theme-toggle]').attr('aria-pressed',light?'true':'false');
   $('[data-avam-theme-label]').text(light?'حالت تیره':'حالت روشن');
-  $('[data-avam-theme-toggle] [aria-hidden="true"]').text(light?'☾':'☼');
+  $('[data-avam-theme-toggle] [aria-hidden="true"]').html(light ? '<svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/></svg>' : '<svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>');
   try{localStorage.setItem(key,light?'light':'dark');}catch(e){}
  }
  applyTheme(saved);
