@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.10.4
+ * Version: 1.10.5
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -37,9 +37,9 @@ final class AVAM_Core {
  }
 
  public static function assets(){
-  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[], '1.10.4');
-  wp_enqueue_style('avam-unified-shell',plugins_url('assets/css/unified-shell.css',__FILE__),['avam-plugin'],'1.10.4');
-  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'], '1.10.4',true);
+  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[], '1.10.5');
+  wp_enqueue_style('avam-unified-shell',plugins_url('assets/css/unified-shell.css',__FILE__),['avam-plugin'],'1.10.5');
+  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'], '1.10.5',true);
   wp_localize_script('avam-plugin','AVAM',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_front'),'account'=>avam_account_url()]);
  }
 
@@ -63,6 +63,26 @@ jQuery(function($){
       $('#'+f+'-url').val(a.url);
     });
     t.open();
+  });
+
+  /* Admin settings accordion: keep the long options page scannable and keyboard-accessible. */
+  var headings=$('.avam-admin-settings form h2');
+  headings.each(function(index){
+    var heading=$(this),group=heading.nextUntil('h2');
+    heading.attr({role:'button',tabindex:'0','aria-expanded':index===0?'true':'false'})
+      .css({display:'flex',alignItems:'center',justifyContent:'space-between',gap:'16px',padding:'16px 18px',margin:'18px 0 0',border:'1px solid #d7e0d9',borderRadius:'12px',background:'#f7f9f7',cursor:'pointer',fontWeight:'700'});
+    var indicator=$('<span aria-hidden="true">').text(index===0?'−':'+')
+      .css({display:'inline-flex',alignItems:'center',justifyContent:'center',width:'28px',height:'28px',borderRadius:'8px',background:'#e8eee9',color:'#526d5b',fontSize:'20px',lineHeight:'1',flex:'0 0 28px'});
+    heading.append(indicator);
+    group.css({marginInline:'0',paddingInline:'18px'});
+    if(index!==0)group.hide();
+    function toggle(){
+      var open=heading.attr('aria-expanded')!=='true';
+      heading.attr('aria-expanded',open?'true':'false');
+      group.stop(true,true).slideToggle(160);
+      indicator.text(open?'−':'+');
+    }
+    heading.on('click',toggle).on('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
   });
 });
 JS;
