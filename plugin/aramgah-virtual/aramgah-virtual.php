@@ -199,6 +199,7 @@ JS;
  }
 
  public static function create(){
+  $avam_cc=get_option('avam_control_center',[]); if(is_array($avam_cc) && ($avam_cc['memorial_creation_enabled']??'1')!=='1' && !current_user_can('manage_options')) return '<div class="avam-card"><p>ساخت یادبود در حال حاضر غیرفعال است.</p></div>';
   if(!is_user_logged_in()) return '<div class="avam-card"><p>برای ساخت یادبود ابتدا وارد شوید.</p><a class="avam-btn" href="'.esc_url(avam_login_url()).'">ورود</a></div>';
   $edit_id=isset($_GET['edit'])?absint($_GET['edit']):0;$editing=false;$data=[];
   if($edit_id){$p=get_post($edit_id);if($p&&$p->post_type===self::CPT&&(int)$p->post_author===get_current_user_id()){$editing=true;$data=['title'=>$p->post_title,'content'=>$p->post_content];foreach(['city','birth','death','visibility','timeline'] as $k)$data[$k]=get_post_meta($edit_id,'avam_'.$k,true);}}
@@ -245,6 +246,8 @@ JS;
    wp_safe_redirect($redirect);exit;
   }
   if($action==='register'&&wp_verify_nonce($nonce,'avam_register')){
+   $avam_cc=get_option('avam_control_center',[]);
+   if(is_array($avam_cc) && (($avam_cc['registration_enabled']??'1')!=='1' || ($avam_cc['public_registration']??'1')!=='1')){wp_safe_redirect(add_query_arg('avam_error',rawurlencode('ثبت‌نام کاربران در حال حاضر غیرفعال است.'),avam_register_url()));exit;}
    $email=sanitize_email(wp_unslash($_POST['email']??''));$name=sanitize_text_field(wp_unslash($_POST['display_name']??''));$pass=$_POST['password']??'';
    if(!is_email($email)||email_exists($email)||strlen($pass)<8){wp_safe_redirect(add_query_arg('avam_error',rawurlencode('اطلاعات ثبت‌نام معتبر نیست.'),avam_register_url()));exit;}
    $base=sanitize_user(strtok($email,'@'));$login=$base;$i=1;while(username_exists($login))$login=$base.$i++;
@@ -254,6 +257,7 @@ JS;
  }
 
  public static function save_front_memorial(){
+  $avam_cc=get_option('avam_control_center',[]); if(is_array($avam_cc) && ($avam_cc['memorial_creation_enabled']??'1')!=='1' && !current_user_can('manage_options')) wp_send_json_error(['message'=>'ساخت یادبود در حال حاضر غیرفعال است.'],403);
   if(!is_user_logged_in()||!check_ajax_referer('avam_front','nonce',false))wp_send_json_error(['message'=>'درخواست نامعتبر است.'],403);
   $title=sanitize_text_field(wp_unslash($_POST['title']??''));if(!$title)wp_send_json_error(['message'=>'نام الزامی است.'],422);
   $edit_id=absint($_POST['edit_id']??0);$post_content=sanitize_textarea_field(wp_unslash($_POST['content']??''));
