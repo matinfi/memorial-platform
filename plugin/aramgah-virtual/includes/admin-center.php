@@ -419,7 +419,7 @@ final class AVAM_Admin_Center {
         if ($hook !== 'settings_page_avam-settings') return;
         wp_enqueue_media();
         wp_enqueue_style('avam-control-center', plugins_url('assets/css/admin-control-center.css', dirname(__FILE__)), [], '1.0.0');
-        wp_add_inline_script('jquery-core', "jQuery(function($){$(document).on('click','.avam-cc-media-pick',function(e){e.preventDefault();var b=$(this),target=$('#'+b.data('target')),type=b.data('type');var frame=wp.media({title:'انتخاب رسانه',button:{text:'استفاده از این فایل'},multiple:false,library:{type:type}});frame.on('select',function(){var item=frame.state().get('selection').first().toJSON();target.val(item.id).trigger('change');});frame.open();});});");
+        wp_enqueue_script('avam-control-center', plugins_url('assets/js/admin-control-center.js', dirname(__FILE__)), ['jquery'], '1.0.0', true);
     }
 }
 AVAM_Admin_Center::init();
