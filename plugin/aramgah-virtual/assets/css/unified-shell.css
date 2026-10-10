@@ -427,3 +427,147 @@ body.avam-theme-light:has(.avam-unified-shell) .avam-unified-welcome-mark{backgr
 
 /* Keep the global search usable on narrow screens; the brand remains in the sidebar. */
 @media(max-width:760px){.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-site-title{display:none}.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-unified-search{flex:1 1 auto;width:100%;max-width:none}}
+
+
+/* Mobile-first usability pass: compact header, opaque drawer, consistent touch targets. */
+@media (max-width: 760px) {
+  .avam-unified-shell,
+  .avam-unified-main { min-width: 0 !important; width: 100% !important; }
+  .avam-unified-main { padding: 0 12px 16px !important; }
+  .avam-unified-main > .avam-ref-topbar,
+  .avam-unified-main > .avam-ref-topbar.avam-site-identity-bar {
+    position: sticky !important;
+    top: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: stretch !important;
+    gap: 0 !important;
+    min-height: 54px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 6px 0 !important;
+    border-bottom: 1px solid #d7e0d9 !important;
+    border-radius: 0 !important;
+    background: #f2f5f3 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .avam-unified-main > .avam-ref-topbar.avam-site-identity-bar .avam-site-title { display: none !important; }
+  .avam-unified-main > .avam-ref-topbar .avam-unified-search {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    min-height: 42px !important;
+    height: 42px !important;
+    margin: 0 !important;
+    padding: 3px 5px 3px 8px !important;
+    gap: 6px !important;
+    border: 1px solid #d5dfd8 !important;
+    border-radius: 11px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+  }
+  .avam-unified-main > .avam-ref-topbar .avam-unified-search input {
+    min-width: 0 !important;
+    min-height: 34px !important;
+    padding: 0 6px !important;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
+  .avam-unified-main > .avam-ref-topbar .avam-unified-search button {
+    min-height: 34px !important;
+    height: 34px !important;
+    padding: 0 11px !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+  .avam-unified-content {
+    padding: 8px 0 24px !important;
+    margin-top: 0 !important;
+  }
+  .avam-unified-content > :first-child { margin-top: 0 !important; }
+  /* The drawer must sit above the scrim; the previous z-index order dimmed the menu itself. */
+  .avam-unified-shell > .avam-mobile-menu-backdrop:not([hidden]) {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 79 !important;
+    display: block !important;
+    background: rgba(15, 24, 20, .52) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .avam-unified-shell > .avam-dash-sidebar {
+    position: fixed !important;
+    inset: 0 0 0 auto !important;
+    z-index: 80 !important;
+    width: min(312px, 86vw) !important;
+    max-width: 86vw !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    max-height: 100dvh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    background: #f7f9f7 !important;
+    color: #26382f !important;
+    opacity: 1 !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: -14px 0 38px rgba(12, 24, 17, .20) !important;
+    transform: translateX(110%);
+    transition: transform .22s ease;
+    overscroll-behavior: contain;
+  }
+  .avam-unified-shell.mobile-menu-open > .avam-dash-sidebar { transform: translateX(0) !important; }
+  .avam-unified-shell > .avam-mobile-menu-toggle { z-index: 81 !important; }
+  .avam-unified-shell .avam-dash-brand { min-height: 76px; padding: 18px 18px 14px; }
+  .avam-unified-shell .avam-dash-nav { padding: 10px 12px 18px; }
+  .avam-unified-shell .avam-dash-nav a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    margin: 3px 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .avam-unified-shell .avam-dash-sidebar-foot { padding: 12px; }
+  .avam-unified-shell .avam-dash-sidebar-foot a,
+  .avam-unified-shell .avam-dash-sidebar-foot button { min-height: 46px; }
+  .avam-unified-content .avam-archive-hero { margin-bottom: 14px !important; border-radius: 16px !important; }
+  .avam-unified-content .avam-archive-hero > .avam-container { padding: 20px 14px !important; }
+  .avam-unified-content .avam-archive-search { gap: 9px !important; padding: 10px !important; }
+  .avam-unified-content .avam-archive-search input,
+  .avam-unified-content .avam-archive-search select,
+  .avam-unified-content .avam-archive-search button { min-height: 48px !important; }
+  .avam-unified-content .avam-ref-heading { margin: 4px 0 14px !important; }
+  .avam-unified-content .avam-ref-panel,
+  .avam-unified-content .avam-ref-table-panel,
+  .avam-unified-content .avam-unified-recent { padding: 16px 13px !important; border-radius: 14px !important; }
+  .avam-unified-content .avam-ref-stats { gap: 9px !important; }
+  .avam-unified-content .avam-ref-stats > * { min-width: 0; }
+  .avam-unified-content .avam-ref-chart-grid { gap: 12px !important; }
+  .avam-unified-content input,
+  .avam-unified-content select,
+  .avam-unified-content textarea { max-width: 100%; font-size: 16px !important; }
+  .avam-unified-content button,
+  .avam-unified-content .avam-btn,
+  .avam-unified-content .avam-dash-primary { min-height: 46px; }
+}
+@media (max-width: 420px) {
+  .avam-unified-main { padding-inline: 10px !important; }
+  .avam-unified-main > .avam-ref-topbar.avam-site-identity-bar { min-height: 50px !important; padding-block: 4px !important; }
+  .avam-unified-main > .avam-ref-topbar .avam-unified-search { min-height: 40px !important; height: 40px !important; }
+  .avam-unified-main > .avam-ref-topbar .avam-unified-search button { padding-inline: 9px !important; }
+  .avam-unified-content { padding-top: 6px !important; }
+  .avam-unified-content .avam-ref-panel,
+  .avam-unified-content .avam-ref-table-panel { padding: 13px 11px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .avam-unified-shell > .avam-dash-sidebar { transition: none !important; }
+}
