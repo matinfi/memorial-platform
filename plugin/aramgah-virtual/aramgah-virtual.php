@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.9.5
+ * Version: 1.9.6
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -37,9 +37,9 @@ final class AVAM_Core {
  }
 
  public static function assets(){
-  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[], '1.9.5');
-  wp_enqueue_style('avam-unified-shell',plugins_url('assets/css/unified-shell.css',__FILE__),['avam-plugin'],'1.9.5');
-  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'], '1.9.5',true);
+  wp_enqueue_style('avam-plugin',plugins_url('assets/css/core.css',__FILE__),[], '1.9.6');
+  wp_enqueue_style('avam-unified-shell',plugins_url('assets/css/unified-shell.css',__FILE__),['avam-plugin'],'1.9.6');
+  wp_enqueue_script('avam-plugin',plugins_url('assets/js/core.js',__FILE__),['jquery'], '1.9.6',true);
   wp_localize_script('avam-plugin','AVAM',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_front'),'account'=>avam_account_url()]);
  }
 
@@ -104,41 +104,8 @@ JS;
   $draft_h=round(($drafts/$max_status)*132);
   $total_h=round(($total/$max_status)*132);
   ob_start(); ?>
-  <section class="avam-dashboard avam-dashboard-reference" dir="rtl">
-    <button class="avam-mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="avam-account-sidebar"><span>☰</span><b>منوی پنل</b></button>
-    <div class="avam-mobile-menu-backdrop" hidden></div>
-    <aside class="avam-dash-sidebar" id="avam-account-sidebar">
-      <a class="avam-dash-brand" href="<?php echo esc_url(home_url('/')); ?>">
-        <span class="avam-dash-brand-mark">آ</span>
-        <span><b>آرامگاه مجازی</b><small>فضای شخصی شما</small></span>
-      </a>
-      <nav class="avam-dash-nav" aria-label="ناوبری حساب">
-        <a class="is-active" href="<?php echo esc_url(avam_account_url()); ?>"><span class="avam-nav-icon">⌂</span>داشبورد</a>
-        <a href="<?php echo esc_url($create); ?>"><span class="avam-nav-icon">＋</span>ساخت یادبود</a>
-        <a href="<?php echo esc_url(home_url('/profile/')); ?>"><span class="avam-nav-icon">⚙</span>تنظیمات حساب</a>
-        <a href="<?php echo esc_url($memorials); ?>"><span class="avam-nav-icon">⌕</span>یادبودها</a>
-        <a href="<?php echo esc_url(home_url('/')); ?>"><span class="avam-nav-icon">↗</span>مشاهده سایت</a>
-      </nav>
-      <div class="avam-dash-sidebar-foot">
-        <a class="avam-dash-logout" href="<?php echo esc_url($logout); ?>"><span>↪</span>خروج از حساب</a>
-      </div>
-    </aside>
-
-    <div class="avam-dash-main">
-      <div class="avam-ref-topbar">
-        <form class="avam-ref-search" action="<?php echo esc_url($memorials); ?>" method="get" role="search">
-          <span aria-hidden="true">⌕</span>
-          <input type="search" name="q" placeholder="جستجو در یادبودها" aria-label="جستجو در یادبودها">
-        </form>
-        <div class="avam-ref-user">
-          <span class="avam-ref-avatar"><?php echo esc_html($initial); ?></span>
-          <div><strong><?php echo esc_html($display_name); ?></strong><small>حساب شخصی</small></div>
-          <span class="avam-ref-chevron">⌄</span>
-          <span class="avam-ref-icon" aria-hidden="true">◔</span>
-        </div>
-      </div>
-
-      <header class="avam-ref-heading">
+  <section class="avam-account-dashboard-content" dir="rtl">
+    <header class="avam-ref-heading">
         <div><span>فضای شخصی</span><h1>داشبورد</h1></div>
         <a class="avam-dash-primary" href="<?php echo esc_url($create); ?>"><span>＋</span> ساخت یادبود</a>
       </header>
@@ -206,8 +173,7 @@ JS;
           <div class="avam-ref-empty"><div>♡</div><h3>هنوز یادبودی نساخته‌اید</h3><p>اولین یادبود را بسازید و نام، تصویر و روایت عزیزتان را در یک صفحه ماندگار نگه دارید.</p><a class="avam-dash-primary" href="<?php echo esc_url($create); ?>">ساخت اولین یادبود</a></div>
         <?php endif; ?>
       </section>
-    </div>
-  </section>
+    </section>
   <?php return ob_get_clean();
  }
 
