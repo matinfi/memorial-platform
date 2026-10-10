@@ -26,7 +26,7 @@ $avam_display_name = is_user_logged_in() ? ($avam_user->user_login ?: $avam_user
 $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 1) : substr($avam_display_name, 0, 1);
 ?>
 <div class="avam-dashboard avam-dashboard-reference avam-unified-shell" dir="rtl">
-  <button class="avam-mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="avam-account-sidebar" aria-label="باز کردن منوی اصلی"><span aria-hidden="true">☰</span><b>منو</b></button>
+  <button class="avam-mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="avam-account-sidebar" aria-label="باز کردن منوی اصلی"><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg><b>منو</b></button>
   <button class="avam-mobile-menu-backdrop" type="button" aria-label="بستن منو" hidden></button>
   <aside class="avam-dash-sidebar" id="avam-account-sidebar">
     <a class="avam-dash-brand" href="<?php echo esc_url(home_url('/')); ?>">
