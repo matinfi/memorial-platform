@@ -15,6 +15,7 @@ final class AVAM_Admin_Center {
         add_action('wp_head', [__CLASS__, 'frontend_css'], 99);
         add_action('wp_body_open', [__CLASS__, 'announcement']);
         add_filter('body_class', [__CLASS__, 'body_classes']);
+        add_filter('wp_robots', [__CLASS__, 'robots']);
     }
 
     private static function tabs() {
@@ -310,6 +311,15 @@ final class AVAM_Admin_Center {
         return $classes;
     }
 
+    public static function robots($robots) {
+        $s = get_option(self::OPTION, []);
+        if (is_array($s) && ($s['seo_search_index'] ?? '1') === '0') {
+            $robots['noindex'] = true;
+            $robots['nofollow'] = true;
+        }
+        return $robots;
+    }
+
     public static function announcement() {
         $s = get_option(self::OPTION, []);
         if (!is_array($s) || ($s['announcement_enabled'] ?? '0') !== '1' || empty($s['announcement_text'])) return;
@@ -335,7 +345,6 @@ final class AVAM_Admin_Center {
         echo '.avam-unified-content,.avam-container,.avam-archive-results{max-width:var(--avam-content-max)}.avam-unified-memorial-card,.avam-memorial-card,.avam-card,.avam-ref-panel{border-radius:var(--avam-radius);box-shadow:var(--avam-shadow)}';
         if (($s['a11y_focus_outline']??'1')==='1') echo ':focus-visible{outline:3px solid '.$accent.'!important;outline-offset:3px}';
         if (($s['font_family']??'vazirmatn')==='system') echo 'body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}';
-        if (($s['seo_search_index'] ?? '1') === '0') echo 'meta[name="robots"]{display:none}';
         echo '</style>';
         if (!is_admin() && !is_singular() && !empty($s['seo_default_description']) && !defined('WPSEO_VERSION') && !class_exists('RankMath\\\\RankMath')) {
             echo '<meta name="description" content="'.esc_attr(wp_strip_all_tags($s['seo_default_description'])).'">';
