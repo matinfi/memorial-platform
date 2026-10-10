@@ -284,6 +284,10 @@ final class AVAM_Admin_Center {
             $old[$key] = $v;
         }
         update_option(self::OPTION,$old,false);
+        if (!empty($old['home_page']) && get_post_type(absint($old['home_page'])) === 'page') {
+            update_option('show_on_front', 'page');
+            update_option('page_on_front', absint($old['home_page']));
+        }
         // Keep existing public-facing options in sync for legacy template compatibility.
         $sync = ['primary_color'=>'avam_primary_color','accent_color'=>'avam_accent_color','footer_text'=>'avam_footer_text','site_message'=>'avam_site_message','search_title'=>'avam_search_title','search_intro'=>'avam_search_intro','single_kicker'=>'avam_single_kicker','single_intro'=>'avam_single_intro','comments_enabled'=>'avam_comments_enabled','comments_moderation'=>'avam_comments_require_moderation','home_eyebrow'=>'avam_home_eyebrow','home_title'=>'avam_home_title','home_subtitle'=>'avam_home_subtitle','home_cta'=>'avam_home_cta','home_image'=>'avam_home_image','home_video'=>'avam_home_video','home_media_type'=>'avam_home_media_type'];
         foreach ($sync as $key=>$option) if (array_key_exists($key,$old)) update_option($option,$old[$key],false);
