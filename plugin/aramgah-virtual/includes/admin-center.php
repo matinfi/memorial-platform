@@ -37,7 +37,7 @@ final class AVAM_Admin_Center {
                 ['type'=>'checkbox','key'=>'sticky_header','label'=>'هدر چسبان','description'=>'در حال حاضر فقط ذخیره می‌شود؛ فعال‌سازی آن نیازمند رفتار اسکرول در قالب است.']
             ]],
             'navigation' => ['منوها و ناوبری', 'منوها', [
-                ['type'=>'menu','key'=>'primary_menu','label'=>'منوی اصلی'],
+                ['type'=>'menu','key'=>'header_menu','label'=>'منوی اصلی'],
                 ['type'=>'menu','key'=>'footer_menu','label'=>'منوی فوتر'],
                 ['type'=>'page','key'=>'home_page','label'=>'صفحه خانه'],
                 ['type'=>'page','key'=>'login_page','label'=>'صفحه ورود'],
