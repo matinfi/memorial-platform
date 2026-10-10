@@ -1,0 +1,36 @@
+/* Final archive and mobile identity corrections. */
+.avam-unified-content>.avam-archive-page{width:100%!important;max-width:none!important;min-width:0!important;padding:0!important;margin:0!important;overflow:visible!important;color:var(--ui-text)!important;background:var(--ui-page)!important}
+.avam-unified-content>.avam-archive-page:before,.avam-unified-content>.avam-archive-page:after{display:none!important}
+.avam-unified-content .avam-archive-hero{margin:0 0 18px!important;padding:0 0 18px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.avam-unified-content .avam-archive-hero>.avam-container{box-sizing:border-box!important;width:100%!important;max-width:none!important;padding:clamp(18px,3vw,28px)!important;border:1px solid var(--ui-border)!important;border-radius:16px!important;background:var(--ui-card)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.avam-unified-content .avam-archive-hero h1,.avam-unified-content .avam-archive-head strong{color:var(--ui-text)!important}
+.avam-unified-content .avam-archive-hero>.avam-container>span{color:var(--ui-accent)!important;background:var(--ui-page)!important;border-color:var(--ui-border)!important}
+.avam-unified-content .avam-archive-search{box-sizing:border-box!important;width:100%!important;border:1px solid var(--ui-border)!important;border-radius:13px!important;background:var(--ui-surface)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.avam-unified-content .avam-archive-search label span{color:var(--ui-muted)!important}
+.avam-unified-content .avam-archive-search input,.avam-unified-content .avam-archive-search select{background:var(--ui-field)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
+.avam-unified-content .avam-archive-search button{background:#31483a!important;color:#fff!important;box-shadow:none!important}
+.avam-unified-content .avam-archive-results{width:100%!important;max-width:none!important;padding:0!important;margin:0!important;background:transparent!important}
+.avam-unified-content .avam-archive-head{padding:0 2px!important}
+.avam-unified-content .avam-memorial-card{overflow:hidden!important;border:1px solid var(--ui-border)!important;border-radius:15px!important;background:var(--ui-card)!important;color:var(--ui-text)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.avam-unified-content .avam-memorial-card:hover{transform:translateY(-2px);border-color:var(--ui-accent)!important;box-shadow:var(--ui-shadow)!important}
+.avam-unified-content .avam-memorial-card-image{background:var(--ui-field)!important}
+.avam-unified-content .avam-memorial-card-image>span{background:var(--ui-page)!important;border-color:var(--ui-border)!important;color:var(--ui-accent)!important}
+.avam-unified-content .avam-memorial-card-body{background:var(--ui-card)!important}
+.avam-unified-content .avam-memorial-card-body>span{background:var(--ui-page)!important;border-color:var(--ui-border)!important;color:var(--ui-accent)!important}
+.avam-unified-content .avam-memorial-card-body h2{color:var(--ui-text)!important}
+.avam-unified-content .avam-archive-empty,.avam-unified-content .avam-archive-pagination .page-numbers{border-color:var(--ui-border)!important;background:var(--ui-card)!important;box-shadow:none!important;backdrop-filter:none!important}
+@media(max-width:760px){
+.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:center!important;gap:8px!important;min-height:0!important;height:auto!important;margin:0 0 12px!important;padding:10px 0 12px!important}
+.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-site-title{display:block!important;visibility:visible!important;width:auto!important;height:auto!important;flex:0 0 auto!important;margin:0!important;padding:0 2px!important;font-size:17px!important;line-height:1.5!important;white-space:nowrap!important}
+.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-unified-search{flex:0 0 auto!important;width:100%!important;max-width:none!important;min-height:42px!important;height:42px!important;max-height:none!important;margin:0!important}
+.avam-unified-content>.avam-archive-page{padding:0!important}
+.avam-unified-content .avam-archive-hero{padding:0 0 12px!important;margin:0 0 12px!important}
+.avam-unified-content .avam-archive-hero>.avam-container{padding:18px 13px!important;border-radius:13px!important}
+.avam-unified-content .avam-archive-search{padding:10px!important}
+.avam-unified-content .avam-memorial-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+.avam-unified-content .avam-memorial-card{border-radius:12px!important}
+.avam-unified-content .avam-memorial-card-image{margin:7px 7px 0!important;border-radius:9px!important}
+.avam-unified-content .avam-memorial-card-body{padding:11px!important}
+.avam-unified-content .avam-memorial-card-body h2{font-size:14px!important;line-height:1.7!important}
+}
+@media(max-width:380px){.avam-unified-content .avam-memorial-grid{grid-template-columns:minmax(0,1fr)!important}}
