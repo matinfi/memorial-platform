@@ -17,6 +17,7 @@ final class AVAM_Admin_Center {
         add_filter('body_class', [__CLASS__, 'body_classes']);
         add_filter('wp_robots', [__CLASS__, 'robots']);
         add_filter('wp_lazy_loading_enabled', [__CLASS__, 'lazy_loading'], 10, 2);
+        add_filter('pre_get_document_title', [__CLASS__, 'document_title']);
         add_action('init', [__CLASS__, 'performance']);
     }
 
@@ -131,7 +132,7 @@ final class AVAM_Admin_Center {
             'seo' => ['سئو و اشتراک‌گذاری', 'سئو', [
                 ['type'=>'text','key'=>'seo_default_title','label'=>'عنوان پیش‌فرض سایت','default'=>'آرامگاه مجازی'],
                 ['type'=>'textarea','key'=>'seo_default_description','label'=>'توضیح پیش‌فرض سایت'],
-                ['type'=>'text','key'=>'seo_og_image','label'=>'نشانی تصویر اشتراک‌گذاری'],
+                ['type'=>'url','key'=>'seo_og_image','label'=>'نشانی تصویر اشتراک‌گذاری'],
                 ['type'=>'checkbox','key'=>'seo_search_index','label'=>'اجازه ایندکس شدن سایت','default'=>'1'],
                 ['type'=>'checkbox','key'=>'seo_social_links','label'=>'نمایش ابزارهای اشتراک‌گذاری','default'=>'1']
             ]],
@@ -326,8 +327,15 @@ final class AVAM_Admin_Center {
             if (($settings['single_share_enabled']??'1')==='0') $classes[]='avam-setting-single-share-off';
             if (($settings['a11y_skip_link']??'1')==='0') $classes[]='avam-setting-skip-link-off';
             if (($settings['seo_social_links']??'1')==='0') $classes[]='avam-setting-social-off';
+            if (($settings['page_titles_enabled']??'1')==='0') $classes[]='avam-setting-page-titles-off';
         }
         return $classes;
+    }
+
+    public static function document_title($title) {
+        if (is_admin() || !is_front_page() || defined('WPSEO_VERSION') || defined('RANK_MATH_VERSION')) return $title;
+        $s = get_option(self::OPTION, []);
+        return is_array($s) && !empty($s['seo_default_title']) ? sanitize_text_field($s['seo_default_title']) : $title;
     }
 
     public static function lazy_loading($default, $tag_name) {
@@ -372,7 +380,7 @@ final class AVAM_Admin_Center {
         $accent=sanitize_hex_color($s['accent_color']??get_option('avam_accent_color','#ad875c'))?:'#ad875c';
         $surface=sanitize_hex_color($s['surface_color']??'#f5f7f6')?:'#f5f7f6';
         $text=sanitize_hex_color($s['text_color']??'#26382f')?:'#26382f';
-        $width=min(1800,max(720,absint($s['content_max_width']??1200)));
+        $width=min(1800,max(720,absint($s['content_max_width']??1200)));\n        if (($s['default_page_width'] ?? 'normal') !== 'normal') $width = ['narrow'=>760,'wide'=>1400][$s['default_page_width']] ?? $width;
         $current_page_id = is_page() ? get_queried_object_id() : 0;
         if ($current_page_id && absint($s['override_page'] ?? 0) === $current_page_id) {
             $override_width = $s['override_width'] ?? 'inherit';
@@ -383,7 +391,9 @@ final class AVAM_Admin_Center {
         $shadow=['none'=>'none','soft'=>'0 8px 24px rgba(35,50,42,.06)','strong'=>'0 12px 32px rgba(20,30,25,.16)'][$s['shadow_style']??'soft']??'0 8px 24px rgba(35,50,42,.06)';
         echo '<style id="avam-control-center-css">:root{--ink:'.$primary.';--cta:'.$primary.';--accent:'.$accent.';--c-primary:'.$primary.';--c-accent:'.$accent.';--avam-surface:'.$surface.';--avam-text:'.$text.';--avam-content-max:'.$width.'px;--avam-radius:'.$radius.';--avam-shadow:'.$shadow.'}';
         echo 'body.avam-setting-home-hero-off .avam-unified-welcome,body.avam-setting-home-stats-off .avam-unified-home-stats,body.avam-setting-home-recent-off .avam-unified-recent,body.avam-setting-home-panel-off .avam-unified-welcome-mark,body.avam-setting-header-title-off .avam-site-title,body.avam-setting-header-search-off .avam-unified-search,body.avam-setting-footer-off footer,body.avam-setting-mobile-menu-off .avam-mobile-menu-toggle{display:none!important}';
-        echo 'body{background:var(--avam-surface);color:var(--avam-text)}.avam-unified-welcome-mark img,.avam-unified-welcome-mark video{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}.avam-footer-copyright{display:block;margin-top:12px;color:#7a877d;font-size:11px}.avam-setting-sticky-header .avam-site-identity-bar{position:sticky;top:32px;z-index:40}.avam-setting-skip-link-off .avam-skip{display:none!important}.avam-setting-account-dashboard-off .avam-account-dashboard-content{display:none!important}.avam-setting-account-stats-off .avam-ref-stats{display:none!important}.avam-setting-account-recent-off .avam-ref-table-panel{display:none!important}.avam-setting-account-comments-link-off .avam-dash-nav a[href*="my-comments"]{display:none!important}.avam-setting-single-image-off .avam-reading-portrait-wrap,.avam-setting-single-timeline-off .avam-reading-timeline,.avam-setting-single-comments-off .avam-reading-comments,.avam-setting-single-share-off [data-share],.avam-setting-social-off [data-share]{display:none!important}';
+        $header_width = ($s['header_width'] ?? 'wide') === 'contained' ? '.avam-unified-main>.avam-ref-topbar{max-width:var(--avam-content-max);margin-inline:auto!important}' : '';
+        echo $header_width;
+        echo 'body{background:var(--avam-surface);color:var(--avam-text)}.avam-unified-welcome-mark img,.avam-unified-welcome-mark video{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}.avam-footer-copyright{display:block;margin-top:12px;color:#7a877d;font-size:11px}.avam-setting-sticky-header .avam-site-identity-bar{position:sticky;top:32px;z-index:40}.avam-setting-skip-link-off .avam-skip,.avam-setting-page-titles-off .avam-page .avam-section-title{display:none!important}.avam-setting-account-dashboard-off .avam-account-dashboard-content{display:none!important}.avam-setting-account-stats-off .avam-ref-stats{display:none!important}.avam-setting-account-recent-off .avam-ref-table-panel{display:none!important}.avam-setting-account-comments-link-off .avam-dash-nav a[href*="my-comments"]{display:none!important}.avam-setting-single-image-off .avam-reading-portrait-wrap,.avam-setting-single-timeline-off .avam-reading-timeline,.avam-setting-single-comments-off .avam-reading-comments,.avam-setting-single-share-off [data-share],.avam-setting-social-off [data-share]{display:none!important}';
         $mobile_breakpoint = in_array((string)($s['mobile_breakpoint'] ?? '760'), ['640','760','900'], true) ? (int)$s['mobile_breakpoint'] : 760;
         echo '@media(max-width:'.$mobile_breakpoint.'px){body.avam-setting-mobile-search-off .avam-unified-search{display:none!important}}';
         echo 'body.avam-setting-high-contrast{filter:contrast(1.12)}'body.avam-setting-reduce-motion *,body.avam-setting-reduce-motion *:before,body.avam-setting-reduce-motion *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}';
@@ -391,8 +401,16 @@ final class AVAM_Admin_Center {
         if (($s['a11y_focus_outline']??'1')==='1') echo ':focus-visible{outline:3px solid '.$accent.'!important;outline-offset:3px}';
         if (($s['font_family']??'vazirmatn')==='system') echo 'body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}';
         echo '</style>';
-        if (!is_admin() && !is_singular() && !empty($s['seo_default_description']) && !defined('WPSEO_VERSION') && !class_exists('RankMath\\RankMath')) {
+        if (!is_admin() && !is_singular() && !empty($s['seo_default_description']) && !defined('WPSEO_VERSION') && !defined('RANK_MATH_VERSION')) {
             echo '<meta name="description" content="'.esc_attr(wp_strip_all_tags($s['seo_default_description'])).'">';
+        }
+        if (!is_admin() && !empty($s['seo_og_image']) && !defined('WPSEO_VERSION') && !defined('RANK_MATH_VERSION')) {
+            $og_image = esc_url($s['seo_og_image']);
+            if ($og_image) echo '<meta property="og:image" content="'.$og_image.'">';
+        }
+        if (!is_admin() && !empty($s['analytics_id']) && preg_match('/^G-[A-Z0-9]+$/i', $s['analytics_id'])) {
+            $analytics_id = esc_js($s['analytics_id']);
+            echo '<script async src="https://www.googletagmanager.com/gtag/js?id='.$analytics_id.'"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","'.$analytics_id.'");</script>';
         }
     }
 
