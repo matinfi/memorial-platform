@@ -571,3 +571,164 @@ body.avam-theme-light:has(.avam-unified-shell) .avam-unified-welcome-mark{backgr
 @media (prefers-reduced-motion: reduce) {
   .avam-unified-shell > .avam-dash-sidebar { transition: none !important; }
 }
+
+
+/* Final consistency pass: remove hidden header space, align borders, and unify form surfaces. */
+.avam-unified-shell,
+.avam-unified-main,
+.avam-unified-content { box-sizing:border-box; }
+.avam-unified-main { min-width:0; }
+.avam-unified-main > .avam-ref-topbar.avam-site-identity-bar {
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  height:auto!important;
+  margin:0 0 12px!important;
+  padding:0 0 10px!important;
+  border:0!important;
+  border-bottom:1px solid var(--avam-border,#dce4de)!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.avam-unified-main > .avam-ref-topbar.avam-site-identity-bar .avam-site-title {
+  flex:0 0 auto;
+  margin:0!important;
+  padding:0!important;
+}
+.avam-unified-main > .avam-ref-topbar.avam-site-identity-bar .avam-unified-search {
+  box-sizing:border-box!important;
+  min-width:0!important;
+  margin:0!important;
+}
+.avam-unified-content {
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0 0 28px!important;
+}
+.avam-unified-content > .avam-create-card,
+.avam-unified-content > .avam-search-page,
+.avam-unified-content > .avam-archive-page,
+.avam-unified-content > .avam-profile-settings,
+.avam-unified-content > .avam-account-dashboard-content,
+.avam-unified-content > .avam-page {
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  border:1px solid var(--avam-border,#dce4de)!important;
+  border-radius:16px!important;
+}
+.avam-unified-content .avam-create-card,
+.avam-unified-content .avam-search-page,
+.avam-unified-content .avam-search-hero,
+.avam-unified-content .avam-create-top,
+.avam-unified-content .avam-form-section,
+.avam-unified-content .avam-search-form,
+.avam-unified-content .avam-result,
+.avam-unified-content .avam-results {
+  box-shadow:none!important;
+}
+.avam-unified-content .avam-search-form,
+.avam-unified-content .avam-result,
+.avam-unified-content .avam-form-section {
+  border-color:var(--avam-border,#dce4de)!important;
+}
+.avam-unified-content .avam-search-form {
+  background:var(--avam-panel-surface,#101415)!important;
+}
+.avam-unified-content .avam-search-form input,
+.avam-unified-content .avam-search-form select,
+.avam-unified-content .avam-memorial-form input,
+.avam-unified-content .avam-memorial-form textarea,
+.avam-unified-content .avam-memorial-form select {
+  background:var(--avam-field-surface,#090b0c)!important;
+  color:var(--avam-text,#f0f3f1)!important;
+  border-color:var(--avam-border,#272d2e)!important;
+}
+.avam-unified-content .avam-search-form input::placeholder,
+.avam-unified-content .avam-memorial-form input::placeholder,
+.avam-unified-content .avam-memorial-form textarea::placeholder {
+  color:var(--avam-muted,#a3ada7)!important;
+}
+.avam-unified-content .avam-search-form button {
+  min-height:44px!important;
+  border-radius:10px!important;
+}
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-shell {
+  --avam-panel-surface:#f8faf8;
+  --avam-field-surface:#ffffff;
+}
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-shell {
+  --avam-panel-surface:#101415;
+  --avam-field-surface:#090b0c;
+}
+@media(max-width:760px) {
+  .avam-unified-main { padding:0 12px 16px!important; }
+  .avam-unified-main > .avam-ref-topbar.avam-site-identity-bar {
+    min-height:0!important;
+    height:auto!important;
+    margin:0 0 8px!important;
+    padding:0 0 8px!important;
+    gap:0!important;
+    align-items:center!important;
+  }
+  .avam-unified-main > .avam-ref-topbar.avam-site-identity-bar .avam-site-title {
+    display:none!important;
+    flex:none!important;
+    width:0!important;
+    height:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+  .avam-unified-main > .avam-ref-topbar.avam-site-identity-bar .avam-unified-search {
+    flex:1 1 100%!important;
+    width:100%!important;
+    height:42px!important;
+    min-height:42px!important;
+    max-height:42px!important;
+    margin:0!important;
+    padding:3px 5px 3px 8px!important;
+  }
+  .avam-unified-content {
+    padding:0 0 22px!important;
+  }
+  .avam-unified-content > .avam-create-card,
+  .avam-unified-content > .avam-search-page,
+  .avam-unified-content > .avam-archive-page,
+  .avam-unified-content > .avam-profile-settings,
+  .avam-unified-content > .avam-account-dashboard-content,
+  .avam-unified-content > .avam-page {
+    width:100%!important;
+    margin:0!important;
+    border-radius:13px!important;
+  }
+  /* Hide the floating menu trigger while the drawer is open so it never covers navigation. */
+  .avam-unified-shell.mobile-menu-open > .avam-mobile-menu-toggle {
+    display:none!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+  .avam-unified-shell > .avam-dash-sidebar {
+    background:#101415!important;
+    color:#f0f3f1!important;
+    opacity:1!important;
+    filter:none!important;
+  }
+  body.avam-theme-light:has(.avam-unified-shell) .avam-unified-shell > .avam-dash-sidebar {
+    background:#f8faf8!important;
+    color:#26382f!important;
+  }
+  .avam-unified-shell > .avam-dash-sidebar .avam-dash-nav a {
+    min-height:48px!important;
+    border:1px solid transparent;
+  }
+  .avam-unified-shell > .avam-dash-sidebar .avam-dash-nav a:focus-visible,
+  .avam-unified-shell > .avam-dash-sidebar .avam-dash-sidebar-foot a:focus-visible,
+  .avam-unified-shell > .avam-dash-sidebar .avam-dash-sidebar-foot button:focus-visible {
+    outline:2px solid #b99a6b!important;
+    outline-offset:2px!important;
+  }
+}
