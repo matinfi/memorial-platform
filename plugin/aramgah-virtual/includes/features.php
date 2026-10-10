@@ -106,10 +106,18 @@ final class AVAM_Features {
   wp_enqueue_script('avam-features',plugins_url('assets/js/features.js',dirname(__DIR__).'/aramgah-virtual.php'),['jquery'],'1.0.0',true);
   wp_localize_script('avam-features','AVAM_FEATURES',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_features')]);
  }
+ private static function is_public_memorial($id) {
+  $post=get_post($id);
+  return $post instanceof WP_Post
+   && $post->post_type==='avam_memorial'
+   && $post->post_status==='publish'
+   && get_post_meta($id,'avam_visibility',true)!=='private';
+ }
  public static function react() {
   if (!check_ajax_referer('avam_features','nonce',false)) wp_send_json_error(['message'=>'درخواست نامعتبر است.'],403);
   $id=absint($_POST['id']??0); $kind=sanitize_key($_POST['kind']??'');
   if (!$id || get_post_type($id)!=='avam_memorial' || !in_array($kind,['candle','flower'],true)) wp_send_json_error(['message'=>'درخواست نامعتبر است.'],422);
+  if (!self::is_public_memorial($id)) wp_send_json_error(['message'=>'یادبود پیدا نشد.'],404);
   $ip=$_SERVER['REMOTE_ADDR']??'unknown'; $key='avam_react_'.hash('sha256',$ip.'|'.$id.'|'.$kind);
   if (get_transient($key)) wp_send_json_error(['message'=>'از همراهی شما سپاسگزاریم؛ این یادبود را قبلاً همراهی کرده‌اید.'],429);
   set_transient($key,1,DAY_IN_SECONDS);
@@ -119,6 +127,7 @@ final class AVAM_Features {
  public static function report() {
   if (!check_ajax_referer('avam_features','nonce',false)) wp_send_json_error(['message'=>'درخواست نامعتبر است.'],403);
   $id=absint($_POST['id']??0); if (!$id || get_post_type($id)!=='avam_memorial') wp_send_json_error(['message'=>'یادبود پیدا نشد.'],404);
+  if (!self::is_public_memorial($id)) wp_send_json_error(['message'=>'یادبود پیدا نشد.'],404);
   $reason=sanitize_textarea_field(wp_unslash($_POST['reason']??'')); if (mb_strlen($reason)<5 || mb_strlen($reason)>1000) wp_send_json_error(['message'=>'لطفاً دلیل گزارش را در ۵ تا ۱۰۰۰ نویسه بنویسید.'],422);
   $ip=$_SERVER['REMOTE_ADDR']??'unknown'; $key='avam_report_'.hash('sha256',$ip.'|'.$id);
   if (get_transient($key)) wp_send_json_error(['message'=>'برای این یادبود قبلاً گزارشی از شما ثبت شده است.'],429);
