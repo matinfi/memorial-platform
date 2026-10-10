@@ -47,7 +47,7 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
       <?php endif; ?>
     </nav>
     <div class="avam-dash-sidebar-foot">
-      <button class="avam-theme-toggle" type="button" data-avam-theme-toggle aria-pressed="false"><span aria-hidden="true">☼</span><span data-avam-theme-label>حالت روشن</span></button>
+      <button class="avam-theme-toggle" type="button" data-avam-theme-toggle aria-pressed="false"><span aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg></span><span data-avam-theme-label>حالت روشن</span></button>
       <?php if (is_user_logged_in()): ?>
         <a class="avam-dash-logout" href="<?php echo esc_url(wp_logout_url(home_url('/'))); ?>"><span aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h9a7 7 0 0 1 7 7v3"/></svg></span>خروج از حساب</a>
       <?php else: ?>
