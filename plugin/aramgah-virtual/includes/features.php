@@ -65,12 +65,13 @@ final class AVAM_Features {
   return get_option('avam_comments_enabled','1')==='1' ? true : false;
  }
  public static function comment_form_defaults($defaults) {
+  $avam_cc=get_option('avam_control_center',[]); $max_length=is_array($avam_cc)?min(20000,max(1,absint($avam_cc['comment_max_length']??5000))):5000;
   $defaults['title_reply']='دعایی یا خاطره‌ای بنویسید';
   $defaults['label_submit']='ثبت پیام';
   $defaults['comment_notes_before']='';
   $defaults['comment_notes_after']='';
   $defaults['logged_in_as']='';
-  $defaults['comment_field']='<p class="comment-form-comment"><label for="comment">پیام شما</label><textarea id="comment" name="comment" rows="5" maxlength="5000" required placeholder="با احترام، خاطره یا دعایی از خود به یادگار بگذارید…"></textarea></p><input type="hidden" name="avam_comment_nonce" value="'.esc_attr(wp_create_nonce('avam_submit_comment')).'"><div class="avam-comment-ajax-notice" role="status" aria-live="polite"></div>';
+  $defaults['comment_field']='<p class="comment-form-comment"><label for="comment">پیام شما</label><textarea id="comment" name="comment" rows="5" maxlength="'.esc_attr($max_length).'" required placeholder="با احترام، خاطره یا دعایی از خود به یادگار بگذارید…"></textarea></p><input type="hidden" name="avam_comment_nonce" value="'.esc_attr(wp_create_nonce('avam_submit_comment')).'"><div class="avam-comment-ajax-notice" role="status" aria-live="polite"></div>';
   return $defaults;
  }
  public static function submit_comment() {
@@ -80,7 +81,8 @@ final class AVAM_Features {
   if (!$post || $post->post_type!=='avam_memorial' || $post->post_status!=='publish' || !comments_open($post_id)) wp_send_json_error(['message'=>'ثبت پیام برای این یادبود ممکن نیست.'],422);
   if (get_post_meta($post_id,'avam_visibility',true)==='private' && !current_user_can('manage_options') && (int)$post->post_author!==get_current_user_id()) wp_send_json_error(['message'=>'دسترسی به این یادبود مجاز نیست.'],404);
   $content=trim(wp_unslash($_POST['comment']??''));
-  if ($content==='' || mb_strlen($content)>5000) wp_send_json_error(['message'=>'متن پیام باید بین ۱ تا ۵۰۰۰ نویسه باشد.'],422);
+  $avam_cc=get_option('avam_control_center',[]); $max_length=is_array($avam_cc)?min(20000,max(1,absint($avam_cc['comment_max_length']??5000))):5000;
+  if ($content==='' || mb_strlen($content)>$max_length) wp_send_json_error(['message'=>'متن پیام باید بین ۱ تا '.number_format_i18n($max_length).' نویسه باشد.'],422);
   $user=wp_get_current_user();
   $author=is_user_logged_in()?$user->display_name:sanitize_text_field(wp_unslash($_POST['author']??''));
   $email=is_user_logged_in()?$user->user_email:sanitize_email(wp_unslash($_POST['email']??''));
