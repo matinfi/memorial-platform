@@ -732,3 +732,473 @@ body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-shell {
     outline-offset:2px!important;
   }
 }
+
+
+/* 2026 UI quality pass: consistent geometry, surfaces, controls and responsive behavior. */
+.avam-unified-shell {
+  --ui-page:#f2f5f3;
+  --ui-surface:#f7f9f7;
+  --ui-card:#f7f9f7;
+  --ui-field:#ffffff;
+  --ui-text:#26382f;
+  --ui-muted:#6f7d73;
+  --ui-border:#d7e0d9;
+  --ui-accent:#9a7852;
+  --ui-shadow:0 8px 24px rgba(31,49,39,.045);
+  color:var(--ui-text);
+}
+body.avam-theme-dark:has(.avam-unified-shell) .avam-unified-shell {
+  --ui-page:#141816;
+  --ui-surface:#1a201c;
+  --ui-card:#1a201c;
+  --ui-field:#111512;
+  --ui-text:#edf2ed;
+  --ui-muted:#a0ada3;
+  --ui-border:#303a33;
+  --ui-accent:#c4a477;
+  --ui-shadow:0 8px 24px rgba(0,0,0,.14);
+}
+.avam-unified-shell,
+.avam-unified-main,
+.avam-unified-content,
+.avam-unified-footer,
+.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar,
+.avam-unified-content .avam-create-card,
+.avam-unified-content .avam-search-page,
+.avam-unified-content .avam-profile-settings,
+.avam-unified-content .avam-card,
+.avam-unified-content .avam-auth-card,
+.avam-unified-content .avam-account-dashboard-content,
+.avam-unified-content .avam-page {
+  color:var(--ui-text)!important;
+  box-sizing:border-box;
+}
+body:has(.avam-unified-shell) { background:var(--ui-page,#f2f5f3)!important; }
+.avam-unified-shell,
+.avam-unified-main,
+.avam-unified-content,
+.avam-unified-footer,
+.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar {
+  background:var(--ui-page,#f2f5f3)!important;
+}
+.avam-unified-main { min-width:0!important; }
+.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar {
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:16px!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  height:auto!important;
+  margin:0 0 14px!important;
+  padding:12px 0 12px!important;
+  border:0!important;
+  border-bottom:1px solid var(--ui-border)!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-site-title {
+  display:block!important;
+  flex:0 0 auto!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  color:var(--ui-text)!important;
+  font-size:18px!important;
+  line-height:1.5!important;
+}
+.avam-unified-search {
+  box-sizing:border-box!important;
+  flex:0 1 560px!important;
+  width:min(100%,560px)!important;
+  min-width:0!important;
+  min-height:46px!important;
+  margin:0!important;
+  padding:4px 6px 4px 10px!important;
+  border:1px solid var(--ui-border)!important;
+  border-radius:12px!important;
+  background:var(--ui-surface)!important;
+  box-shadow:none!important;
+}
+.avam-unified-search input {
+  min-width:0!important;
+  min-height:36px!important;
+  background:transparent!important;
+  color:var(--ui-text)!important;
+  font-size:14px!important;
+}
+.avam-unified-search input::placeholder { color:var(--ui-muted)!important; opacity:1; }
+.avam-unified-search button {
+  min-height:36px!important;
+  border-radius:9px!important;
+  background:#31483a!important;
+  color:#fff!important;
+}
+.avam-unified-content {
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0 0 28px!important;
+  overflow-wrap:anywhere;
+}
+.avam-unified-content>.avam-create-card,
+.avam-unified-content>.avam-search-page,
+.avam-unified-content>.avam-profile-settings,
+.avam-unified-content>.avam-card,
+.avam-unified-content>.avam-auth-card,
+.avam-unified-content>.avam-page {
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:clamp(18px,2.5vw,32px)!important;
+  border:1px solid var(--ui-border)!important;
+  border-radius:16px!important;
+  background:var(--ui-card)!important;
+  color:var(--ui-text)!important;
+  box-shadow:var(--ui-shadow)!important;
+}
+.avam-unified-content .avam-create-top {
+  align-items:flex-start;
+  gap:18px;
+  margin:0 0 24px!important;
+  padding:0 0 20px!important;
+  border-bottom:1px solid var(--ui-border)!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.avam-unified-content .avam-create-top h1,
+.avam-unified-content .avam-search-hero h1,
+.avam-unified-content .avam-profile-settings h1,
+.avam-unified-content .avam-profile-settings h2 {
+  color:var(--ui-text)!important;
+}
+.avam-unified-content .avam-create-top p,
+.avam-unified-content .avam-search-hero p,
+.avam-unified-content .avam-create-card .avam-auth-lead {
+  color:var(--ui-muted)!important;
+}
+.avam-unified-content .avam-form-section {
+  margin:0 0 22px!important;
+  padding:0 0 22px!important;
+  border-bottom:1px solid var(--ui-border)!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.avam-unified-content .avam-form-section:last-of-type { margin-bottom:12px!important; }
+.avam-unified-content .avam-form-section-title>span {
+  width:36px!important;
+  height:36px!important;
+  flex:0 0 36px!important;
+  border:1px solid var(--ui-border)!important;
+  border-radius:10px!important;
+  background:var(--ui-surface)!important;
+  color:var(--ui-accent)!important;
+  font-size:11px!important;
+}
+.avam-unified-content .avam-form-section-title strong,
+.avam-unified-content .avam-form-section-title small,
+.avam-unified-content .avam-field label { color:var(--ui-text)!important; }
+.avam-unified-content .avam-form-section-title small { color:var(--ui-muted)!important; }
+.avam-unified-content .avam-form-grid { gap:16px!important; }
+.avam-unified-content .avam-field { min-width:0; gap:8px!important; }
+.avam-unified-content .avam-field input,
+.avam-unified-content .avam-field textarea,
+.avam-unified-content .avam-field select,
+.avam-unified-content .avam-search-form input,
+.avam-unified-content .avam-search-form select,
+.avam-unified-content .avam-archive-search input,
+.avam-unified-content .avam-archive-search select,
+.avam-unified-content .avam-profile-settings input:not([type=checkbox]):not([type=submit]),
+.avam-unified-content .avam-profile-settings select {
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  min-height:46px!important;
+  border:1px solid var(--ui-border)!important;
+  border-radius:10px!important;
+  background:var(--ui-field)!important;
+  color:var(--ui-text)!important;
+  box-shadow:none!important;
+  font:inherit!important;
+  font-size:16px!important;
+}
+.avam-unified-content .avam-field textarea { min-height:170px!important; line-height:1.9!important; }
+.avam-unified-content input::placeholder,
+.avam-unified-content textarea::placeholder { color:var(--ui-muted)!important; opacity:1; }
+.avam-unified-content .avam-field input:focus,
+.avam-unified-content .avam-field textarea:focus,
+.avam-unified-content .avam-field select:focus,
+.avam-unified-content .avam-search-form input:focus,
+.avam-unified-content .avam-archive-search input:focus,
+.avam-unified-content .avam-archive-search select:focus {
+  outline:2px solid color-mix(in srgb,var(--ui-accent) 35%,transparent)!important;
+  outline-offset:1px!important;
+  border-color:var(--ui-accent)!important;
+}
+.avam-unified-content .avam-upload {
+  background:var(--ui-surface)!important;
+  border-color:var(--ui-border)!important;
+}
+.avam-unified-content .avam-upload:hover { background:var(--ui-page)!important; }
+.avam-unified-content .avam-search-hero { padding:0 0 24px!important; text-align:right!important; }
+.avam-unified-content .avam-search-hero>span { color:var(--ui-accent)!important; }
+.avam-unified-content .avam-search-hero h1 { margin:6px 0 8px!important; font-size:clamp(26px,3.2vw,38px)!important; }
+.avam-unified-content .avam-search-form {
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  align-items:end!important;
+  gap:14px!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:22px 0 0!important;
+  padding:18px!important;
+  border:1px solid var(--ui-border)!important;
+  border-radius:14px!important;
+  background:var(--ui-surface)!important;
+  box-shadow:none!important;
+}
+.avam-unified-content .avam-search-form label { display:grid!important; min-width:0!important; gap:7px!important; color:var(--ui-text)!important; }
+.avam-unified-content .avam-search-form label span { color:var(--ui-muted)!important; font-size:12px!important; }
+.avam-unified-content .avam-search-form button {
+  grid-column:1/-1!important;
+  min-height:46px!important;
+  border-radius:10px!important;
+  background:#31483a!important;
+  color:#fff!important;
+}
+.avam-unified-content .avam-results { grid-template-columns:repeat(3,minmax(0,1fr))!important; gap:14px!important; margin-top:20px!important; }
+.avam-unified-content .avam-result {
+  min-width:0!important;
+  border:1px solid var(--ui-border)!important;
+  border-radius:13px!important;
+  background:var(--ui-surface)!important;
+  color:var(--ui-text)!important;
+  box-shadow:none!important;
+}
+.avam-unified-content .avam-result h2 { color:var(--ui-text)!important; font-size:16px!important; }
+.avam-unified-content .avam-result span { color:var(--ui-muted)!important; }
+.avam-unified-content .avam-no-results {
+  border-color:var(--ui-border)!important;
+  background:var(--ui-surface)!important;
+  color:var(--ui-muted)!important;
+}
+.avam-unified-content .avam-archive-hero,
+.avam-unified-content .avam-archive-search,
+.avam-unified-content .avam-archive-empty,
+.avam-unified-content .avam-archive-pagination .page-numbers {
+  background:var(--ui-surface)!important;
+  border-color:var(--ui-border)!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+.avam-unified-content .avam-memorial-card {
+  background:var(--ui-surface)!important;
+  border-color:var(--ui-border)!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+.avam-unified-content .avam-memorial-card-body h2 { color:var(--ui-text)!important; }
+.avam-unified-content .avam-memorial-card-body p,
+.avam-unified-content .avam-archive-hero p,
+.avam-unified-content .avam-archive-head span { color:var(--ui-muted)!important; }
+.avam-unified-content .avam-ref-panel,
+.avam-unified-content .avam-ref-table-panel,
+.avam-unified-content .avam-ref-chart-grid,
+.avam-unified-content .avam-ref-stats article,
+.avam-unified-content .avam-unified-recent,
+.avam-unified-content .avam-unified-home-stats article,
+.avam-unified-content .avam-unified-memorial-card {
+  border:1px solid var(--ui-border)!important;
+  background:var(--ui-card)!important;
+  box-shadow:none!important;
+}
+.avam-unified-content .avam-unified-welcome {
+  min-width:0;
+  border:1px solid var(--ui-border)!important;
+  background:var(--ui-surface)!important;
+  box-shadow:none!important;
+}
+.avam-unified-content .avam-unified-welcome h1,
+.avam-unified-content .avam-unified-section-head h2,
+.avam-unified-content .avam-unified-memorial-info h3 { color:var(--ui-text)!important; }
+.avam-unified-content .avam-unified-welcome p,
+.avam-unified-content .avam-unified-memorial-info p { color:var(--ui-muted)!important; }
+.avam-unified-content .avam-unified-content a:focus-visible,
+.avam-unified-shell a:focus-visible,
+.avam-unified-shell button:focus-visible {
+  outline:2px solid var(--ui-accent)!important;
+  outline-offset:3px!important;
+}
+.avam-unified-shell>.avam-dash-sidebar {
+  background:var(--ui-surface)!important;
+  color:var(--ui-text)!important;
+  border-inline-start:1px solid var(--ui-border)!important;
+  opacity:1!important;
+  filter:none!important;
+  backdrop-filter:none!important;
+}
+.avam-unified-shell .avam-dash-brand,
+.avam-unified-shell .avam-dash-brand b,
+.avam-unified-shell .avam-dash-brand small,
+.avam-unified-shell .avam-dash-nav a,
+.avam-unified-shell .avam-dash-sidebar-foot a,
+.avam-unified-shell .avam-theme-toggle { color:var(--ui-text)!important; }
+.avam-unified-shell .avam-dash-nav a[aria-current="page"] {
+  background:color-mix(in srgb,var(--ui-accent) 12%,var(--ui-surface))!important;
+  border-color:color-mix(in srgb,var(--ui-accent) 25%,var(--ui-border))!important;
+}
+.avam-unified-shell .avam-nav-icon {
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 34px!important;
+  width:34px!important;
+  height:34px!important;
+  border-radius:9px!important;
+  background:var(--ui-page)!important;
+  color:var(--ui-accent)!important;
+  font-size:0!important;
+}
+.avam-unified-shell .avam-nav-icon svg { width:18px;height:18px;display:block; }
+.avam-unified-shell .avam-theme-toggle [aria-hidden="true"] { display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px; }
+.avam-unified-shell .avam-theme-toggle svg { width:18px;height:18px;display:block; }
+.avam-unified-shell .avam-mobile-menu-toggle {
+  display:none;
+  border:1px solid var(--ui-border)!important;
+  background:#31483a!important;
+  color:#fff!important;
+  box-shadow:0 8px 24px rgba(20,35,28,.18)!important;
+}
+@media(max-width:760px) {
+  .avam-unified-main { padding:0 12px 16px!important; }
+  .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar {
+    position:relative!important;
+    top:auto!important;
+    gap:0!important;
+    margin:0 0 10px!important;
+    padding:8px 0 9px!important;
+  }
+  .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-site-title {
+    display:none!important;
+    flex:none!important;
+    width:0!important;
+    height:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+  .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-unified-search {
+    flex:1 1 100%!important;
+    width:100%!important;
+    max-width:none!important;
+    min-height:42px!important;
+    height:42px!important;
+    max-height:42px!important;
+    margin:0!important;
+  }
+  .avam-unified-content { padding:0 0 22px!important; }
+  .avam-unified-content>.avam-create-card,
+  .avam-unified-content>.avam-search-page,
+  .avam-unified-content>.avam-profile-settings,
+  .avam-unified-content>.avam-card,
+  .avam-unified-content>.avam-auth-card,
+  .avam-unified-content>.avam-page {
+    padding:17px 14px!important;
+    border-radius:13px!important;
+  }
+  .avam-unified-content .avam-create-top { display:grid!important; grid-template-columns:minmax(0,1fr)!important; gap:8px!important; }
+  .avam-unified-content .avam-create-back { justify-self:start; }
+  .avam-unified-content .avam-form-grid { grid-template-columns:minmax(0,1fr)!important; gap:14px!important; }
+  .avam-unified-content .avam-form-section { margin-bottom:18px!important; padding-bottom:18px!important; }
+  .avam-unified-content .avam-search-form { grid-template-columns:minmax(0,1fr)!important; gap:12px!important; padding:12px!important; margin-top:18px!important; }
+  .avam-unified-content .avam-search-form button { grid-column:auto!important; width:100%!important; }
+  .avam-unified-content .avam-results { grid-template-columns:repeat(2,minmax(0,1fr))!important; gap:10px!important; }
+  .avam-unified-content .avam-result img { aspect-ratio:1.2!important; object-fit:cover; }
+  .avam-unified-content .avam-result>div { padding:12px!important; }
+  .avam-unified-content .avam-result h2 { font-size:14px!important; }
+  .avam-unified-content .avam-archive-search { grid-template-columns:minmax(0,1fr)!important; gap:10px!important; padding:12px!important; }
+  .avam-unified-content .avam-archive-search label,
+  .avam-unified-content .avam-archive-search button { width:100%!important; min-width:0!important; }
+  .avam-unified-content .avam-archive-search button { min-height:46px!important; }
+  .avam-unified-content .avam-memorial-grid { grid-template-columns:repeat(2,minmax(0,1fr))!important; gap:10px!important; }
+  .avam-unified-content .avam-memorial-card-body { padding:13px!important; }
+  .avam-unified-content .avam-unified-home-stats { grid-template-columns:minmax(0,1fr)!important; }
+  .avam-unified-shell>.avam-mobile-menu-toggle {
+    position:fixed!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:8px!important;
+    right:14px!important;
+    left:auto!important;
+    bottom:14px!important;
+    z-index:81!important;
+    min-width:58px!important;
+    width:auto!important;
+    max-width:calc(100vw - 28px)!important;
+    height:46px!important;
+    min-height:46px!important;
+    max-height:46px!important;
+    padding:0 14px!important;
+    border-radius:13px!important;
+    white-space:nowrap!important;
+    box-sizing:border-box!important;
+  }
+  .avam-unified-shell.mobile-menu-open>.avam-mobile-menu-toggle {
+    display:none!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+  .avam-unified-shell>.avam-mobile-menu-backdrop:not([hidden]) {
+    position:fixed!important;
+    inset:0!important;
+    display:block!important;
+    z-index:79!important;
+    background:rgba(12,20,15,.52)!important;
+    backdrop-filter:none!important;
+  }
+  .avam-unified-shell>.avam-dash-sidebar {
+    position:fixed!important;
+    top:0!important;
+    right:0!important;
+    bottom:0!important;
+    left:auto!important;
+    z-index:80!important;
+    width:min(312px,88vw)!important;
+    max-width:88vw!important;
+    height:100dvh!important;
+    min-height:0!important;
+    max-height:100dvh!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain;
+    transform:translateX(110%);
+    transition:transform .22s ease;
+    opacity:1!important;
+    filter:none!important;
+    backdrop-filter:none!important;
+    background:var(--ui-surface)!important;
+    box-shadow:-14px 0 38px rgba(12,24,17,.20)!important;
+  }
+  .avam-unified-shell.mobile-menu-open>.avam-dash-sidebar { transform:translateX(0)!important; }
+  body.avam-mobile-nav-open { overflow:hidden!important; }
+  .avam-unified-shell .avam-dash-nav { padding:10px 12px 18px!important; }
+  .avam-unified-shell .avam-dash-nav a { min-height:48px!important; margin:3px 0!important; padding:7px 10px!important; }
+}
+@media(max-width:420px) {
+  .avam-unified-main { padding-inline:10px!important; }
+  .avam-unified-content>.avam-create-card,
+  .avam-unified-content>.avam-search-page,
+  .avam-unified-content>.avam-profile-settings,
+  .avam-unified-content>.avam-card { padding:15px 11px!important; }
+  .avam-unified-content .avam-results,
+  .avam-unified-content .avam-memorial-grid { grid-template-columns:minmax(0,1fr)!important; }
+  .avam-unified-content .avam-result img { aspect-ratio:1.65!important; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .avam-unified-shell>.avam-dash-sidebar { transition:none!important; }
+  .avam-unified-content * { scroll-behavior:auto!important; }
+}
