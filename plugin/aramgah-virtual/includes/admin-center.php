@@ -346,7 +346,7 @@ final class AVAM_Admin_Center {
         if (($s['a11y_focus_outline']??'1')==='1') echo ':focus-visible{outline:3px solid '.$accent.'!important;outline-offset:3px}';
         if (($s['font_family']??'vazirmatn')==='system') echo 'body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}';
         echo '</style>';
-        if (!is_admin() && !is_singular() && !empty($s['seo_default_description']) && !defined('WPSEO_VERSION') && !class_exists('RankMath\\\\RankMath')) {
+        if (!is_admin() && !is_singular() && !empty($s['seo_default_description']) && !defined('WPSEO_VERSION') && !class_exists('RankMath\\RankMath')) {
             echo '<meta name="description" content="'.esc_attr(wp_strip_all_tags($s['seo_default_description'])).'">';
         }
     }
