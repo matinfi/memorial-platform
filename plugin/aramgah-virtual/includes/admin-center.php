@@ -13,6 +13,7 @@ final class AVAM_Admin_Center {
         add_action('admin_post_avam_save_control_center', [__CLASS__, 'save']);
         add_action('admin_enqueue_scripts', [__CLASS__, 'assets']);
         add_action('wp_head', [__CLASS__, 'frontend_css'], 99);
+        add_action('wp_body_open', [__CLASS__, 'announcement']);
         add_filter('body_class', [__CLASS__, 'body_classes']);
     }
 
@@ -283,7 +284,7 @@ final class AVAM_Admin_Center {
         }
         update_option(self::OPTION,$old,false);
         // Keep existing public-facing options in sync for legacy template compatibility.
-        $sync = ['primary_color'=>'avam_primary_color','accent_color'=>'avam_accent_color','footer_text'=>'avam_footer_text','site_message'=>'avam_site_message','search_title'=>'avam_search_title','search_intro'=>'avam_search_intro','single_kicker'=>'avam_single_kicker','single_intro'=>'avam_single_intro','home_eyebrow'=>'avam_home_eyebrow','home_title'=>'avam_home_title','home_subtitle'=>'avam_home_subtitle','home_cta'=>'avam_home_cta','home_image'=>'avam_home_image','home_video'=>'avam_home_video','home_media_type'=>'avam_home_media_type'];
+        $sync = ['primary_color'=>'avam_primary_color','accent_color'=>'avam_accent_color','footer_text'=>'avam_footer_text','site_message'=>'avam_site_message','search_title'=>'avam_search_title','search_intro'=>'avam_search_intro','single_kicker'=>'avam_single_kicker','single_intro'=>'avam_single_intro','comments_enabled'=>'avam_comments_enabled','comments_moderation'=>'avam_comments_require_moderation','home_eyebrow'=>'avam_home_eyebrow','home_title'=>'avam_home_title','home_subtitle'=>'avam_home_subtitle','home_cta'=>'avam_home_cta','home_image'=>'avam_home_image','home_video'=>'avam_home_video','home_media_type'=>'avam_home_media_type'];
         foreach ($sync as $key=>$option) if (array_key_exists($key,$old)) update_option($option,$old[$key],false);
         if (isset($_POST['return_tab'])) $tab=sanitize_key(wp_unslash($_POST['return_tab'])); else $tab='overview';
         if (!isset($tabs[$tab])) $tab='overview';
@@ -309,6 +310,15 @@ final class AVAM_Admin_Center {
         return $classes;
     }
 
+    public static function announcement() {
+        $s = get_option(self::OPTION, []);
+        if (!is_array($s) || ($s['announcement_enabled'] ?? '0') !== '1' || empty($s['announcement_text'])) return;
+        $type = sanitize_key($s['announcement_type'] ?? 'info');
+        $colors = ['info'=>'#edf4f8','success'=>'#edf7ef','warning'=>'#fff6e5'];
+        $color = $colors[$type] ?? $colors['info'];
+        echo '<div class="avam-cc-announcement" role="status" style="padding:10px 18px;background:'.esc_attr($color).';color:#26382f;text-align:center;font-size:13px">'.esc_html($s['announcement_text']).'</div>';
+    }
+
     public static function frontend_css() {
         $s=get_option(self::OPTION,[]);
         if (!is_array($s)) $s=[];
@@ -325,7 +335,11 @@ final class AVAM_Admin_Center {
         echo '.avam-unified-content,.avam-container,.avam-archive-results{max-width:var(--avam-content-max)}.avam-unified-memorial-card,.avam-memorial-card,.avam-card,.avam-ref-panel{border-radius:var(--avam-radius);box-shadow:var(--avam-shadow)}';
         if (($s['a11y_focus_outline']??'1')==='1') echo ':focus-visible{outline:3px solid '.$accent.'!important;outline-offset:3px}';
         if (($s['font_family']??'vazirmatn')==='system') echo 'body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}';
+        if (($s['seo_search_index'] ?? '1') === '0') echo 'meta[name="robots"]{display:none}';
         echo '</style>';
+        if (!is_admin() && !is_singular() && !empty($s['seo_default_description']) && !defined('WPSEO_VERSION') && !class_exists('RankMath\\\\RankMath')) {
+            echo '<meta name="description" content="'.esc_attr(wp_strip_all_tags($s['seo_default_description'])).'">';
+        }
     }
 
     public static function assets($hook) {
