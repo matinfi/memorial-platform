@@ -263,3 +263,155 @@ body:has(.avam-unified-shell),
 @media(max-width:760px){
   .avam-unified-shell>.avam-dash-sidebar{background:#f2f5f3!important}
 }
+
+
+/* Two coordinated color schemes. Dark graphite is the initial scheme; the switcher enables light mode. */
+.avam-unified-shell{
+ --avam-surface:#090b0c;
+ --avam-surface-soft:#090b0c;
+ --avam-border:#272d2e;
+ --avam-text:#f0f3f1;
+ --avam-muted:#a3ada7;
+ --avam-accent:#c7a77b;
+ background:var(--avam-surface)!important;
+ color:var(--avam-text)!important;
+}
+body:has(.avam-unified-shell):not(.avam-theme-light),
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-shell,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-main,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-footer,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-shell>.avam-dash-sidebar,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-main>.avam-ref-topbar,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-unified-welcome,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-unified-home-stats article,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-unified-recent,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-unified-memorial-card,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-archive-hero,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-archive-results,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-card,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-ref-panel,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-ref-table-panel,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-ref-chart-grid,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-ref-stats,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-ref-table-wrap,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-create-card,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-profile-settings,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-account-dashboard-content,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-page,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content .avam-my-comments{
+ background:#090b0c!important;
+ color:#f0f3f1!important;
+ border-color:#272d2e!important;
+ box-shadow:none!important;
+}
+body:has(.avam-unified-shell):not(.avam-theme-light){background:#090b0c!important;color:#f0f3f1!important}
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content h1,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content h2,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content h3,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content strong,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-site-title,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-dash-brand,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-dash-brand b,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-dash-nav a,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-dash-sidebar-foot a{
+ color:#f0f3f1!important;
+}
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content p,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content small,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content label,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-footer,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-dash-brand small{
+ color:#a3ada7!important;
+}
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content input,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content select,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content textarea,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-search{
+ background:#090b0c!important;color:#f0f3f1!important;border-color:#343c3d!important;
+}
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content input::placeholder,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-content textarea::placeholder{color:#89958e!important}
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-dash-brand-mark,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-nav-icon,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-stat-icon,
+body:has(.avam-unified-shell):not(.avam-theme-light) .avam-unified-welcome-mark{
+ background:#15191a!important;color:#c7a77b!important;border-color:#2a3031!important;
+}
+.avam-theme-toggle{display:flex;align-items:center;gap:10px;width:100%;min-height:42px;margin:0 0 10px;padding:0 12px;border:1px solid #3b4240;border-radius:12px;background:#15191a;color:#e9eeea;font:500 13px "Vazirmatn",sans-serif;text-align:right;cursor:pointer}
+.avam-theme-toggle span:first-child{font-size:18px;line-height:1}
+.avam-theme-light .avam-theme-toggle{background:#e8eee9;color:#34473d;border-color:#d1dcd4}
+.avam-theme-light .avam-unified-shell{--avam-surface:#f2f5f3;--avam-surface-soft:#f2f5f3;--avam-border:#dce4de;--avam-text:#26382f;--avam-muted:#718076;--avam-accent:#526d5b}
+body.avam-theme-light:has(.avam-unified-shell),
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-shell,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-main,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-footer,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-shell>.avam-dash-sidebar,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-main>.avam-ref-topbar,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-unified-welcome,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-unified-home-stats article,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-unified-recent,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-unified-memorial-card,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-archive-hero,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-archive-results,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-card,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-ref-panel,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-ref-table-panel,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-ref-chart-grid,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-ref-stats,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-ref-table-wrap,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-create-card,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-profile-settings,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-account-dashboard-content,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-page,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content .avam-my-comments{
+ background:#f2f5f3!important;color:#26382f!important;border-color:#dce4de!important;box-shadow:none!important;
+}
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content h1,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content h2,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content h3,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content strong,
+body.avam-theme-light:has(.avam-unified-shell) .avam-site-title,
+body.avam-theme-light:has(.avam-unified-shell) .avam-dash-brand,
+body.avam-theme-light:has(.avam-unified-shell) .avam-dash-brand b,
+body.avam-theme-light:has(.avam-unified-shell) .avam-dash-nav a,
+body.avam-theme-light:has(.avam-unified-shell) .avam-dash-sidebar-foot a{color:#26382f!important}
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content p,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content small,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content label,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-footer,
+body.avam-theme-light:has(.avam-unified-shell) .avam-dash-brand small{color:#718076!important}
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content input,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content select,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-content textarea,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-search{background:#f2f5f3!important;color:#26382f!important;border-color:#d1dcd4!important}
+body.avam-theme-light:has(.avam-unified-shell) .avam-dash-brand-mark,
+body.avam-theme-light:has(.avam-unified-shell) .avam-nav-icon,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-stat-icon,
+body.avam-theme-light:has(.avam-unified-shell) .avam-unified-welcome-mark{background:#e8eee9!important;color:#526d5b!important;border-color:#dce4de!important}
+.avam-my-comments{padding:clamp(18px,3vw,32px)!important;border:1px solid var(--avam-border,#272d2e)!important;border-radius:18px}
+.avam-my-comments-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:20px}
+.avam-my-comments-head h1{margin:5px 0 8px;font-size:clamp(22px,3vw,30px)}
+.avam-my-comments-head>div>span{color:#c7a77b;font-size:12px;font-weight:700}
+.avam-my-comments-head p{margin:0;line-height:1.9}
+.avam-my-comments-head>strong{flex:none;padding:8px 12px;border:1px solid var(--avam-border,#272d2e);border-radius:10px;font-size:12px}
+.avam-my-comments-list{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.avam-my-comment{padding:16px;border:1px solid var(--avam-border,#272d2e);border-radius:14px;background:transparent}
+.avam-my-comment-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.avam-my-comment-meta>a{font-weight:700;color:#c7a77b}
+.avam-my-comment-meta time{font-size:12px;color:var(--avam-muted,#a3ada7)}
+.avam-comment-status{padding:4px 8px;border-radius:999px;font-size:11px}
+.avam-comment-status.is-pending{background:#3b2d18;color:#f1cf91}
+.avam-comment-status.is-published{background:#18352a;color:#9ad6b3}
+.avam-my-comment>p{margin:12px 0;line-height:1.9;overflow-wrap:anywhere}
+.avam-my-comment-open{font-size:12px;font-weight:700;color:#c7a77b}
+.avam-my-comments-empty{text-align:center;padding:28px 12px}
+.avam-my-comments-empty>span{font-size:36px;color:#c7a77b}
+.avam-my-comments-empty h2{margin:8px 0}
+.avam-my-comments-empty .avam-btn{display:inline-flex;margin-top:10px}
+.avam-theme-light .avam-my-comment-meta>a,.avam-theme-light .avam-my-comment-open,.avam-theme-light .avam-my-comments-head>div>span{color:#526d5b}
+.avam-theme-light .avam-comment-status.is-pending{background:#f8ecd5;color:#79571d}
+.avam-theme-light .avam-comment-status.is-published{background:#dcefe3;color:#235d3c}
