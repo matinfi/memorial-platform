@@ -6,28 +6,10 @@
 <meta name="theme-color" content="#f5f7f6">
 <?php wp_head(); ?>
 <style>
-/* Shared full-width identity bar; keep its palette aligned with the application panel. */
-.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{box-sizing:border-box;width:calc(100% + 60px);min-height:88px;margin:0 -30px 8px!important;padding:18px 30px!important;background:#f5f7f6;border-bottom:1px solid #e0e7e3;color:#26382f}
-.avam-site-identity-brand{display:flex;align-items:center;gap:13px;min-width:0;color:inherit;text-decoration:none}
-.avam-site-identity-mark{display:flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:44px;border:1px solid #dce5de;border-radius:14px;background:#e8eee9;color:#526d5b;font-family:inherit;font-size:24px;font-weight:700}
-.avam-site-identity-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
-.avam-site-identity-copy strong{color:#26382f;font-size:17px;font-weight:750;line-height:1.5}
-.avam-site-identity-copy small{color:#718076;font-size:12px;line-height:1.5}
-.avam-site-identity-bar .avam-ref-user{display:flex;align-items:center;gap:10px;flex:0 0 auto;margin-inline-start:auto}
-.avam-site-identity-bar .avam-ref-user>div{display:flex;flex-direction:column;gap:3px}
-.avam-site-identity-bar .avam-ref-user strong{color:#26382f;font-size:13px;font-weight:700}
-.avam-site-identity-bar .avam-ref-user small{color:#718076;font-size:11px}
-@media(min-width:761px) and (max-width:1100px){.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{width:calc(100% + 44px);margin:0 -22px 8px!important;padding:18px 22px!important}}
-@media(max-width:760px){
- .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{width:calc(100% + 24px);min-height:72px;margin:0 -12px 8px!important;padding:12px!important;gap:12px}
- .avam-site-identity-mark{flex-basis:38px;width:38px;height:38px;border-radius:12px;font-size:21px}
- .avam-site-identity-copy strong{font-size:14px}
- .avam-site-identity-copy small{font-size:10px}
- .avam-site-identity-bar .avam-ref-user{gap:6px}
- .avam-site-identity-bar .avam-ref-user>div{display:flex}
- .avam-site-identity-bar .avam-ref-user strong{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
- .avam-site-identity-bar .avam-ref-user small{font-size:10px}
-}
+/* Minimal identity header: one site name, using the exact same surface as the application shell. */
+.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{box-sizing:border-box;width:100%;min-height:76px;margin:0 0 8px!important;padding:18px 0!important;background:#f2f5f3;border:0;border-bottom:1px solid #dce4de;border-radius:0;color:#26382f;box-shadow:none}
+.avam-site-identity-bar .avam-site-title{display:block;margin:0;color:#26382f;font-family:"Vazirmatn","Noto Sans Arabic",Tahoma,sans-serif;font-size:20px;font-weight:750;line-height:1.6}
+@media(max-width:760px){.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{min-height:64px;padding:14px 0!important}.avam-site-identity-bar .avam-site-title{font-size:17px}}
 </style>
 </head>
 <body <?php body_class(); ?>>
@@ -49,7 +31,7 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
   <aside class="avam-dash-sidebar" id="avam-account-sidebar">
     <a class="avam-dash-brand" href="<?php echo esc_url(home_url('/')); ?>">
       <span class="avam-dash-brand-mark">آ</span>
-      <span><b>آرامگاه مجازی</b><small><?php echo is_user_logged_in() ? 'فضای شخصی شما' : 'یادها اینجا می‌مانند'; ?></small></span>
+      <span><b><?php echo esc_html(is_user_logged_in() ? $avam_display_name : 'آرامگاه مجازی'); ?></b><small><?php echo is_user_logged_in() ? 'فضای شخصی شما' : 'یادها اینجا می‌مانند'; ?></small></span>
     </a>
     <nav class="avam-dash-nav" aria-label="ناوبری اصلی">
       <a href="<?php echo esc_url(home_url('/')); ?>"<?php echo is_front_page() ? ' aria-current="page"' : ''; ?>><span class="avam-nav-icon" aria-hidden="true">⌂</span>خانه</a>
@@ -73,13 +55,6 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
   </aside>
   <div class="avam-dash-main avam-unified-main">
     <header class="avam-ref-topbar avam-site-identity-bar">
-      <a class="avam-site-identity-brand" href="<?php echo esc_url(home_url('/')); ?>" aria-label="آرامگاه مجازی، صفحه اصلی">
-        <span class="avam-site-identity-mark" aria-hidden="true">آ</span>
-        <span class="avam-site-identity-copy"><strong>آرامگاه مجازی</strong><small><?php echo is_user_logged_in() ? 'فضای شخصی شما' : 'یادها اینجا می‌مانند'; ?></small></span>
-      </a>
-      <div class="avam-ref-user">
-        <span class="avam-ref-avatar"><?php echo esc_html($avam_initial); ?></span>
-        <div><strong><?php echo esc_html($avam_display_name); ?></strong><small><?php echo is_user_logged_in() ? 'نام کاربری' : 'دسترسی مهمان'; ?></small></div>
-      </div>
+      <span class="avam-site-title">آرامگاه مجازی</span>
     </header>
     <main id="main" class="avam-unified-content">
