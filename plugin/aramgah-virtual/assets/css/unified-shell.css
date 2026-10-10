@@ -170,3 +170,96 @@ body:has(.avam-unified-shell){background:#f2f5f3;color:#172236;font-family:"Vazi
  .avam-unified-search button{padding:0 8px}
  .avam-account-dashboard-content>.avam-ref-heading{align-items:flex-start;flex-wrap:wrap}
 }
+
+
+/* Cohesive professional palette: all application surfaces share one calm sage background. */
+body:has(.avam-unified-shell),
+.avam-unified-shell,
+.avam-unified-main,
+.avam-unified-content,
+.avam-unified-footer,
+.avam-unified-shell>.avam-dash-sidebar,
+.avam-unified-main>.avam-ref-topbar,
+.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar,
+.avam-unified-content .avam-unified-welcome,
+.avam-unified-content .avam-unified-home-stats article,
+.avam-unified-content .avam-unified-recent,
+.avam-unified-content .avam-unified-memorial-card,
+.avam-unified-content .avam-archive-hero,
+.avam-unified-content .avam-archive-results,
+.avam-unified-content .avam-card,
+.avam-unified-content .avam-ref-panel,
+.avam-unified-content .avam-ref-table-panel,
+.avam-unified-content .avam-ref-chart-grid,
+.avam-unified-content .avam-ref-stats,
+.avam-unified-content .avam-ref-table-wrap,
+.avam-unified-content .avam-create-card,
+.avam-unified-content .avam-profile-settings,
+.avam-unified-content .avam-account-dashboard-content,
+.avam-unified-content .avam-page{
+  background:#f2f5f3!important;
+  color:#26382f;
+}
+.avam-unified-shell>.avam-dash-sidebar{
+  border-inline-start:1px solid #dce4de!important;
+  box-shadow:none!important;
+  color:#26382f!important;
+}
+.avam-unified-shell .avam-dash-brand,
+.avam-unified-shell .avam-dash-brand b,
+.avam-unified-shell .avam-dash-brand small,
+.avam-unified-shell .avam-dash-nav a,
+.avam-unified-shell .avam-dash-sidebar-foot a{
+  color:#34473d!important;
+}
+.avam-unified-shell .avam-dash-brand-mark,
+.avam-unified-shell .avam-nav-icon,
+.avam-unified-welcome-mark,
+.avam-unified-stat-icon,
+.avam-unified-memorial-image,
+.avam-unified-empty>span{
+  background:#e8eee9!important;
+  color:#526d5b!important;
+  border-color:#dce4de!important;
+}
+.avam-unified-content .avam-unified-welcome{
+  background:#f2f5f3!important;
+  border:1px solid #dce4de!important;
+  box-shadow:none!important;
+}
+.avam-unified-welcome:after{display:none!important}
+.avam-unified-content .avam-unified-home-stats article,
+.avam-unified-content .avam-unified-recent,
+.avam-unified-content .avam-unified-memorial-card,
+.avam-unified-content .avam-ref-panel,
+.avam-unified-content .avam-ref-table-panel,
+.avam-unified-content .avam-ref-chart-grid{
+  border:1px solid #dce4de!important;
+  border-radius:16px;
+  box-shadow:none!important;
+}
+.avam-unified-content .avam-unified-memorial-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 16px rgba(38,56,47,.06)!important;
+}
+.avam-unified-content input,
+.avam-unified-content select,
+.avam-unified-content textarea,
+.avam-unified-search{
+  background:#f2f5f3!important;
+  color:#26382f!important;
+  border-color:#d1dcd4!important;
+  box-shadow:none!important;
+}
+.avam-unified-content input::placeholder,
+.avam-unified-content textarea::placeholder{color:#78867d!important}
+.avam-unified-content .avam-unified-secondary,
+.avam-unified-content .avam-unified-actions>a{
+  background:#e8eee9!important;
+  color:#34473d!important;
+  border-color:#d1dcd4!important;
+}
+.avam-unified-footer{border-top:1px solid #dce4de!important}
+@media(max-width:760px){
+  .avam-unified-shell>.avam-dash-sidebar{background:#f2f5f3!important}
+}
