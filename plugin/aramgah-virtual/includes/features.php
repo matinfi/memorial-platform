@@ -95,6 +95,14 @@ final class AVAM_Features {
   $author=is_user_logged_in()?$user->display_name:sanitize_text_field(wp_unslash($_POST['author']??''));
   $email=is_user_logged_in()?$user->user_email:sanitize_email(wp_unslash($_POST['email']??''));
   if (!$author || !is_email($email)) wp_send_json_error(['message'=>'لطفاً نام و ایمیل معتبر وارد کنید.'],422);
+  // Reject rapid repeat submissions before WordPress inserts a comment. The versioned
+  // key intentionally ignores stale transients created by the previous spam-based limiter.
+  $ip=sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR']??''));
+  $rate_key='avam_comment_submit_rate_v2_'.hash('sha256',$ip.'|'.$post_id);
+  $rate_seconds=max(10,min(300,absint(get_option('avam_rate_limit_seconds',30))));
+  if (get_transient($rate_key)) {
+   wp_send_json_error(['message'=>'برای جلوگیری از ارسال پیام‌های پیاپی، لطفاً حدود '.number_format_i18n($rate_seconds).' ثانیه بعد دوباره تلاش کنید.'],429);
+  }
   $commentdata=[
    'comment_post_ID'=>$post_id,
    'comment_content'=>sanitize_textarea_field($content),
@@ -113,7 +121,11 @@ final class AVAM_Features {
    wp_send_json_error(['message'=>$comment_id->get_error_message()?:'ثبت پیام انجام نشد.'],422);
   }
   $comment=get_comment($comment_id);
-  if (!$comment || (string)$comment->comment_approved==='spam') wp_send_json_error(['message'=>'این پیام به‌دلیل محدودیت ارسال ثبت نشد. کمی بعد دوباره تلاش کنید.'],429);
+  if (!$comment || (string)$comment->comment_approved==='spam') {
+   wp_send_json_error(['message'=>'پیام توسط فیلتر هرزنامه پذیرفته نشد. لطفاً متن را بررسی کنید و در صورت تکرار، با مدیر سایت تماس بگیرید.'],422);
+  }
+  // Start the cooldown only after a comment was actually created and not marked as spam.
+  set_transient($rate_key,1,$rate_seconds);
   $pending=(string)$comment->comment_approved!=='1';
   $html='';
   if (!$pending) {
@@ -123,10 +135,8 @@ final class AVAM_Features {
  }
  public static function moderate_comments($approved,$commentdata) {
   if (empty($commentdata['comment_post_ID']) || get_post_type((int)$commentdata['comment_post_ID'])!=='avam_memorial') return $approved;
-  $ip=isset($commentdata['comment_author_IP'])?$commentdata['comment_author_IP']:'';
-  $key='avam_comment_rate_'.hash('sha256',$ip.'|'.(int)$commentdata['comment_post_ID']);
-  if (get_transient($key)) return 'spam';
-  set_transient($key,1,max(10,min(300,absint(get_option('avam_rate_limit_seconds',30)))));
+  // Apply moderation here only. Rate limiting belongs in submit_comment(), where it can
+  // return a clear 429 response instead of silently converting a valid comment to spam.
   if (get_option('avam_comments_require_moderation','1')==='1' && !current_user_can('moderate_comments')) return 0;
   return $approved;
  }
