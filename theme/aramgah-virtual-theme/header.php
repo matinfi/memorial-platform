@@ -8,10 +8,8 @@
 <style>
 /* Minimal identity header: one site name, using the exact same surface as the application shell. */
 .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{box-sizing:border-box;width:100%;min-height:76px;margin:0 0 8px!important;padding:18px 0!important;background:#f2f5f3;border:0;border-bottom:1px solid #dce4de;border-radius:0;color:#26382f;box-shadow:none}
-.avam-site-identity-bar .avam-site-title{display:block;margin:0;color:transparent;font-family:"Vazirmatn","Noto Sans Arabic",Tahoma,sans-serif;font-size:clamp(1.25rem,2.3vw,2rem);font-weight:900;line-height:1.6;background-color:#222;background-image:linear-gradient(-40deg,transparent 0%,transparent 40%,#fff 50%,transparent 60%,transparent 100%);background-repeat:no-repeat;background-size:50px 100%;background-position:-200px 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:avam-site-title-shine 5s linear infinite}
-@keyframes avam-site-title-shine{0%,10%{background-position:-200px 0}20%{background-position:left center}100%{background-position:200px 0}}
+.avam-site-identity-bar .avam-site-title{display:block;margin:0;color:#26382f;font-family:"Vazirmatn","Noto Sans Arabic",Tahoma,sans-serif;font-size:clamp(1.25rem,2.3vw,2rem);font-weight:900;line-height:1.6;background:none;-webkit-text-fill-color:currentColor}
 @media(max-width:760px){.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{min-height:0;padding:7px 0 8px!important;flex-wrap:wrap;gap:7px}.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-site-title{display:block!important;font-size:1.2rem;line-height:1.4}.avam-site-identity-bar .avam-unified-search{flex:1 1 100%;width:100%;max-width:none}}
-@media(prefers-reduced-motion:reduce){.avam-site-identity-bar .avam-site-title{animation:none;background-position:center}}
 </style>
 </head>
 <body <?php body_class(); ?>>
@@ -76,7 +74,7 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
   </aside>
   <div class="avam-dash-main avam-unified-main">
     <header class="avam-ref-topbar avam-site-identity-bar">
-      <span class="avam-site-title shine"><?php $avam_cc = get_option('avam_control_center', []); echo esc_html(is_array($avam_cc) ? ($avam_cc['site_title'] ?? 'آرامگاه مجازی') : 'آرامگاه مجازی'); ?></span>
+      <span class="avam-site-title"><?php $avam_cc = get_option('avam_control_center', []); echo esc_html(is_array($avam_cc) ? ($avam_cc['site_title'] ?? 'آرامگاه مجازی') : 'آرامگاه مجازی'); ?></span>
       <form class="avam-unified-search" role="search" method="get" action="<?php echo esc_url($avam_memorials_url); ?>">
         <label class="screen-reader-text" for="avam-global-search">جست‌وجوی یادبودها</label>
         <input id="avam-global-search" type="search" name="q" value="<?php echo esc_attr(isset($_GET['q']) ? sanitize_text_field(wp_unslash($_GET['q'])) : ''); ?>" placeholder="جست‌وجو بر اساس نام یا روایت…" autocomplete="off">
