@@ -97,8 +97,19 @@ $intro=get_option('avam_single_intro','روایتی برای ماندن و به 
     <?php if (get_post_meta(get_the_ID(),'avam_visibility',true)!=='private'): ?>
     <div class="avam-memorial-actions" aria-label="همراهی با یادبود">
       <button type="button" data-avam-react="candle" data-id="<?php echo esc_attr(get_the_ID()); ?>">🕯️ روشن کردن شمع <span data-count><?php echo esc_html((int)get_post_meta(get_the_ID(),'avam_candle_count',true)); ?></span></button>
+      <button type="button" data-avam-reaction-list="candle" data-id="<?php echo esc_attr(get_the_ID()); ?>" class="avam-reaction-list-trigger">چه کسانی شمع روشن کرده‌اند؟</button>
       <button type="button" data-avam-react="flower" data-id="<?php echo esc_attr(get_the_ID()); ?>">🌷 تقدیم گل <span data-count><?php echo esc_html((int)get_post_meta(get_the_ID(),'avam_flower_count',true)); ?></span></button>
+      <button type="button" data-avam-reaction-list="flower" data-id="<?php echo esc_attr(get_the_ID()); ?>" class="avam-reaction-list-trigger">چه کسانی گل داده‌اند؟</button>
       <button type="button" data-avam-report data-id="<?php echo esc_attr(get_the_ID()); ?>">گزارش محتوا</button>
+    </div>
+    <div id="avam-reaction-modal" class="avam-reaction-modal" role="dialog" aria-modal="true" aria-labelledby="avam-reaction-modal-title" hidden>
+      <div class="avam-reaction-modal-panel">
+        <button type="button" class="avam-reaction-modal-close" data-avam-reaction-close aria-label="بستن فهرست">×</button>
+        <h3 id="avam-reaction-modal-title">همراهان این یادبود</h3>
+        <p class="avam-reaction-modal-status" data-avam-reaction-status role="status" aria-live="polite">در حال بارگذاری…</p>
+        <ul class="avam-reaction-modal-list" data-avam-reaction-items></ul>
+        <p class="avam-reaction-modal-note" data-avam-reaction-note></p>
+      </div>
     </div>
     <?php endif; ?>
 
