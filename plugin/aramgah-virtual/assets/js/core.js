@@ -112,6 +112,45 @@ jQuery(function($){
 });
 
 
+/* Professional image selection: previews, file validation, and clear feedback. */
+jQuery(function($){
+ const form=document.getElementById('avam-create-form');
+ if(!form)return;
+ const maxBytes=8*1024*1024;
+ const allowed=['image/jpeg','image/png','image/webp'];
+ function showError(message){
+  const notice=document.getElementById('avam-create-notice');
+  if(notice){notice.textContent=message;notice.classList.add('avam-notice','avam-error');}
+ }
+ function previewImage(file,container,alt){
+  const url=URL.createObjectURL(file);
+  const img=document.createElement('img');
+  img.src=url;img.alt=alt;img.onload=()=>URL.revokeObjectURL(url);
+  container.appendChild(img);
+ }
+ form.querySelectorAll('input[type="file"][name="image"],input[type="file"][name="gallery[]"]').forEach(input=>{
+  input.addEventListener('change',()=>{
+   const gallery=input.name==='gallery[]';
+   const files=Array.from(input.files||[]);
+   const existingCount=gallery?Number(input.dataset.existingCount||0):0;
+   if(gallery&&existingCount+files.length>10){showError('گالری می‌تواند در مجموع حداکثر ۱۰ تصویر داشته باشد. تعداد عکس‌های انتخاب‌شده را کاهش دهید.');input.value='';return;}
+   for(const file of files){
+    if(!allowed.includes(file.type)){showError('فرمت «'+file.name+'» پشتیبانی نمی‌شود. فقط JPG، PNG و WebP مجاز است.');input.value='';return;}
+    if(file.size>maxBytes){showError('حجم «'+file.name+'» بیشتر از ۸ مگابایت است. لطفاً تصویر کوچک‌تری انتخاب کنید.');input.value='';return;}
+   }
+   const kind=gallery?'gallery':'featured';
+   const preview=form.querySelector('[data-preview="'+kind+'"]');
+   const filename=form.querySelector('[data-upload-filename="'+kind+'"]');
+   if(!preview)return;
+   preview.replaceChildren();preview.hidden=!files.length;
+   if(gallery){files.forEach(file=>previewImage(file,preview,file.name));if(filename)filename.textContent=files.length?files.length+' تصویر انتخاب شد':'';}
+   else if(files[0]){previewImage(files[0],preview,'پیش‌نمایش تصویر اصلی انتخاب‌شده');const caption=document.createElement('span');caption.textContent=files[0].name;preview.appendChild(caption);if(filename)filename.textContent=files[0].name;}
+   const notice=document.getElementById('avam-create-notice');
+   if(notice){notice.textContent='';notice.classList.remove('avam-notice','avam-error');}
+  });
+ });
+});
+
 /* AJAX navigation inside the account app shell. */
 (function($){
  let busy=false;
