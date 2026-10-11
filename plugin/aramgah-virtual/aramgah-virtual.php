@@ -286,6 +286,7 @@ JS;
    if(is_wp_error($att))wp_send_json_error(['message'=>'تصویر قابل ذخیره‌سازی نبود.'],422);
    set_post_thumbnail($id,$att);
   }
+  if(!isset($keep_gallery)){$existing_gallery=get_post_meta($id,'avam_gallery_ids',true);if(!is_array($existing_gallery))$existing_gallery=[];$existing_gallery=array_values(array_filter(array_map('absint',$existing_gallery),'wp_attachment_is_image'));$keep_gallery=$existing_gallery;if(!empty($_POST['gallery_management'])){$requested_keep=isset($_POST['gallery_keep'])&&is_array($_POST['gallery_keep'])?array_map('absint',wp_unslash($_POST['gallery_keep'])):[];$keep_gallery=array_values(array_intersect($existing_gallery,$requested_keep));}}
   $gallery_ids=[];
   if(!empty($_FILES['gallery']['name']) && is_array($_FILES['gallery']['name'])){ $total_files=count($_FILES['gallery']['name']);
    require_once ABSPATH.'wp-admin/includes/file.php';require_once ABSPATH.'wp-admin/includes/media.php';require_once ABSPATH.'wp-admin/includes/image.php';
