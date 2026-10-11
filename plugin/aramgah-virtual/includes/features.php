@@ -10,6 +10,7 @@ final class AVAM_Features {
   add_action('init',[__CLASS__,'ensure_pages'],20);
   add_action('pre_get_posts',[__CLASS__,'exclude_private_from_public_queries']);
   add_filter('rest_prepare_avam_memorial',[__CLASS__,'filter_private_rest_memorial'],10,3);
+  add_filter('get_avatar_url',[__CLASS__,'filter_user_avatar_url'],10,3);
   add_action('admin_menu',[__CLASS__,'admin_menu'],30);
   add_action('admin_init',[__CLASS__,'register_settings']);
   add_filter('pre_comment_approved',[__CLASS__,'moderate_comments'],20,2);
@@ -177,6 +178,17 @@ final class AVAM_Features {
   if (is_email($email)) wp_mail($email,'گزارش یادبود: '.get_the_title($id),"یادبود: ".get_permalink($id)."\nدلیل: ".$reason."\nتعداد گزارش‌ها: ".$count);
   wp_send_json_success(['message'=>'گزارش شما برای بررسی ارسال شد.']);
  }
+ public static function filter_user_avatar_url($url,$id_or_email,$args=[]) {
+  $user=null;
+  if($id_or_email instanceof WP_User)$user=$id_or_email;
+  elseif($id_or_email instanceof WP_Comment){$user=$id_or_email->user_id?get_userdata((int)$id_or_email->user_id):null;if(!$user&&$id_or_email->comment_author_email)$user=get_user_by('email',$id_or_email->comment_author_email);}
+  elseif(is_numeric($id_or_email))$user=get_userdata((int)$id_or_email);
+  elseif(is_string($id_or_email)&&is_email($id_or_email))$user=get_user_by('email',$id_or_email);
+  if(!$user)return $url;
+  $attachment_id=absint(get_user_meta($user->ID,'avam_avatar_id',true));
+  $custom=$attachment_id?wp_get_attachment_image_url($attachment_id,'thumbnail'):false;
+  return $custom?:$url;
+ }
  public static function profile() {
   if (!is_user_logged_in()) return '<div class="avam-card"><p>برای تنظیمات حساب وارد شوید.</p><a class="avam-btn" href="'.esc_url(avam_login_url()).'">ورود</a></div>';
   $uid=get_current_user_id(); $user=get_userdata($uid); $notice='';
@@ -187,7 +199,28 @@ final class AVAM_Features {
     if ($action==='profile') {
      $name=sanitize_text_field(wp_unslash($_POST['display_name']??'')); $email=sanitize_email(wp_unslash($_POST['email']??''));
      if (!$name || !is_email($email) || email_exists($email) && strtolower($email)!==strtolower($user->user_email)) $notice='<div class="avam-notice avam-error">نام یا ایمیل معتبر نیست یا قبلاً استفاده شده است.</div>';
-     else { $res=wp_update_user(['ID'=>$uid,'display_name'=>$name,'user_email'=>$email]); $notice=is_wp_error($res)?'<div class="avam-notice avam-error">ذخیره اطلاعات انجام نشد.</div>':'<div class="avam-notice">اطلاعات حساب ذخیره شد.</div>'; $user=get_userdata($uid); }
+     else {
+      $res=wp_update_user(['ID'=>$uid,'display_name'=>$name,'user_email'=>$email]);
+      if(is_wp_error($res)) $notice='<div class="avam-notice avam-error">ذخیره اطلاعات انجام نشد.</div>';
+      else {
+       update_user_meta($uid,'avam_anniversary_reminders',isset($_POST['anniversary_reminders'])?'1':'0');
+       if(!empty($_FILES['avatar']['name'])){
+        if(!empty($_FILES['avatar']['error'])&&(int)$_FILES['avatar']['error']!==UPLOAD_ERR_OK) $notice='<div class="avam-notice avam-error">بارگذاری تصویر پروفایل ناموفق بود.</div>';
+        elseif((int)($_FILES['avatar']['size']??0)>8*1024*1024) $notice='<div class="avam-notice avam-error">حجم تصویر پروفایل باید حداکثر ۸ مگابایت باشد.</div>';
+        else {
+         $check=wp_check_filetype_and_ext($_FILES['avatar']['tmp_name'],$_FILES['avatar']['name']);
+         if(empty($check['type'])||!in_array($check['type'],['image/jpeg','image/png','image/webp'],true)) $notice='<div class="avam-notice avam-error">فقط تصویر JPG، PNG یا WebP مجاز است.</div>';
+         else {
+          require_once ABSPATH.'wp-admin/includes/file.php';require_once ABSPATH.'wp-admin/includes/media.php';require_once ABSPATH.'wp-admin/includes/image.php';
+          $avatar_id=media_handle_upload('avatar',0);
+          if(is_wp_error($avatar_id)) $notice='<div class="avam-notice avam-error">ذخیره تصویر پروفایل انجام نشد.</div>';
+          else {update_user_meta($uid,'avam_avatar_id',(int)$avatar_id);$notice='<div class="avam-notice">اطلاعات و تصویر پروفایل ذخیره شد.</div>';}
+         }
+        }
+       } else $notice='<div class="avam-notice">اطلاعات حساب ذخیره شد.</div>';
+       $user=get_userdata($uid);
+      }
+     }
     } elseif ($action==='password') {
      $current=(string)($_POST['current_password']??''); $new=(string)($_POST['new_password']??''); $confirm=(string)($_POST['confirm_password']??'');
      if (!wp_check_password($current,$user->user_pass,$uid) || strlen($new)<10 || $new!==$confirm) $notice='<div class="avam-notice avam-error">رمز فعلی نادرست است یا رمز جدید (حداقل ۱۰ نویسه) مطابقت ندارد.</div>';
@@ -195,7 +228,7 @@ final class AVAM_Features {
     }
    }
   }
-  ob_start(); ?><section class="avam-card avam-profile-settings" dir="rtl"><h1>تنظیمات حساب</h1><p>اطلاعات نمایشی و امنیت حساب خود را مدیریت کنید.</p><?php echo $notice; ?><form method="post" class="avam-form"><input type="hidden" name="avam_profile_action" value="profile"><?php wp_nonce_field('avam_profile_'.$uid,'avam_profile_nonce'); ?><div class="avam-field"><label>نام نمایشی</label><input name="display_name" required maxlength="80" value="<?php echo esc_attr($user->display_name); ?>"></div><div class="avam-field"><label>ایمیل</label><input type="email" name="email" required value="<?php echo esc_attr($user->user_email); ?>"></div><label class="avam-reminder-optin"><input type="checkbox" name="anniversary_reminders" value="1" <?php checked(get_user_meta($uid,'avam_anniversary_reminders',true),'1'); ?>> یادآوری سالانه سالگرد درگذشت از طریق ایمیل</label><button class="avam-btn" type="submit">ذخیره پروفایل</button></form><hr><h2>تغییر رمز عبور</h2><form method="post" class="avam-form"><input type="hidden" name="avam_profile_action" value="password"><?php wp_nonce_field('avam_profile_'.$uid,'avam_profile_nonce'); ?><div class="avam-field"><label>رمز فعلی</label><input type="password" name="current_password" autocomplete="current-password" required></div><div class="avam-field"><label>رمز جدید</label><input type="password" name="new_password" minlength="10" autocomplete="new-password" required></div><div class="avam-field"><label>تکرار رمز جدید</label><input type="password" name="confirm_password" minlength="10" autocomplete="new-password" required></div><button class="avam-btn" type="submit">تغییر رمز</button></form></section><?php return ob_get_clean();
+  ob_start(); ?><section class="avam-card avam-profile-settings" dir="rtl"><h1>تنظیمات حساب</h1><p>اطلاعات نمایشی و امنیت حساب خود را مدیریت کنید.</p><?php echo $notice; ?><form method="post" enctype="multipart/form-data" class="avam-form avam-profile-form"><input type="hidden" name="avam_profile_action" value="profile"><?php wp_nonce_field('avam_profile_'.$uid,'avam_profile_nonce'); ?><div class="avam-profile-avatar-field"><div class="avam-profile-avatar-preview" data-profile-avatar-preview><?php $avatar_id=absint(get_user_meta($uid,'avam_avatar_id',true)); $avatar_url=$avatar_id?wp_get_attachment_image_url($avatar_id,'thumbnail'):get_avatar_url($uid); ?><img src="<?php echo esc_url($avatar_url); ?>" alt="تصویر پروفایل فعلی"></div><div class="avam-field"><label for="avam-profile-avatar">تصویر پروفایل</label><input id="avam-profile-avatar" type="file" name="avatar" accept="image/jpeg,image/png,image/webp" aria-describedby="avam-profile-avatar-help"><small id="avam-profile-avatar-help">JPG، PNG یا WebP؛ حداکثر ۸ مگابایت</small></div></div><div class="avam-field"><label>نام نمایشی</label><input name="display_name" required maxlength="80" value="<?php echo esc_attr($user->display_name); ?>"></div><div class="avam-field"><label>ایمیل</label><input type="email" name="email" required value="<?php echo esc_attr($user->user_email); ?>"></div><label class="avam-reminder-optin"><input type="checkbox" name="anniversary_reminders" value="1" <?php checked(get_user_meta($uid,'avam_anniversary_reminders',true),'1'); ?>> یادآوری سالانه سالگرد درگذشت از طریق ایمیل</label><button class="avam-btn" type="submit">ذخیره پروفایل</button></form><hr><h2>تغییر رمز عبور</h2><form method="post" class="avam-form"><input type="hidden" name="avam_profile_action" value="password"><?php wp_nonce_field('avam_profile_'.$uid,'avam_profile_nonce'); ?><div class="avam-field"><label>رمز فعلی</label><input type="password" name="current_password" autocomplete="current-password" required></div><div class="avam-field"><label>رمز جدید</label><input type="password" name="new_password" minlength="10" autocomplete="new-password" required></div><div class="avam-field"><label>تکرار رمز جدید</label><input type="password" name="confirm_password" minlength="10" autocomplete="new-password" required></div><button class="avam-btn" type="submit">تغییر رمز</button></form></section><?php return ob_get_clean();
  }
  public static function my_comments() {
   if (!is_user_logged_in()) {
