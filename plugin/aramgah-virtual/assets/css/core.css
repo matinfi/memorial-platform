@@ -1960,3 +1960,8 @@
  .avam-media-manager .avam-image-preview img{width:72px;height:72px}
  .avam-media-manager .avam-featured-preview img{width:104px;height:104px}
 }
+
+.avam-media-manager .avam-gallery-item{position:relative;display:inline-flex;flex:0 0 auto}
+.avam-media-manager .avam-gallery-item img{display:block}
+.avam-media-manager .avam-gallery-item .avam-gallery-remove{position:absolute;top:4px;left:4px;display:grid;place-items:center;width:26px;height:26px;padding:0;border:1px solid rgba(255,255,255,.85);border-radius:50%;background:#fff;color:#9a3e3e;font-size:20px;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,.12);cursor:pointer}
+.avam-media-manager .avam-gallery-item .avam-gallery-remove:focus-visible{outline:3px solid #567b64;outline-offset:2px}
