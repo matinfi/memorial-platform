@@ -222,7 +222,11 @@ final class AVAM_Features {
   }
  }
  public static function assets() {
-  wp_enqueue_script('avam-features',plugins_url('assets/js/features.js',dirname(__DIR__).'/aramgah-virtual.php'),['jquery'],'1.0.0',true);
+  $settings=get_option('avam_control_center',[]);
+  $cache_busting=!is_array($settings)||($settings['cache_busting']??'1')==='1';
+  $script_path=dirname(__DIR__).'/assets/js/features.js';
+  $script_version=$cache_busting && is_file($script_path)?(string)filemtime($script_path):'1.11.8';
+  wp_enqueue_script('avam-features',plugins_url('assets/js/features.js',dirname(__DIR__).'/aramgah-virtual.php'),['jquery'],$script_version,true);
   wp_localize_script('avam-features','AVAM_FEATURES',['ajax'=>admin_url('admin-ajax.php'),'nonce'=>wp_create_nonce('avam_features')]);
  }
  private static function is_public_memorial($id) {
