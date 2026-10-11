@@ -39,4 +39,36 @@ jQuery(function($){
    .fail(xhr=>showNotice(form,xhr.responseJSON?.data?.message||'ارتباط با سرور برقرار نشد.','error'))
    .always(()=>submit.prop('disabled',false));
  });
+ $(document).on('click','[data-avam-reaction-list]',function(e){
+  e.preventDefault();
+  const button=$(this), modal=$('#avam-reaction-modal'), kind=String(button.data('avam-reaction-list')||''), id=button.data('id');
+  const title=kind==='candle'?'کسانی که شمع روشن کرده‌اند':'کسانی که گل داده‌اند';
+  modal.find('#avam-reaction-modal-title').text(title);
+  modal.find('[data-avam-reaction-status]').text('در حال بارگذاری…').show();
+  modal.find('[data-avam-reaction-items]').empty();
+  modal.find('[data-avam-reaction-note]').empty();
+  modal.prop('hidden',false).attr('aria-hidden','false');
+  $('body').addClass('avam-reaction-modal-open');
+  $.post(AVAM_FEATURES.ajax,{action:'avam_reaction_list',nonce:AVAM_FEATURES.nonce,id:id,kind:kind})
+   .done(r=>{
+    const list=modal.find('[data-avam-reaction-items]').empty();
+    if(!r.success){modal.find('[data-avam-reaction-status]').text(r.data?.message||'فهرست بارگذاری نشد.');return;}
+    const items=Array.isArray(r.data.items)?r.data.items:[];
+    items.forEach(item=>$('<li>').text(item.name||'کاربر').appendTo(list));
+    modal.find('[data-avam-reaction-status]').text(items.length?'نام همراهان ثبت‌شده: '+items.length:'هنوز نامی برای این همراهی ثبت نشده است.');
+    if(Number(r.data.unlisted)>0) modal.find('[data-avam-reaction-note]').text('تعداد کل: '+r.data.total+'؛ برخی همراهی‌های قدیمی پیش از فعال‌شدن ثبت نام‌ها انجام شده‌اند و نامشان ذخیره نشده است.');
+    else if(!items.length) modal.find('[data-avam-reaction-note]').text('با ثبت گل یا روشن‌کردن شمع، نام حساب کاربری در این فهرست دیده می‌شود. همراهان مهمان با عنوان «کاربر مهمان» نمایش داده می‌شوند.');
+   })
+   .fail(xhr=>modal.find('[data-avam-reaction-status]').text(xhr.responseJSON?.data?.message||'ارتباط با سرور برقرار نشد.'))
+   .always(()=>modal.find('[data-avam-reaction-status]').show());
+ });
+ $(document).on('click','[data-avam-reaction-close]',function() {
+  const modal=$('#avam-reaction-modal'); modal.prop('hidden',true).attr('aria-hidden','true'); $('body').removeClass('avam-reaction-modal-open');
+ });
+ $(document).on('click','#avam-reaction-modal',function(e) {
+  if(e.target===this){$(this).prop('hidden',true).attr('aria-hidden','true');$('body').removeClass('avam-reaction-modal-open');}
+ });
+ $(document).on('keydown',function(e) {
+  if(e.key==='Escape'){const modal=$('#avam-reaction-modal');if(modal.length&&!modal.prop('hidden')){modal.prop('hidden',true).attr('aria-hidden','true');$('body').removeClass('avam-reaction-modal-open');}}
+ });
 });
