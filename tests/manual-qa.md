@@ -71,3 +71,13 @@
 - [ ] نویسنده باید پیام در انتظار تأیید خودش را با اعلان مناسب ببیند؛ بازدیدکننده دیگر نباید متن پیام در انتظار را ببیند.
 - [ ] نام سایت در دسکتاپ و موبایل با افکت درخشش دیده شود؛ با تنظیم کاهش حرکت، انیمیشن متوقف شود.
 - [ ] کارت‌های یادبود در صفحه اصلی و آرشیو باید لایه‌های طلایی و افکت نور داشته باشند، در موبایل سرریز افقی نسازند و با صفحه‌کلید focus واضح داشته باشند.
+
+
+## Follow-up regression checks — comment throttling and title shine
+
+- Submit a valid comment once: it should be accepted and either published or marked pending moderation.
+- Submit another comment to the same memorial immediately: the UI should show a clear cooldown message with the configured interval, not mislabel the comment as spam.
+- After the cooldown, submit a new valid comment: it should work normally.
+- If a separate spam filter rejects a comment, the UI should explain that it was rejected by the spam filter rather than claiming the rate limit was hit.
+- Verify the site title has a moving light sweep on desktop and mobile, remains visible on narrow screens, and still reads clearly with reduced motion enabled.
+- If styles appear stale after deployment, purge page/CDN caches and confirm the active theme reports version 2.2.3 and plugin version 1.11.7.
