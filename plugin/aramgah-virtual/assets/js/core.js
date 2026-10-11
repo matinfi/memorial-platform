@@ -112,6 +112,21 @@ jQuery(function($){
 });
 
 
+/* Profile avatar preview also works in the AJAX-loaded account settings page. */
+jQuery(function($){
+ $(document).on('change','#avam-profile-avatar',function(){
+  const input=this,form=input.closest('.avam-profile-form'),file=input.files&&input.files[0];
+  if(!form||!file)return;
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>8*1024*1024){
+   input.value='';
+   const notice=form.closest('.avam-profile-settings')?.querySelector('.avam-notice');
+   if(notice){notice.textContent='فقط JPG، PNG یا WebP با حجم حداکثر ۸ مگابایت مجاز است.';notice.classList.add('avam-error');}
+   return;
+  }
+  const preview=form.querySelector('[data-profile-avatar-preview]');
+  if(preview){const img=document.createElement('img');const url=URL.createObjectURL(file);img.src=url;img.alt='پیش‌نمایش تصویر پروفایل';img.onload=()=>URL.revokeObjectURL(url);preview.replaceChildren(img);}
+ });
+});
 /* Professional image selection: delegated handlers also work after in-app navigation. */
 jQuery(function($){
  const maxBytes=8*1024*1024;
