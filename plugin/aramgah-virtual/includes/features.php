@@ -25,6 +25,8 @@ final class AVAM_Features {
   add_action('wp_ajax_nopriv_avam_submit_comment',[__CLASS__,'submit_comment']);
   add_action('wp_ajax_avam_react',[__CLASS__,'react']);
   add_action('wp_ajax_nopriv_avam_react',[__CLASS__,'react']);
+  add_action('wp_ajax_avam_reaction_list',[__CLASS__,'reaction_list']);
+  add_action('wp_ajax_nopriv_avam_reaction_list',[__CLASS__,'reaction_list']);
   add_action('wp_ajax_avam_report',[__CLASS__,'report']);
   add_action('wp_ajax_nopriv_avam_report',[__CLASS__,'report']);
   add_shortcode('avam_profile_settings',[__CLASS__,'profile']);
@@ -68,7 +70,11 @@ final class AVAM_Features {
  }
  public static function comments_open_for_memorial($open,$post_id) {
   if (get_post_type($post_id)!=='avam_memorial') return $open;
-  return $open && get_option('avam_comments_enabled','1')==='1';
+  if (get_option('avam_comments_enabled','1')!=='1' || get_post_status($post_id)!=='publish') return false;
+  // Let a memorial's owner comment on their own post even if the post-level
+  // WordPress discussion flag was closed. Other visitors still respect that flag.
+  $is_owner=is_user_logged_in() && (int)get_post_field('post_author',$post_id)===get_current_user_id();
+  return $open || $is_owner;
  }
  public static function comment_form_defaults($defaults) {
   $avam_cc=get_option('avam_control_center',[]); $max_length=is_array($avam_cc)?min(20000,max(1,absint($avam_cc['comment_max_length']??5000))):5000;
@@ -235,9 +241,42 @@ final class AVAM_Features {
   if (!self::is_public_memorial($id)) wp_send_json_error(['message'=>'یادبود پیدا نشد.'],404);
   $ip=$_SERVER['REMOTE_ADDR']??'unknown'; $key='avam_react_'.hash('sha256',$ip.'|'.$id.'|'.$kind);
   if (get_transient($key)) wp_send_json_error(['message'=>'از همراهی شما سپاسگزاریم؛ این یادبود را قبلاً همراهی کرده‌اید.'],429);
+  $user_id=get_current_user_id();
+  $log=get_post_meta($id,'avam_reaction_log',true);
+  if (!is_array($log)) $log=[];
+  if ($user_id) {
+   foreach ($log as $entry) {
+    if (is_array($entry) && (int)($entry['user_id']??0)===$user_id && ($entry['kind']??'')===$kind) {
+     wp_send_json_error(['message'=>'از همراهی شما سپاسگزاریم؛ قبلاً این کار را با حساب خود انجام داده‌اید.'],429);
+    }
+   }
+  }
   set_transient($key,1,DAY_IN_SECONDS);
+  $user=$user_id?get_userdata($user_id):false;
+  $name=$user?($user->display_name?:$user->user_login):'کاربر مهمان';
+  $log[]=['kind'=>$kind,'user_id'=>$user_id,'name'=>sanitize_text_field($name),'time'=>current_time('mysql')];
+  update_post_meta($id,'avam_reaction_log',$log);
   $meta='avam_'.$kind.'_count'; $count=max(0,(int)get_post_meta($id,$meta,true))+1; update_post_meta($id,$meta,$count);
   wp_send_json_success(['count'=>$count]);
+ }
+ public static function reaction_list() {
+  $nonce_raw=$_POST['nonce']??'';
+  if (!is_string($nonce_raw) || !wp_verify_nonce(sanitize_text_field(wp_unslash($nonce_raw)),'avam_features')) wp_send_json_error(['message'=>'درخواست نامعتبر است.'],403);
+  $id=absint($_POST['id']??0); $kind_raw=$_POST['kind']??'';
+  if (!$id || !is_string($kind_raw)) wp_send_json_error(['message'=>'درخواست نامعتبر است.'],422);
+  $kind=sanitize_key(wp_unslash($kind_raw));
+  if (!in_array($kind,['candle','flower'],true)) wp_send_json_error(['message'=>'نوع همراهی نامعتبر است.'],422);
+  if (!self::is_public_memorial($id)) wp_send_json_error(['message'=>'یادبود پیدا نشد.'],404);
+  $log=get_post_meta($id,'avam_reaction_log',true);
+  if (!is_array($log)) $log=[];
+  $items=[];
+  foreach ($log as $entry) {
+   if (!is_array($entry) || ($entry['kind']??'')!==$kind) continue;
+   $name=isset($entry['name']) && is_string($entry['name']) ? sanitize_text_field($entry['name']) : '';
+   if ($name!=='') $items[]=['name'=>$name];
+  }
+  $total=max(0,(int)get_post_meta($id,'avam_'.$kind.'_count',true));
+  wp_send_json_success(['items'=>$items,'total'=>$total,'unlisted'=>max(0,$total-count($items))]);
  }
  public static function report() {
   $nonce_raw=$_POST['nonce']??''; $reason_raw=$_POST['reason']??'';
