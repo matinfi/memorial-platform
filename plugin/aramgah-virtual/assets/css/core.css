@@ -1980,3 +1980,65 @@
 .avam-reading-comments .comment-content p{white-space:pre-line;overflow-wrap:anywhere}
 .avam-reading-comments .avam-social-comments-empty,.avam-reading-comments .avam-social-comments-pending{padding:12px 15px;border:1px solid rgba(212,175,55,.18);border-radius:12px;background:rgba(255,255,255,.035);line-height:1.9}
 .avam-reading-comments .avam-social-comments-pending{border-color:rgba(197,151,66,.4);color:#e9cc8b}
+
+
+/* Public supporter list for candle and flower reactions */
+.avam-memorial-actions .avam-reaction-list-trigger{
+  background:transparent;
+  border-color:rgba(212,175,55,.15);
+  color:#d8c99e;
+  font-size:13px;
+}
+.avam-memorial-actions .avam-reaction-list-trigger:hover,
+.avam-memorial-actions .avam-reaction-list-trigger:focus-visible{
+  border-color:#d4af37;
+  color:#f3d77f;
+}
+.avam-reaction-modal[hidden]{display:none!important}
+.avam-reaction-modal{
+  position:fixed;
+  inset:0;
+  z-index:100000;
+  display:grid;
+  place-items:center;
+  padding:18px;
+  background:rgba(4,8,15,.76);
+  backdrop-filter:blur(5px);
+}
+body.avam-reaction-modal-open{overflow:hidden}
+.avam-reaction-modal-panel{
+  position:relative;
+  width:min(100%,460px);
+  max-height:min(80vh,680px);
+  overflow:auto;
+  padding:26px 22px 20px;
+  border:1px solid rgba(212,175,55,.3);
+  border-radius:20px;
+  background:#111720;
+  color:#f0f2f5;
+  box-shadow:0 24px 80px rgba(0,0,0,.4);
+}
+.avam-reaction-modal-panel h3{margin:0 36px 14px 0;font-size:20px;line-height:1.7}
+.avam-reaction-modal-close{
+  position:absolute;
+  top:12px;
+  left:12px;
+  width:36px;
+  height:36px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:50%;
+  background:rgba(255,255,255,.06);
+  color:inherit;
+  font-size:25px;
+  line-height:1;
+  cursor:pointer;
+}
+.avam-reaction-modal-status,.avam-reaction-modal-note{margin:8px 0;color:#c2c9d3;font-size:13px;line-height:1.9}
+.avam-reaction-modal-list{display:grid;gap:8px;list-style:none;margin:14px 0;padding:0}
+.avam-reaction-modal-list li{padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.035);overflow-wrap:anywhere}
+.avam-reaction-modal-note:empty{display:none}
+@media(max-width:600px){
+  .avam-reaction-modal{padding:12px}
+  .avam-reaction-modal-panel{padding:24px 16px 16px;border-radius:16px}
+  .avam-memorial-actions .avam-reaction-list-trigger{width:100%}
+}
