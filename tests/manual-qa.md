@@ -81,3 +81,13 @@
 - If a separate spam filter rejects a comment, the UI should explain that it was rejected by the spam filter rather than claiming the rate limit was hit.
 - Verify the site title has a moving light sweep on desktop and mobile, remains visible on narrow screens, and still reads clearly with reduced motion enabled.
 - If styles appear stale after deployment, purge page/CDN caches and confirm the active theme reports version 2.2.3 and plugin version 1.11.7.
+
+
+## Follow-up regression checks — mobile header, owner comments, reaction identities
+
+- Confirm the site title has no shine animation or gradient, and the mobile header keeps its compact layout without extra height or wrapping regressions.
+- With a logged-in memorial owner, submit a comment on their own published memorial even if that memorial's individual WordPress discussion flag is closed; the global `avam_comments_enabled` setting must still be respected.
+- Verify a visitor who is not the owner cannot comment when the memorial's comments are individually closed.
+- Give a flower and light a candle on a public memorial, then open each supporter list and verify account display names appear without exposing emails or IP addresses.
+- Verify guest reactions are shown as `کاربر مهمان`, and legacy totals with no stored identity show an explanatory note.
+- Verify the supporter list is usable on desktop/mobile, closes by close button, backdrop, and Escape, and does not appear on private memorials.
