@@ -3,7 +3,7 @@ Theme Name: آرامگاه مجازی
 Theme URI: https://example.com/
 Author: Virtual Memorial
 Description: Cinematic homepage theme for آرامگاه مجازی.
-Version: 2.2.2
+Version: 2.2.3
 Requires at least: 6.4
 Requires PHP: 8.0
 Text Domain: avam
@@ -1375,3 +1375,57 @@ body:not(:has(.avam-home-page)){
 @keyframes avam-card-glider{0%{transform:rotate(45deg) translate(-140px,-140px)}100%{transform:rotate(45deg) translate(220px,-40px)}}
 @media(max-width:760px){.avam-playing-card .avam-memorial-card-body,.avam-playing-card .avam-unified-memorial-info{min-height:104px;padding:12px!important}.avam-playing-card.avam-memorial-card h2,.avam-playing-card .avam-unified-memorial-info h3{font-size:14px}}
 @media(prefers-reduced-motion:reduce){.avam-playing-card,.avam-playing-card .avam-card-layer,.avam-playing-card .avam-memorial-card-face,.avam-playing-card .avam-unified-memorial-face{transition:none!important}.avam-playing-card .avam-card-glider{display:none!important;animation:none!important}}
+
+
+/* Reliable Uiverse-style shine for the site identity. This intentionally overrides
+   legacy mobile rules that collapsed the title to zero width and hid it. */
+body.avam-shell .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-site-title.shine {
+  display:block!important;
+  visibility:visible!important;
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:max-content!important;
+  max-width:100%!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0 2px!important;
+  overflow:visible!important;
+  color:transparent!important;
+  background-color:#26382f!important;
+  background-image:linear-gradient(110deg,#26382f 0%,#26382f 38%,#fff 47%,#f0d27a 50%,#26382f 62%,#26382f 100%)!important;
+  background-repeat:no-repeat!important;
+  background-size:250% 100%!important;
+  background-position:100% 0!important;
+  -webkit-background-clip:text!important;
+  background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;
+  font-weight:900!important;
+  line-height:1.5!important;
+  animation:avam-site-title-shine-v2 3s linear infinite!important;
+}
+@keyframes avam-site-title-shine-v2 {
+  from { background-position:100% 0; }
+  to { background-position:0 0; }
+}
+@media(max-width:760px) {
+  body.avam-shell .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-site-title.shine {
+    display:block!important;
+    visibility:visible!important;
+    flex:0 0 auto!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:100%!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0 2px!important;
+    font-size:17px!important;
+    line-height:1.5!important;
+    white-space:normal!important;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  body.avam-shell .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-site-title.shine {
+    animation:none!important;
+    background-position:50% 0!important;
+  }
+}
