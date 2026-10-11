@@ -9,7 +9,7 @@
 /* Minimal identity header: one site name, using the exact same surface as the application shell. */
 .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{box-sizing:border-box;width:100%;min-height:76px;margin:0 0 8px!important;padding:18px 0!important;background:#f2f5f3;border:0;border-bottom:1px solid #dce4de;border-radius:0;color:#26382f;box-shadow:none}
 .avam-site-identity-bar .avam-site-title{display:block;margin:0;color:#26382f;font-family:"Vazirmatn","Noto Sans Arabic",Tahoma,sans-serif;font-size:20px;font-weight:750;line-height:1.6}
-@media(max-width:760px){.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{min-height:64px;padding:14px 0!important}.avam-site-identity-bar .avam-site-title{font-size:17px}}
+@media(max-width:760px){.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{min-height:0;padding:0 0 8px!important}.avam-site-identity-bar .avam-site-title{font-size:17px}}
 </style>
 </head>
 <body <?php body_class(); ?>>
