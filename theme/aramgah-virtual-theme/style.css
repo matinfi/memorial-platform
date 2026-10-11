@@ -3,7 +3,7 @@ Theme Name: آرامگاه مجازی
 Theme URI: https://example.com/
 Author: Virtual Memorial
 Description: Cinematic homepage theme for آرامگاه مجازی.
-Version: 2.2.0
+Version: 2.2.2
 Requires at least: 6.4
 Requires PHP: 8.0
 Text Domain: avam
@@ -1325,3 +1325,53 @@ body:not(:has(.avam-home-page)){
 .avam-dashboard-reference .avam-dash-main{transition:opacity .15s}
 @media(max-width:900px){.avam-archive-search{grid-template-columns:repeat(2,minmax(0,1fr))}.avam-archive-search button{width:100%}.avam-memorial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.avam-archive-page{padding:18px 0 58px}.avam-archive-hero{padding:12px 0 18px}.avam-archive-hero>.avam-container{padding:23px 17px;border-radius:22px}.avam-archive-hero h1{font-size:35px}.avam-archive-hero p{font-size:13px;margin-bottom:20px}.avam-archive-search{grid-template-columns:1fr;gap:10px;padding:11px;border-radius:16px}.avam-archive-search input,.avam-archive-search select,.avam-archive-search button{min-height:50px}.avam-archive-head{align-items:flex-start;flex-direction:column;gap:4px}.avam-archive-head strong{font-size:18px}.avam-memorial-grid{grid-template-columns:1fr;gap:14px}.avam-memorial-card{border-radius:20px}.avam-memorial-card-image{aspect-ratio:1.8}.avam-memorial-card-body{padding:16px 18px 20px}.avam-memorial-card-body h2{font-size:18px}.avam-archive-pagination .page-numbers{gap:2px}.avam-archive-pagination a,.avam-archive-pagination span{min-width:34px;height:36px}}
+
+/* Semantic footer menu reset for configured WordPress navigation. */
+.avam-footer nav>.avam-footer-nav{display:flex;flex-wrap:wrap;gap:18px;list-style:none;margin:0;padding:0}
+.avam-footer-nav>li{list-style:none;margin:0;padding:0}
+
+
+
+/* Memorial playing-card treatment inspired by the supplied layered gold card reference. */
+.avam-playing-card,
+.avam-unified-content .avam-playing-card{
+ position:relative!important;display:block;overflow:visible!important;isolation:isolate;border:0!important;border-radius:8px!important;background:transparent!important;box-shadow:none!important;text-decoration:none;transition:transform .25s ease;
+}
+.avam-playing-card .avam-card-layer{position:absolute;inset:0;border-radius:8px;pointer-events:none;transition:transform .5s ease,box-shadow .5s ease}
+.avam-playing-card .avam-card-layer-2{z-index:0;background:#b8860b}
+.avam-playing-card .avam-card-layer-1{z-index:1;background:#daa520}
+.avam-playing-card .avam-memorial-card-face,
+.avam-playing-card .avam-unified-memorial-face{position:relative;z-index:2;display:block;min-width:0;overflow:hidden;border:1px solid #d6a91a;border-radius:8px;background:#ffd700;box-shadow:0 5px 16px rgba(75,53,9,.12),inset 0 1px rgba(255,255,255,.7);transition:box-shadow .5s ease}
+.avam-playing-card .avam-memorial-card-image,
+.avam-playing-card .avam-unified-memorial-image{position:relative;display:grid;place-items:center;aspect-ratio:1.28;height:auto!important;margin:0!important;overflow:hidden;border-radius:0!important;background:linear-gradient(145deg,#ffd700,#f5c842);color:#9f332c}
+.avam-playing-card .avam-memorial-card-image img,
+.avam-playing-card .avam-unified-memorial-image img{display:block;width:100%;height:100%;object-fit:cover}
+.avam-playing-card .avam-memorial-card-image>span,
+.avam-playing-card .avam-unified-memorial-image>span{display:grid;place-items:center;width:64px;height:64px;border:1px solid rgba(159,51,44,.28);border-radius:50%;background:rgba(255,255,255,.24);color:#9f332c}
+.avam-playing-card .avam-memorial-card-body,
+.avam-playing-card .avam-unified-memorial-info{min-height:112px;padding:14px 16px 18px!important;background:#ffd700;color:#392b0c}
+.avam-playing-card .avam-memorial-card-body>span,
+.avam-playing-card .avam-unified-memorial-info small{display:inline-flex;padding:3px 7px;border:1px solid rgba(159,51,44,.2);border-radius:999px;background:rgba(255,255,255,.24);color:#9f332c;font-size:10px}
+.avam-playing-card.avam-memorial-card h2,
+.avam-playing-card .avam-unified-memorial-info h3{margin:7px 0;color:#392b0c;font-size:clamp(14px,1.4vw,19px);font-weight:800;line-height:1.65;letter-spacing:0;white-space:normal;overflow-wrap:anywhere}
+.avam-playing-card .avam-memorial-card-body p,
+.avam-playing-card .avam-unified-memorial-info p{margin:0;color:#725b1d;font-size:11px;line-height:1.8}
+.avam-playing-card .avam-card-corner{position:absolute;z-index:4;display:block;color:#9f332c;font-size:1.2em;font-weight:900;line-height:1;text-shadow:0 1px rgba(255,255,255,.4);pointer-events:none}
+.avam-playing-card .avam-card-corner-top{top:8px;left:10px}
+.avam-playing-card .avam-card-corner-bottom{right:10px;bottom:8px;transform:rotate(180deg)}
+.avam-playing-card .avam-card-glider{position:absolute;z-index:3;top:-15%;left:43%;width:.6em;height:130%;background:aliceblue;opacity:.3;pointer-events:none;transform:rotate(45deg) translate(-140px,-140px);animation:avam-card-glider 1.8s infinite linear;animation-delay:.05s}
+.avam-playing-card:hover .avam-card-glider,
+.avam-playing-card:focus-visible .avam-card-glider{visibility:hidden}
+.avam-playing-card:hover .avam-card-layer-1,
+.avam-playing-card:focus-visible .avam-card-layer-1{transform:rotate(3deg) translate(3px,-2px)}
+.avam-playing-card:hover .avam-card-layer-2,
+.avam-playing-card:focus-visible .avam-card-layer-2{transform:rotate(6deg) translate(6px,-3px)}
+.avam-playing-card:hover .avam-memorial-card-face,
+.avam-playing-card:hover .avam-unified-memorial-face,
+.avam-playing-card:focus-visible .avam-memorial-card-face,
+.avam-playing-card:focus-visible .avam-unified-memorial-face{box-shadow:0 7px 29px rgba(218,165,32,.38),inset 0 1px rgba(255,255,255,.75)}
+.avam-playing-card:active{transform:rotate(2deg);transform-origin:bottom left}
+.avam-playing-card:focus-visible{outline:3px solid #9f332c;outline-offset:5px}
+@keyframes avam-card-glider{0%{transform:rotate(45deg) translate(-140px,-140px)}100%{transform:rotate(45deg) translate(220px,-40px)}}
+@media(max-width:760px){.avam-playing-card .avam-memorial-card-body,.avam-playing-card .avam-unified-memorial-info{min-height:104px;padding:12px!important}.avam-playing-card.avam-memorial-card h2,.avam-playing-card .avam-unified-memorial-info h3{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.avam-playing-card,.avam-playing-card .avam-card-layer,.avam-playing-card .avam-memorial-card-face,.avam-playing-card .avam-unified-memorial-face{transition:none!important}.avam-playing-card .avam-card-glider{display:none!important;animation:none!important}}

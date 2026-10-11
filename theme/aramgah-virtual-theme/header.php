@@ -8,8 +8,10 @@
 <style>
 /* Minimal identity header: one site name, using the exact same surface as the application shell. */
 .avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{box-sizing:border-box;width:100%;min-height:76px;margin:0 0 8px!important;padding:18px 0!important;background:#f2f5f3;border:0;border-bottom:1px solid #dce4de;border-radius:0;color:#26382f;box-shadow:none}
-.avam-site-identity-bar .avam-site-title{display:block;margin:0;color:#26382f;font-family:"Vazirmatn","Noto Sans Arabic",Tahoma,sans-serif;font-size:20px;font-weight:750;line-height:1.6}
-@media(max-width:760px){.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{min-height:0;padding:0 0 8px!important}.avam-site-identity-bar .avam-site-title{font-size:17px}}
+.avam-site-identity-bar .avam-site-title{display:block;margin:0;color:transparent;font-family:"Vazirmatn","Noto Sans Arabic",Tahoma,sans-serif;font-size:clamp(1.25rem,2.3vw,2rem);font-weight:900;line-height:1.6;background-color:#222;background-image:linear-gradient(-40deg,transparent 0%,transparent 40%,#fff 50%,transparent 60%,transparent 100%);background-repeat:no-repeat;background-size:50px 100%;background-position:-200px 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:avam-site-title-shine 5s linear infinite}
+@keyframes avam-site-title-shine{0%,10%{background-position:-200px 0}20%{background-position:left center}100%{background-position:200px 0}}
+@media(max-width:760px){.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar{min-height:0;padding:7px 0 8px!important;flex-wrap:wrap;gap:7px}.avam-unified-main>.avam-ref-topbar.avam-site-identity-bar .avam-site-title{display:block!important;font-size:1.2rem;line-height:1.4}.avam-site-identity-bar .avam-unified-search{flex:1 1 100%;width:100%;max-width:none}}
+@media(prefers-reduced-motion:reduce){.avam-site-identity-bar .avam-site-title{animation:none;background-position:center}}
 </style>
 </head>
 <body <?php body_class(); ?>>
@@ -20,13 +22,16 @@ $avam_memorials_url = function_exists('avam_memorials_url') ? avam_memorials_url
 $avam_login_url = function_exists('avam_login_url') ? avam_login_url() : wp_login_url();
 $avam_register_url = function_exists('avam_register_url') ? avam_register_url() : wp_registration_url();
 $avam_account_url = function_exists('avam_account_url') ? avam_account_url() : home_url('/account/');
-$avam_create_url = function_exists('avam_create_url') ? avam_create_url() : $avam_register_url;
 $avam_cc_pages = get_option('avam_control_center', []); if (!is_array($avam_cc_pages)) $avam_cc_pages = [];
+$avam_registration_open = (($avam_cc_pages['registration_enabled'] ?? '1') === '1') && (($avam_cc_pages['public_registration'] ?? '1') === '1');
+$avam_create_url = is_user_logged_in()
+    ? (function_exists('avam_create_url') ? avam_create_url() : home_url('/create-memorial/'))
+    : ($avam_registration_open ? $avam_register_url : $avam_login_url);
 $avam_profile_id = absint($avam_cc_pages['profile_page'] ?? 0); $avam_comments_id = absint($avam_cc_pages['comments_page'] ?? 0);
 $avam_profile_url = $avam_profile_id && get_post_type($avam_profile_id)==='page' ? get_permalink($avam_profile_id) : home_url('/profile/');
 $avam_comments_url = $avam_comments_id && get_post_type($avam_comments_id)==='page' ? get_permalink($avam_comments_id) : home_url('/my-comments/');
 $avam_user = wp_get_current_user();
-$avam_display_name = is_user_logged_in() ? ($avam_user->user_login ?: $avam_user->display_name) : 'مهمان گرامی';
+$avam_display_name = is_user_logged_in() ? ($avam_user->display_name ?: $avam_user->user_login) : 'مهمان گرامی';
 $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 1) : substr($avam_display_name, 0, 1);
 ?>
 <div class="avam-dashboard avam-dashboard-reference avam-unified-shell" dir="rtl">
@@ -42,19 +47,19 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
       $avam_control_settings = get_option('avam_control_center', []);
       $avam_selected_menu = is_array($avam_control_settings) ? absint($avam_control_settings['header_menu'] ?? ($avam_control_settings['primary_menu'] ?? 0)) : 0;
       if ($avam_selected_menu && wp_get_nav_menu_object($avam_selected_menu)) {
-        wp_nav_menu(['menu'=>$avam_selected_menu,'container'=>false,'items_wrap'=>'%3$s','fallback_cb'=>false,'depth'=>2]);
+        wp_nav_menu(['menu'=>$avam_selected_menu,'container'=>false,'items_wrap'=>'<ul class="avam-custom-nav">%3$s</ul>','fallback_cb'=>false,'depth'=>2]);
       } else {
         ?>
       <a href="<?php echo esc_url(home_url('/')); ?>"<?php echo is_front_page() ? ' aria-current="page"' : ''; ?>><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"/><path d="M5 9v12h14V9"/><path d="M9 21v-7h6v7"/></svg></span>خانه</a>
       <a href="<?php echo esc_url($avam_memorials_url); ?>"<?php echo is_page() && get_post_field('post_name',get_queried_object_id())==='memorials' ? ' aria-current="page"' : ''; ?>><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg></span>جست‌وجوی یادبودها</a>
       <?php if (is_user_logged_in()): ?>
         <a href="<?php echo esc_url($avam_account_url); ?>"><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></span>داشبورد من</a>
-        <a href="<?php echo esc_url(home_url('/my-comments/')); ?>"><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="4" cy="6" r=".6" fill="currentColor"/><circle cx="4" cy="12" r=".6" fill="currentColor"/><circle cx="4" cy="18" r=".6" fill="currentColor"/></svg></span>دیدگاه‌های من</a>
+        <?php if (($avam_cc_pages['account_comments_link'] ?? '1') === '1'): ?>        <a href="<?php echo esc_url($avam_comments_url); ?>"><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="4" cy="6" r=".6" fill="currentColor"/><circle cx="4" cy="12" r=".6" fill="currentColor"/><circle cx="4" cy="18" r=".6" fill="currentColor"/></svg></span>دیدگاه‌های من</a><?php endif; ?>
         <a href="<?php echo esc_url($avam_create_url); ?>"><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>ساخت یادبود</a>
-        <a href="<?php echo esc_url(home_url('/profile/')); ?>"><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a7.9 7.9 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a7.9 7.9 0 0 1-1.7-1l-1.7.6-1.4-2.4L7.3 15a7.4 7.4 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.6a7.9 7.9 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a7.9 7.9 0 0 1 1.7 1l1.7-.6 1.4 2.4-1.4 1.1a7.4 7.4 0 0 1 0 2Z"/></svg></span>تنظیمات حساب</a>
+        <a href="<?php echo esc_url($avam_profile_url); ?>"><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a7.9 7.9 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a7.9 7.9 0 0 1-1.7-1l-1.7.6-1.4-2.4L7.3 15a7.4 7.4 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.6a7.9 7.9 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a7.9 7.9 0 0 1 1.7 1l1.7-.6 1.4 2.4-1.4 1.1a7.4 7.4 0 0 1 0 2Z"/></svg></span>تنظیمات حساب</a>
       <?php else: ?>
         <a href="<?php echo esc_url($avam_login_url); ?>"><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h9a7 7 0 0 1 7 7v3"/></svg></span>ورود</a>
-        <a href="<?php echo esc_url($avam_register_url); ?>"><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>ثبت‌نام</a>
+        <?php if ($avam_registration_open): ?><a href="<?php echo esc_url($avam_register_url); ?>"><span class="avam-nav-icon" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>ثبت‌نام</a><?php endif; ?>
       <?php endif; ?>
     <?php
       }
@@ -65,13 +70,13 @@ $avam_initial = function_exists('mb_substr') ? mb_substr($avam_display_name, 0, 
       <?php if (is_user_logged_in()): ?>
         <a class="avam-dash-logout" href="<?php echo esc_url(wp_logout_url(home_url('/'))); ?>"><span aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h9a7 7 0 0 1 7 7v3"/></svg></span>خروج از حساب</a>
       <?php else: ?>
-        <a class="avam-dash-logout" href="<?php echo esc_url($avam_register_url); ?>"><span aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>ایجاد حساب رایگان</a>
+        <a class="avam-dash-logout" href="<?php echo esc_url($avam_create_url); ?>"><span aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span><?php echo $avam_registration_open ? 'ایجاد حساب رایگان' : 'ورود به حساب'; ?></a>
       <?php endif; ?>
     </div>
   </aside>
   <div class="avam-dash-main avam-unified-main">
     <header class="avam-ref-topbar avam-site-identity-bar">
-      <span class="avam-site-title"><?php $avam_cc = get_option('avam_control_center', []); echo esc_html(is_array($avam_cc) ? ($avam_cc['site_title'] ?? 'آرامگاه مجازی') : 'آرامگاه مجازی'); ?></span>
+      <span class="avam-site-title shine"><?php $avam_cc = get_option('avam_control_center', []); echo esc_html(is_array($avam_cc) ? ($avam_cc['site_title'] ?? 'آرامگاه مجازی') : 'آرامگاه مجازی'); ?></span>
       <form class="avam-unified-search" role="search" method="get" action="<?php echo esc_url($avam_memorials_url); ?>">
         <label class="screen-reader-text" for="avam-global-search">جست‌وجوی یادبودها</label>
         <input id="avam-global-search" type="search" name="q" value="<?php echo esc_attr(isset($_GET['q']) ? sanitize_text_field(wp_unslash($_GET['q'])) : ''); ?>" placeholder="جست‌وجو بر اساس نام یا روایت…" autocomplete="off">

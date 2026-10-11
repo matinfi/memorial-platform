@@ -11,12 +11,15 @@ final class AVAM_Admin_Center {
 
     public static function init() {
         add_action('admin_post_avam_save_control_center', [__CLASS__, 'save']);
+        add_action('admin_post_avam_clear_diagnostics', [__CLASS__, 'clear_diagnostics']);
+        add_action('admin_post_avam_test_diagnostics', [__CLASS__, 'test_diagnostics']);
         add_action('admin_enqueue_scripts', [__CLASS__, 'assets']);
         add_action('wp_head', [__CLASS__, 'frontend_css'], 99);
         add_action('wp_body_open', [__CLASS__, 'announcement']);
         add_filter('body_class', [__CLASS__, 'body_classes']);
         add_filter('wp_robots', [__CLASS__, 'robots']);
         add_filter('wp_lazy_loading_enabled', [__CLASS__, 'lazy_loading'], 10, 2);
+        add_filter('number_format_i18n', [__CLASS__, 'number_display'], 10, 3);
         add_filter('pre_get_document_title', [__CLASS__, 'document_title']);
         add_action('init', [__CLASS__, 'performance']);
     }
@@ -57,7 +60,7 @@ final class AVAM_Admin_Center {
                 ['type'=>'checkbox','key'=>'home_hero_enabled','label'=>'نمایش بخش معرفی اصلی','default'=>'1'],
                 ['type'=>'checkbox','key'=>'home_stats_enabled','label'=>'نمایش آمار صفحه اصلی','default'=>'1'],
                 ['type'=>'checkbox','key'=>'home_recent_enabled','label'=>'نمایش یادبودهای تازه','default'=>'1'],
-                ['type'=>'checkbox','key'=>'home_intro_panel_enabled','label'=>'نمایش پنل معرفی','default'=>'1'],
+                ['type'=>'checkbox','key'=>'home_intro_panel_enabled','label'=>'نمایش رسانه و نشان بخش معرفی','default'=>'1'],
                 ['type'=>'text','key'=>'home_eyebrow','label'=>'متن بالای عنوان','default'=>'آرامگاه مجازی'],
                 ['type'=>'text','key'=>'home_title','label'=>'عنوان اصلی صفحه','default'=>'یادها اینجا می‌مانند.'],
                 ['type'=>'textarea','key'=>'home_subtitle','label'=>'توضیح صفحه اصلی','default'=>'فضایی محترمانه برای زنده نگه‌داشتن نام، تصویر و روایت عزیزان.'],
@@ -125,7 +128,7 @@ final class AVAM_Admin_Center {
             ]],
             'access' => ['نقش‌ها و دسترسی‌ها', 'دسترسی', [
                 ['type'=>'checkbox','key'=>'public_registration','label'=>'ثبت‌نام عمومی فعال باشد','default'=>'1'],
-                ['type'=>'checkbox','key'=>'private_memorials_enabled','label'=>'پشتیبانی از یادبود خصوصی','default'=>'1'],
+                ['type'=>'checkbox','key'=>'private_memorials_enabled','label'=>'پشتیبانی از یادبود خصوصی','default'=>'1','description'=>'دسترسی صفحه و API محدود می‌شود؛ فایل‌های رسانه‌ای وردپرس ممکن است با URL مستقیم قابل دسترسی بمانند. برای محرمانگی کامل تصاویر، ذخیره‌سازی خصوصی سمت سرور و پیکربندی هاست لازم است.'],
                 ['type'=>'checkbox','key'=>'admin_bar_frontend','label'=>'نمایش نوار مدیریت وردپرس برای مدیران','default'=>'1'],
                 ['type'=>'textarea','key'=>'access_note','label'=>'یادداشت سیاست دسترسی','description'=>'این گزینه‌ها جایگزین مدیریت نقش‌ها و قابلیت‌های وردپرس نیستند.']
             ]],
@@ -159,12 +162,16 @@ final class AVAM_Admin_Center {
                 ['type'=>'text','key'=>'timezone_note','label'=>'یادداشت منطقه زمانی','description'=>'منطقه زمانی اصلی را از تنظیمات عمومی وردپرس تغییر دهید.']
             ]],
             'integrations' => ['اتصال‌ها و توسعه', 'اتصال‌ها', [
-                ['type'=>'text','key'=>'analytics_id','label'=>'شناسه ابزار آمارگیری'],
+                ['type'=>'text','key'=>'analytics_id','label'=>'شناسه ابزار آمارگیری','description'=>'اسکریپت آمارگیری بلافاصله بارگذاری می‌شود؛ پیش از فعال‌سازی، سیاست حریم خصوصی و رضایت کاربر را متناسب با قوانین محل فعالیت تنظیم کنید.'],
                 ['type'=>'url','key'=>'privacy_policy_url','label'=>'پیوند سیاست حریم خصوصی'],
                 ['type'=>'textarea','key'=>'custom_head_note','label'=>'یادداشت کدهای سفارشی','description'=>'برای امنیت، اجرای کد دلخواه در هدر از این فیلد انجام نمی‌شود. از افزونه معتبر یا Child Theme استفاده کنید.']
             ]],
+            'diagnostics' => ['گزارش‌ها و عیب‌یابی', 'گزارش‌ها', [
+                ['type'=>'notice','label'=>'ثبت رویدادهای فنی','description'=>'پس از فعال‌سازی، هشدارهای زمان اجرای PHP، خطاهای بحرانی PHP، شکست ارسال ایمیل، خطاهای مشخص عملیات سرور، خطاهای JavaScript، Promiseهای ردشده و شکست بارگذاری منابع هم‌مبدأ در حداکثر ۲۰۰ رکورد اخیر ذخیره می‌شوند. متن پیام‌ها، پشته کامل خطا، رمز عبور، ایمیل کاربران، نشانی کامل صفحات و آدرس IP در این گزارش‌ها ثبت نمی‌شود.'],
+                ['type'=>'checkbox','key'=>'diagnostics_enabled','label'=>'فعال‌سازی ثبت گزارش‌های فنی','default'=>'0','description'=>'این گزینه را هنگام بررسی مشکل فعال کنید و پس از پایان عیب‌یابی، در صورت عدم نیاز خاموش کنید.']
+            ]],
             'advanced' => ['پشتیبان‌گیری و پیشرفته', 'پیشرفته', [
-                ['type'=>'checkbox','key'=>'advanced_debug','label'=>'ثبت یادداشت عیب‌یابی تنظیمات','default'=>'0'],
+                ['type'=>'notice','label'=>'گزارش‌های فنی','description'=>'برای فعال‌سازی، مشاهده، آزمایش و پاک‌کردن گزارش‌های خطا به تب «گزارش‌ها» در همین مرکز کنترل بروید.'],
                 ['type'=>'checkbox','key'=>'advanced_confirm_delete','label'=>'تأیید مضاعف عملیات حذف','default'=>'1'],
                 ['type'=>'textarea','key'=>'advanced_notes','label'=>'یادداشت نسخه و نگهداری'],
                 ['type'=>'notice','label'=>'پشتیبان‌گیری و بازیابی','description'=>'برای جلوگیری از واردکردن داده نامعتبر، در این نسخه خروجی/ورودی فایل تنظیمات ارائه نشده است. از ابزار پشتیبان‌گیری هاست یا افزونه معتبر استفاده کنید.']
@@ -192,12 +199,15 @@ final class AVAM_Admin_Center {
     public static function render() {
         if (!current_user_can('manage_options')) return;
         $tabs = self::tabs();
-        $active = isset($_GET['tab']) ? sanitize_key(wp_unslash($_GET['tab'])) : 'overview';
+        $active = isset($_GET['tab']) && is_string($_GET['tab']) ? sanitize_key(wp_unslash($_GET['tab'])) : 'overview';
         if (!isset($tabs[$active])) $active = 'overview';
         $values = get_option(self::OPTION, []);
         if (!is_array($values)) $values = [];
         echo '<div class="wrap avam-control-center" dir="rtl"><div class="avam-cc-heading"><div><span class="avam-cc-eyebrow">ARAMGAH VIRTUAL · CONTROL CENTER</span><h1>مرکز کنترل آرامگاه مجازی</h1><p>تنظیمات ساختاریافته قالب و تجربه کاربری، با ذخیره‌سازی مرکزی و تب‌های مستقل.</p></div><span class="avam-cc-version">نسخه مدیریت ۱.۰</span></div>';
         if (isset($_GET['saved']) && $_GET['saved'] === '1') echo '<div class="notice notice-success is-dismissible"><p>تنظیمات با موفقیت ذخیره شد.</p></div>';
+        if (isset($_GET['logs_cleared']) && $_GET['logs_cleared'] === '1') echo '<div class="notice notice-success is-dismissible"><p>گزارش‌های فنی پاک شدند.</p></div>';
+        if (isset($_GET['test_logged']) && $_GET['test_logged'] === '1') echo '<div class="notice notice-success is-dismissible"><p>رویداد آزمایشی ثبت شد؛ جدول گزارش‌ها را بررسی کنید.</p></div>';
+        if (isset($_GET['test_skipped']) && $_GET['test_skipped'] === '1') echo '<div class="notice notice-warning is-dismissible"><p>برای ثبت رویداد آزمایشی ابتدا گزارش‌گیری را فعال کنید.</p></div>';
         echo '<div class="avam-cc-layout"><nav class="avam-cc-tabs" aria-label="گروه‌های تنظیمات">';
         foreach ($tabs as $key=>$tab) {
             $url = add_query_arg(['page'=>self::PAGE,'tab'=>$key], admin_url('options-general.php'));
@@ -207,7 +217,9 @@ final class AVAM_Admin_Center {
         echo '<form method="post" action="'.esc_url(admin_url('admin-post.php')).'"><input type="hidden" name="action" value="avam_save_control_center"><input type="hidden" name="return_tab" value="'.esc_attr($active).'">';
         wp_nonce_field('avam_save_control_center','avam_control_nonce');
         foreach ($tabs[$active][2] as $field) self::render_field($field, $values);
-        echo '<div class="avam-cc-actions"><button class="button button-primary button-hero" type="submit">ذخیره تنظیمات این تب</button><span>تنظیمات هر گروه جداگانه ذخیره می‌شوند.</span></div></form></section></div></div>';
+        echo '<div class="avam-cc-actions"><button class="button button-primary button-hero" type="submit">ذخیره تنظیمات این تب</button><span>تنظیمات هر گروه جداگانه ذخیره می‌شوند.</span></div></form>';
+        if ($active === 'diagnostics') self::render_diagnostics();
+        echo '</section></div></div>';
     }
 
     private static function render_field($f, $values) {
@@ -262,9 +274,60 @@ final class AVAM_Admin_Center {
         echo '</div></div>';
     }
 
+    private static function render_diagnostics() {
+        if (!current_user_can('manage_options')) return;
+        $entries = class_exists('AVAM_Logger') ? AVAM_Logger::entries() : [];
+        echo '<section class="avam-cc-panel" style="margin-top:20px"><div class="avam-cc-panel-head"><div><span>ثبت رویدادها</span><h2>آخرین گزارش‌های فنی</h2></div><span class="avam-cc-count">'.count($entries).' از ۲۰۰</span></div>';
+        if (!class_exists('AVAM_Logger')) {
+            echo '<p>ماژول گزارش‌گیری بارگذاری نشده است. نصب و فعال بودن نسخه به‌روز افزونه را بررسی کنید.</p>';
+        } else {
+            if (!AVAM_Logger::enabled()) echo '<p class="description">ثبت رویدادهای جدید خاموش است؛ گزارش‌های قبلی همچنان قابل مشاهده‌اند.</p>';
+            if (!$entries) {
+                echo '<p>هنوز رویدادی ثبت نشده است. در صورت بروز مشکل، ثبت گزارش‌های فنی را فعال کنید و دوباره مسیر مشکل‌دار را آزمایش کنید.</p>';
+            } else {
+                echo '<div style="overflow-x:auto"><table class="widefat striped"><thead><tr><th>زمان</th><th>شدت</th><th>رویداد</th><th>جزئیات فنی</th></tr></thead><tbody>';
+                foreach ($entries as $entry) {
+                    $level = sanitize_key($entry['level'] ?? 'info');
+                    $context = isset($entry['context']) && is_array($entry['context']) ? wp_json_encode($entry['context'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : '{}';
+                    echo '<tr><td>'.esc_html($entry['time'] ?? '').'</td><td><strong>'.esc_html(strtoupper($level)).'</strong></td><td><code>'.esc_html($entry['event'] ?? 'unknown').'</code></td><td><code>'.esc_html($context ?: '{}').'</code></td></tr>';
+                }
+                echo '</tbody></table></div>';
+                echo '<p class="description">این گزارش‌ها برای عیب‌یابی فنی‌اند؛ جایگزین گزارش‌های PHP/وب‌سرور هاست نیستند و پیام‌های دستی کنسول یا خطاهای منابع خارج از دامنه سایت را پوشش نمی‌دهند.</p>';
+                echo '<form method="post" action="'.esc_url(admin_url('admin-post.php')).'" style="margin-top:16px"><input type="hidden" name="action" value="avam_clear_diagnostics">';
+                wp_nonce_field('avam_clear_diagnostics','avam_clear_diagnostics_nonce');
+                echo '<button type="submit" class="button" onclick="return confirm(\'همه گزارش‌های ذخیره‌شده پاک شوند؟\')">پاک کردن گزارش‌ها</button></form>';
+            }
+        }
+        if (class_exists('AVAM_Logger') && AVAM_Logger::enabled()) {
+            echo '<form method="post" action="'.esc_url(admin_url('admin-post.php')).'" style="margin-top:16px"><input type="hidden" name="action" value="avam_test_diagnostics">';
+            wp_nonce_field('avam_test_diagnostics','avam_test_diagnostics_nonce');
+            echo '<button type="submit" class="button button-secondary">ثبت رویداد آزمایشی</button> <span class="description">برای بررسی عملکرد پنل بدون ایجاد خطای واقعی.</span></form>';
+        }
+        echo '</section>';
+    }
+
+    public static function test_diagnostics() {
+        if (!current_user_can('manage_options')) wp_die('دسترسی غیرمجاز', '', ['response'=>403]);
+        if (!isset($_POST['avam_test_diagnostics_nonce']) || !is_string($_POST['avam_test_diagnostics_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['avam_test_diagnostics_nonce'])), 'avam_test_diagnostics')) wp_die('درخواست معتبر نیست.', '', ['response'=>403]);
+        $enabled = class_exists('AVAM_Logger') && AVAM_Logger::enabled();
+        if ($enabled) AVAM_Logger::log('info', 'diagnostics_test_event', ['component'=>'admin']);
+        $result_key = $enabled ? 'test_logged' : 'test_skipped';
+        $args = ['page'=>self::PAGE,'tab'=>'diagnostics', $result_key=>'1'];
+        wp_safe_redirect(add_query_arg($args, admin_url('options-general.php')));
+        exit;
+    }
+
+    public static function clear_diagnostics() {
+        if (!current_user_can('manage_options')) wp_die('دسترسی غیرمجاز', '', ['response'=>403]);
+        if (!isset($_POST['avam_clear_diagnostics_nonce']) || !is_string($_POST['avam_clear_diagnostics_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['avam_clear_diagnostics_nonce'])), 'avam_clear_diagnostics')) wp_die('درخواست معتبر نیست.', '', ['response'=>403]);
+        if (class_exists('AVAM_Logger')) AVAM_Logger::clear();
+        wp_safe_redirect(add_query_arg(['page'=>self::PAGE,'tab'=>'diagnostics','logs_cleared'=>'1'], admin_url('options-general.php')));
+        exit;
+    }
+
     public static function save() {
         if (!current_user_can('manage_options')) wp_die('دسترسی غیرمجاز', '', ['response'=>403]);
-        if (!isset($_POST['avam_control_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['avam_control_nonce'])),'avam_save_control_center')) wp_die('درخواست معتبر نیست.', '', ['response'=>403]);
+        if (!isset($_POST['avam_control_nonce']) || !is_string($_POST['avam_control_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['avam_control_nonce'])),'avam_save_control_center')) wp_die('درخواست معتبر نیست.', '', ['response'=>403]);
         $posted = isset($_POST['settings']) && is_array($_POST['settings']) ? wp_unslash($_POST['settings']) : [];
         $tabs = self::tabs();
         $schema = [];
@@ -274,6 +337,8 @@ final class AVAM_Admin_Center {
         foreach ($schema as $key=>$field) {
             if (!array_key_exists($key,$posted)) continue;
             $v = $posted[$key];
+            // Every control in this settings schema is scalar; reject array-shaped tampered input.
+            if (!is_scalar($v)) $v = '';
             switch ($field['type']) {
                 case 'checkbox': $v = $v === '1' ? '1' : '0'; break;
                 case 'color': $v = sanitize_hex_color($v) ?: ($field['default'] ?? '#2c3531'); break;
@@ -333,6 +398,12 @@ final class AVAM_Admin_Center {
             if (($settings['a11y_skip_link']??'1')==='0') $classes[]='avam-setting-skip-link-off';
             if (($settings['seo_social_links']??'1')==='0') $classes[]='avam-setting-social-off';
             if (($settings['page_titles_enabled']??'1')==='0') $classes[]='avam-setting-page-titles-off';
+            $spacing = in_array(($settings['block_spacing'] ?? 'normal'), ['compact','normal','relaxed'], true) ? $settings['block_spacing'] : 'normal';
+            $classes[] = 'avam-setting-block-spacing-' . $spacing;
+            $heading_style = in_array(($settings['block_heading_style'] ?? 'line'), ['plain','line','badge'], true) ? $settings['block_heading_style'] : 'line';
+            $classes[] = 'avam-setting-heading-' . $heading_style;
+            if (($settings['block_icons'] ?? '1') === '0') $classes[] = 'avam-setting-block-icons-off';
+            if (($settings['block_animations'] ?? '0') !== '1') $classes[] = 'avam-setting-block-animations-off';
         }
         return $classes;
     }
@@ -341,6 +412,15 @@ final class AVAM_Admin_Center {
         if (is_admin() || !is_front_page() || defined('WPSEO_VERSION') || defined('RANK_MATH_VERSION')) return $title;
         $s = get_option(self::OPTION, []);
         return is_array($s) && !empty($s['seo_default_title']) ? sanitize_text_field($s['seo_default_title']) : $title;
+    }
+
+    public static function number_display($formatted, $number, $decimals) {
+        $settings = get_option(self::OPTION, []);
+        if (!is_array($settings) || ($settings['number_display'] ?? 'locale') !== 'latin') return $formatted;
+        return strtr((string)$formatted, [
+            '۰'=>'0','۱'=>'1','۲'=>'2','۳'=>'3','۴'=>'4','۵'=>'5','۶'=>'6','۷'=>'7','۸'=>'8','۹'=>'9',
+            '٠'=>'0','١'=>'1','٢'=>'2','٣'=>'3','٤'=>'4','٥'=>'5','٦'=>'6','٧'=>'7','٨'=>'8','٩'=>'9'
+        ]);
     }
 
     public static function lazy_loading($default, $tag_name) {
@@ -396,14 +476,23 @@ final class AVAM_Admin_Center {
         $radius=['sharp'=>'4px','medium'=>'12px','round'=>'22px'][$s['corner_style']??'medium']??'12px';
         $shadow=['none'=>'none','soft'=>'0 8px 24px rgba(35,50,42,.06)','strong'=>'0 12px 32px rgba(20,30,25,.16)'][$s['shadow_style']??'soft']??'0 8px 24px rgba(35,50,42,.06)';
         echo '<style id="avam-control-center-css">:root{--ink:'.$primary.';--cta:'.$primary.';--accent:'.$accent.';--c-primary:'.$primary.';--c-accent:'.$accent.';--avam-surface:'.$surface.';--avam-text:'.$text.';--avam-content-max:'.$width.'px;--avam-radius:'.$radius.';--avam-shadow:'.$shadow.'}';
-        echo 'body.avam-setting-home-hero-off .avam-unified-welcome,body.avam-setting-home-stats-off .avam-unified-home-stats,body.avam-setting-home-recent-off .avam-unified-recent,body.avam-setting-home-panel-off .avam-unified-welcome-mark,body.avam-setting-header-title-off .avam-site-title,body.avam-setting-header-search-off .avam-unified-search,body.avam-setting-footer-off footer,body.avam-setting-mobile-menu-off .avam-mobile-menu-toggle{display:none!important}';
+        echo 'body.avam-setting-home-hero-off .avam-unified-welcome,body.avam-setting-home-stats-off .avam-unified-home-stats,body.avam-setting-home-recent-off .avam-unified-recent,body.avam-setting-home-panel-off .avam-unified-welcome-mark,body.avam-setting-header-title-off .avam-site-title,body.avam-setting-header-search-off .avam-unified-search,body.avam-setting-header-title-off.avam-setting-header-search-off .avam-site-identity-bar,body.avam-setting-footer-off .avam-unified-footer,body.avam-setting-mobile-menu-off .avam-mobile-menu-toggle{display:none!important}';
         $header_width = ($s['header_width'] ?? 'wide') === 'contained' ? '.avam-unified-main>.avam-ref-topbar{max-width:var(--avam-content-max);margin-inline:auto!important}' : '';
         echo $header_width;
-        echo 'body{background:var(--avam-surface);color:var(--avam-text)}.avam-unified-welcome-mark img,.avam-unified-welcome-mark video{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}.avam-footer-copyright{display:block;margin-top:12px;color:#7a877d;font-size:11px}.avam-setting-sticky-header .avam-site-identity-bar{position:sticky;top:32px;z-index:40}.avam-setting-skip-link-off .avam-skip,.avam-setting-page-titles-off .avam-page .avam-section-title{display:none!important}.avam-setting-account-dashboard-off .avam-account-dashboard-content{display:none!important}.avam-setting-account-stats-off .avam-ref-stats{display:none!important}.avam-setting-account-recent-off .avam-ref-table-panel{display:none!important}.avam-setting-account-comments-link-off .avam-dash-nav a[href*="my-comments"]{display:none!important}.avam-setting-single-image-off .avam-reading-portrait-wrap,.avam-setting-single-timeline-off .avam-reading-timeline,.avam-setting-single-comments-off .avam-reading-comments,.avam-setting-single-share-off [data-share],.avam-setting-social-off [data-share]{display:none!important}';
+        echo 'body{background:var(--avam-surface);color:var(--avam-text)}.avam-unified-welcome-mark img,.avam-unified-welcome-mark video{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}.avam-footer-copyright{display:block;margin-top:12px;color:#7a877d;font-size:11px}body.avam-setting-sticky-header .avam-site-identity-bar{position:sticky;top:0;z-index:40}body.admin-bar.avam-setting-sticky-header .avam-site-identity-bar{top:32px}@media(max-width:782px){body.admin-bar.avam-setting-sticky-header .avam-site-identity-bar{top:46px}}.avam-setting-skip-link-off .avam-skip,.avam-setting-page-titles-off .avam-page .avam-section-title{display:none!important}.avam-setting-account-dashboard-off .avam-account-dashboard-content{display:none!important}.avam-setting-account-stats-off .avam-ref-stats{display:none!important}.avam-setting-account-recent-off .avam-ref-table-panel{display:none!important}.avam-setting-account-comments-link-off .avam-dash-nav a[href*="my-comments"]{display:none!important}.avam-setting-single-image-off .avam-reading-portrait-wrap,.avam-setting-single-timeline-off .avam-reading-timeline,.avam-setting-single-comments-off .avam-reading-comments,.avam-setting-single-share-off [data-share],.avam-setting-social-off [data-share]{display:none!important}';
         $mobile_breakpoint = in_array((string)($s['mobile_breakpoint'] ?? '760'), ['640','760','900'], true) ? (int)$s['mobile_breakpoint'] : 760;
         echo '@media(max-width:'.$mobile_breakpoint.'px){body.avam-setting-mobile-search-off .avam-unified-search{display:none!important}}';
-        echo 'body.avam-setting-high-contrast{filter:contrast(1.12)}body.avam-setting-reduce-motion *,body.avam-setting-reduce-motion *:before,body.avam-setting-reduce-motion *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}';
+        echo 'body.avam-setting-high-contrast{filter:contrast(1.12)}body.avam-setting-reduce-motion *,body.avam-setting-reduce-motion *:before,body.avam-setting-reduce-motion *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}body.avam-setting-reduce-motion .avam-unified-welcome-mark video[autoplay]{display:none!important}';
         echo '.avam-unified-content,.avam-container,.avam-archive-results{max-width:var(--avam-content-max)}.avam-unified-memorial-card,.avam-memorial-card,.avam-card,.avam-ref-panel{border-radius:var(--avam-radius);box-shadow:var(--avam-shadow)}';
+        $spacing_rules = [
+            'compact' => 'body.avam-setting-block-spacing-compact .avam-unified-home-stats,body.avam-setting-block-spacing-compact .avam-unified-memorial-grid,body.avam-setting-block-spacing-compact .avam-memorial-grid{gap:8px!important}body.avam-setting-block-spacing-compact .avam-unified-home-stats,body.avam-setting-block-spacing-compact .avam-unified-recent{margin-block:10px!important}',
+            'relaxed' => 'body.avam-setting-block-spacing-relaxed .avam-unified-home-stats,body.avam-setting-block-spacing-relaxed .avam-unified-memorial-grid,body.avam-setting-block-spacing-relaxed .avam-memorial-grid{gap:22px!important}body.avam-setting-block-spacing-relaxed .avam-unified-home-stats,body.avam-setting-block-spacing-relaxed .avam-unified-recent{margin-block:28px!important}',
+            'normal' => ''
+        ];
+        $spacing = in_array(($s['block_spacing'] ?? 'normal'), ['compact','normal','relaxed'], true) ? $s['block_spacing'] : 'normal';
+        echo $spacing_rules[$spacing];
+        echo 'body.avam-setting-block-icons-off .avam-unified-stat-icon,body.avam-setting-block-icons-off .avam-ref-stat-icon,body.avam-setting-block-icons-off .avam-nav-icon{display:none!important}body.avam-setting-block-animations-off .avam-unified-content *,body.avam-setting-block-animations-off .avam-unified-content *:before,body.avam-setting-block-animations-off .avam-unified-content *:after{animation:none!important;transition:none!important}';
+        echo 'body.avam-setting-heading-plain .avam-unified-section-head h2,body.avam-setting-heading-plain .avam-ref-heading h1,body.avam-setting-heading-plain .avam-reading-body h2{border:0!important;box-shadow:none!important;background:none!important}body.avam-setting-heading-badge .avam-unified-section-head h2,body.avam-setting-heading-badge .avam-reading-body h2{display:inline-flex;align-items:center;padding:5px 12px;border-radius:999px;background:var(--avam-surface);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent)}';
         if (($s['a11y_focus_outline']??'1')==='1') echo ':focus-visible{outline:3px solid '.$accent.'!important;outline-offset:3px}';
         if (($s['font_family']??'vazirmatn')==='system') echo 'body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}';
         echo '</style>';
