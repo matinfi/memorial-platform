@@ -398,9 +398,11 @@ final class AVAM_Admin_Center {
             if (($settings['a11y_skip_link']??'1')==='0') $classes[]='avam-setting-skip-link-off';
             if (($settings['seo_social_links']??'1')==='0') $classes[]='avam-setting-social-off';
             if (($settings['page_titles_enabled']??'1')==='0') $classes[]='avam-setting-page-titles-off';
-            $spacing = in_array(($settings['block_spacing'] ?? 'normal'), ['compact','normal','relaxed'], true) ? $settings['block_spacing'] : 'normal';
+            $spacing_value = $settings['block_spacing'] ?? 'normal';
+            $spacing = in_array($spacing_value, ['compact','normal','relaxed'], true) ? $spacing_value : 'normal';
             $classes[] = 'avam-setting-block-spacing-' . $spacing;
-            $heading_style = in_array(($settings['block_heading_style'] ?? 'line'), ['plain','line','badge'], true) ? $settings['block_heading_style'] : 'line';
+            $heading_style_value = $settings['block_heading_style'] ?? 'line';
+            $heading_style = in_array($heading_style_value, ['plain','line','badge'], true) ? $heading_style_value : 'line';
             $classes[] = 'avam-setting-heading-' . $heading_style;
             if (($settings['block_icons'] ?? '1') === '0') $classes[] = 'avam-setting-block-icons-off';
             if (($settings['block_animations'] ?? '0') !== '1') $classes[] = 'avam-setting-block-animations-off';
