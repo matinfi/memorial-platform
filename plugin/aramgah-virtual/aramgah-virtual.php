@@ -296,8 +296,8 @@ JS;
     $_FILES['avam_gallery_single']=$single; $gallery_att=media_handle_upload('avam_gallery_single',$id); unset($_FILES['avam_gallery_single']);
     if(is_wp_error($gallery_att))wp_send_json_error(['message'=>'یکی از تصاویر گالری ذخیره نشد.'],422); $gallery_ids[]=(int)$gallery_att;
    }
-   if($gallery_ids || !empty($_POST['gallery_management'])){if(!isset($keep_gallery)){$keep_gallery=get_post_meta($id,'avam_gallery_ids',true);if(!is_array($keep_gallery))$keep_gallery=[];}$final_gallery=array_values(array_unique(array_merge($keep_gallery,$gallery_ids)));update_post_meta($id,'avam_gallery_ids',array_slice($final_gallery,0,10));}
   }
+  if($gallery_ids || !empty($_POST['gallery_management'])){$final_gallery=array_values(array_unique(array_merge($keep_gallery,$gallery_ids)));update_post_meta($id,'avam_gallery_ids',array_slice($final_gallery,0,10));}
   $url=$save_status==='draft'?get_preview_post_link($id):get_permalink($id);
   wp_send_json_success(['url'=>$url?:get_permalink($id),'id'=>(int)$id,'status'=>$save_status,'message'=>$save_status==='draft'?'پیش‌نویس ذخیره شد.':'یادبود منتشر شد.']);
  }
