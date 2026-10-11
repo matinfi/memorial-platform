@@ -15,7 +15,7 @@ jQuery(function($){
  });
  $(document).on('click','.avam-action-delete',function(){
   const b=$(this),id=b.data('id');
-  if(!id||!window.confirm('این یادبود برای همیشه حذف شود؟ این عمل قابل بازگشت نیست.'))return;
+  if(!id||(AVAM.confirmDelete!==false&&!window.confirm('این یادبود برای همیشه حذف شود؟ این عمل قابل بازگشت نیست.')))return;
   b.prop('disabled',true).text('در حال حذف...');
   $.post(AVAM.ajax,{action:'avam_delete_memorial',nonce:AVAM.nonce,id:id}).done(function(r){
    if(r.success){const row=b.closest('.avam-ref-table tr,.avam-dash-memorial');row.slideUp(220,function(){$(this).remove();});}
@@ -201,7 +201,10 @@ jQuery(function($){
     const globalSearch=document.querySelector('.avam-unified-search input[name="q"]');
     if(globalSearch)globalSearch.value=currentUrl.searchParams.get('q')||'';
     if(replace)history.replaceState({avamPanel:true},'',url);else history.pushState({avamPanel:true},'',url);
-    window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+    if(currentUrl.hash){
+     const id=decodeURIComponent(currentUrl.hash.slice(1));
+     window.setTimeout(function(){const target=document.getElementById(id);if(target)target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});else window.scrollTo({top:0,behavior:'auto'});},40);
+    }else window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
     shell.classList.remove('avam-panel-loading');
     busy=false;
    }).catch(()=>{
@@ -213,6 +216,7 @@ jQuery(function($){
   if(!href||a.target||a.hasAttribute('download')||a.classList.contains('avam-dash-logout')||a.getAttribute('href')==='#')return;
   const u=new URL(href,location.href);
   if(u.origin!==location.origin)return;
+  if(u.pathname===location.pathname && u.search===location.search && u.hash)return;
   e.preventDefault();window.avamPanelNavigate(href,false);
  });
  $(document).on('submit','.avam-dashboard-reference .avam-ref-search, .avam-dashboard-reference .avam-archive-search',function(e){
@@ -222,3 +226,80 @@ jQuery(function($){
  });
  window.addEventListener('popstate',function(){if(document.querySelector('.avam-unified-shell'))window.avamPanelNavigate(location.href,true);});
 })(jQuery);
+
+/* Share/copy handlers stay delegated so they also work after in-app navigation. */
+(function(){
+ function fallbackCopy(){
+  const field=document.createElement('textarea');
+  field.value=window.location.href;
+  field.setAttribute('readonly','');
+  field.style.position='fixed';
+  field.style.opacity='0';
+  document.body.appendChild(field);
+  field.select();
+  let copied=false;
+  try{copied=document.execCommand('copy');}catch(error){}
+  field.remove();
+  if(!copied)window.prompt('پیوند این یادبود را کپی کنید:',window.location.href);
+  return copied;
+ }
+ function copyLink(trigger,original,isHtml){
+  const done=function(){
+   if(isHtml)trigger.textContent='✓ لینک کپی شد';
+   else trigger.textContent='لینک کپی شد';
+   window.setTimeout(function(){if(isHtml)trigger.innerHTML=original;else trigger.textContent=original;},1800);
+  };
+  if(navigator.clipboard&&window.isSecureContext){
+   navigator.clipboard.writeText(window.location.href).then(done).catch(function(){if(fallbackCopy())done();});
+  }else if(fallbackCopy())done();
+ }
+ document.addEventListener('click',function(event){
+  const share=event.target.closest('[data-share]');
+  const copy=event.target.closest('[data-copy]');
+  if(!share&&!copy)return;
+  const trigger=share||copy;
+  if(share&&navigator.share){
+   navigator.share({title:document.title,url:window.location.href}).catch(function(error){
+    if(!error||error.name!=='AbortError')copyLink(share,share.textContent,false);
+   });
+   return;
+  }
+  copyLink(trigger,copy?copy.innerHTML:trigger.textContent,Boolean(copy));
+ });
+})();
+/* Optional, privacy-conscious browser diagnostics; only same-origin failures are reported. */
+(function(){
+ if(!window.AVAM||!AVAM.diagnostics||!AVAM.clientLogNonce||!AVAM.ajax)return;
+ function send(kind,source,line,resourceType){
+  let component=resourceType||'';
+  if(source){
+   try{
+    const url=new URL(source,window.location.href);
+    if(url.origin!==window.location.origin)return;
+    if(!component)component=url.pathname.split('/').pop().slice(0,100);
+   }catch(e){return;}
+  }
+  jQuery.post(AVAM.ajax,{
+   action:'avam_client_log',
+   nonce:AVAM.clientLogNonce,
+   kind:kind,
+   component:component,
+   line:Number.isFinite(Number(line))?Math.max(0,Math.min(100000,Number(line))):0
+  });
+ }
+ window.addEventListener('error',function(event){
+  if(event.target&&event.target!==window){
+   const target=event.target;
+   const source=target.src||target.href||'';
+   const tag=String(target.tagName||'').toUpperCase();
+   const resourceType=tag==='IMG'?'image':(tag==='VIDEO'||tag==='AUDIO'?'media':(tag==='LINK'?'stylesheet':(tag==='SCRIPT'?'script':'resource')));
+   if(source)send('resource_load_error',source,0,resourceType);
+   return;
+  }
+  if(event.filename)send('javascript_error',event.filename,event.lineno||0);
+ },true);
+ window.addEventListener('unhandledrejection',function(){
+  send('unhandled_promise_rejection','',0);
+ });
+})();
+

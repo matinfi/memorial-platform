@@ -8,13 +8,14 @@
       <?php
       $avam_cc_footer = get_option('avam_control_center', []);
       $avam_footer_menu = is_array($avam_cc_footer) ? absint($avam_cc_footer['footer_menu'] ?? 0) : 0;
+      $avam_footer_registration_open = !is_array($avam_cc_footer) || ((($avam_cc_footer['registration_enabled'] ?? '1') === '1') && (($avam_cc_footer['public_registration'] ?? '1') === '1'));
       if ($avam_footer_menu && wp_get_nav_menu_object($avam_footer_menu)) {
-        wp_nav_menu(['menu'=>$avam_footer_menu,'container'=>false,'items_wrap'=>'%3$s','fallback_cb'=>false,'depth'=>1]);
+        wp_nav_menu(['menu'=>$avam_footer_menu,'container'=>false,'items_wrap'=>'<ul class="avam-footer-nav">%3$s</ul>','fallback_cb'=>false,'depth'=>1]);
       } else {
         ?>
         <a href="<?php echo esc_url(home_url('/')); ?>">خانه</a>
         <a href="<?php echo esc_url(avam_memorials_url()); ?>">یادبودها</a>
-        <?php if (is_user_logged_in()): ?><a href="<?php echo esc_url(avam_account_url()); ?>">حساب من</a><?php else: ?><a href="<?php echo esc_url(avam_login_url()); ?>">ورود</a><a href="<?php echo esc_url(avam_register_url()); ?>">ثبت‌نام</a><?php endif; ?>
+        <?php if (is_user_logged_in()): ?><a href="<?php echo esc_url(avam_account_url()); ?>">حساب من</a><?php else: ?><a href="<?php echo esc_url(avam_login_url()); ?>">ورود</a><?php if ($avam_footer_registration_open): ?><a href="<?php echo esc_url(avam_register_url()); ?>">ثبت‌نام</a><?php endif; ?><?php endif; ?>
         <?php
       }
       ?>

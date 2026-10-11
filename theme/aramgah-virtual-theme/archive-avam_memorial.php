@@ -1,9 +1,12 @@
 <?php
 get_header();
 $avam_cc = get_option('avam_control_center', []); if (!is_array($avam_cc)) $avam_cc = [];
-$q=isset($_GET['q'])?sanitize_text_field(wp_unslash($_GET['q'])):'';
-$city=isset($_GET['city'])?sanitize_text_field(wp_unslash($_GET['city'])):'';
-$sort=isset($_GET['sort'])?sanitize_key(wp_unslash($_GET['sort'])):sanitize_key($avam_cc['archive_default_sort'] ?? 'newest');
+$q=isset($_GET['q']) && is_string($_GET['q'])?sanitize_text_field(wp_unslash($_GET['q'])):'';
+$city_filter_enabled=($avam_cc['archive_city_filter']??'1')==='1';
+$sort_enabled=($avam_cc['archive_sort']??'1')==='1';
+$city=$city_filter_enabled && isset($_GET['city']) && is_string($_GET['city'])?sanitize_text_field(wp_unslash($_GET['city'])):'';
+$default_sort=sanitize_key($avam_cc['archive_default_sort']??'newest');
+$sort=$sort_enabled && isset($_GET['sort']) && is_string($_GET['sort'])?sanitize_key(wp_unslash($_GET['sort'])):$default_sort;
 $order_map=['newest'=>['date','DESC'],'oldest'=>['date','ASC'],'name'=>['title','ASC']];
 [$orderby,$order]=$order_map[$sort]??$order_map['newest'];
 $args=['post_type'=>'avam_memorial','post_status'=>'publish','posts_per_page'=>min(60,max(1,absint($avam_cc['archive_per_page'] ?? 12))),'paged'=>max(1,get_query_var('paged')),'orderby'=>$orderby,'order'=>$order,'meta_query'=>['relation'=>'AND',['relation'=>'OR',['key'=>'avam_visibility','compare'=>'NOT EXISTS'],['key'=>'avam_visibility','value'=>'private','compare'=>'!=']]]];
@@ -30,11 +33,14 @@ $memorials=new WP_Query($args);
     <?php if($memorials->have_posts()): ?>
       <div class="avam-memorial-grid">
       <?php while($memorials->have_posts()):$memorials->the_post(); $city_value=get_post_meta(get_the_ID(),'avam_city',true);$death=get_post_meta(get_the_ID(),'avam_death',true); ?>
-        <a class="avam-memorial-card" href="<?php the_permalink(); ?>">
-          <div class="avam-memorial-card-image"><?php if(has_post_thumbnail()): ?><img src="<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID(),'large')); ?>" alt="<?php echo esc_attr(get_the_title()); ?>"><?php else: ?><span><svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20c.4-3.5 2.8-5.5 6.5-5.5s6.1 2 6.5 5.5"/><path d="M3 4v4M3 4h4M21 20v-4M21 20h-4"/></svg></span><?php endif; ?></div>
+        <a class="avam-memorial-card avam-playing-card" href="<?php the_permalink(); ?>">
+          <span class="avam-card-layer avam-card-layer-1" aria-hidden="true"></span><span class="avam-card-layer avam-card-layer-2" aria-hidden="true"></span><span class="avam-card-glider" aria-hidden="true"></span><span class="avam-card-corner avam-card-corner-top" aria-hidden="true">✦</span><span class="avam-card-corner avam-card-corner-bottom" aria-hidden="true">✦</span>
+          <div class="avam-memorial-card-face">
+          <div class="avam-memorial-card-image"><?php if(has_post_thumbnail()): ?><img src="<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID(),'large')); ?>" alt="<?php echo esc_attr(get_the_title()); ?>" loading="<?php echo (($avam_cc['lazy_images']??'1')==='1')?'lazy':'eager'; ?>"><?php else: ?><span><svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20c.4-3.5 2.8-5.5 6.5-5.5s6.1 2 6.5 5.5"/><path d="M3 4v4M3 4h4M21 20v-4M21 20h-4"/></svg></span><?php endif; ?></div>
           <div class="avam-memorial-card-body">
             <span>یادبود</span><h2><?php the_title(); ?></h2>
             <?php if (($avam_cc['archive_show_city'] ?? '1') === '1' || (($avam_cc['archive_show_dates'] ?? '1') === '1' && $death)): ?><p><?php if (($avam_cc['archive_show_city'] ?? '1') === '1') echo esc_html($city_value ?: ''); ?><?php if (($avam_cc['archive_show_dates'] ?? '1') === '1' && $death && $city_value && (($avam_cc['archive_show_city'] ?? '1') === '1')): ?> · <?php endif; ?><?php if (($avam_cc['archive_show_dates'] ?? '1') === '1') echo esc_html($death); ?></p><?php endif; ?>
+          </div>
           </div>
         </a>
       <?php endwhile; wp_reset_postdata(); ?>

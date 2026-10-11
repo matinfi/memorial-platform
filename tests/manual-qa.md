@@ -45,3 +45,58 @@
 - [ ] ورود، ثبت‌نام و خروج پس از تغییر وضعیت احراز هویت، نام کاربر و گزینه‌های سایدبار را به‌روز کنند.
 - [ ] در عرض‌های 320، 375، 768، 1024 و دسکتاپ، overflow افقی ناخواسته یا جدول خارج از قاب وجود نداشته باشد.
 - [ ] اجرای lint نحو PHP و JavaScript و آزمون دستی در مرورگر واقعی؛ تا انجام این موارد، وضعیت را «نیازمند تأیید» ثبت کنید.
+
+
+## آزمون‌های تکمیلی ممیزی کیفیت
+- [ ] وقتی ثبت‌نام بسته است، صفحه مستقیم ثبت‌نام پیام واضح نشان دهد و فرم قابل ارسال نباشد؛ پیوند ثبت‌نام در منوهای سفارشی و فوتر نیز پنهان شود.
+- [ ] وقتی فیلتر شهر یا مرتب‌سازی آرشیو خاموش است، افزودن دستی پارامتر `city` یا `sort` به URL نباید قابلیت خاموش‌شده را فعال کند.
+- [ ] مجموعه REST یادبودها و جست‌وجوی REST نباید یادبود خصوصی را برگرداند؛ URL مستقیم یادبود خصوصی برای غیرمالک 404 بدهد.
+- [ ] در ناوبری داخلی پوسته، دکمه اشتراک‌گذاری/کپی روی صفحه یادبود کار کند و لینک مستقیم به یک دیدگاه پس از بارگذاری محتوا به همان دیدگاه اسکرول کند.
+- [ ] با خاموش/روشن کردن cache busting، نسخه فایل‌های CSS/JS به‌ترتیب ثابت/مبتنی بر زمان تغییر فایل باشد.
+- [ ] با گزینه اعداد لاتین، خروجی `number_format_i18n` از ارقام فارسی/عربی به ارقام لاتین تبدیل شود.
+- [ ] گزینه دعا و خاطره باید تنظیم بومی «دیدگاه‌ها باز/بسته» در همان یادبود را رعایت کند.
+- [ ] ارسال nonce یا فیلدهای متنی به شکل آرایه و بارگذاری فایل با ساختار نامعتبر باید پاسخ کنترل‌شده بدهد، نه خطای بحرانی PHP.
+- [ ] در موبایل، هدر در بالای صفحه بدون نوار خالی اضافی نمایش داده شود؛ در عرض‌های 320، 375 و 760 پیکسل بررسی شود.
+- [ ] در REST، دیدگاه‌های مربوط به یادبود خصوصی و فایل‌های رسانه‌ای متصل به آن نباید در فهرست عمومی یا دریافت مستقیم REST افشا شوند.
+- [ ] گزینه «تأیید مضاعف عملیات حذف» باید تعیین کند آیا پیش از حذف یادبود پیام تأیید نمایش داده می‌شود.
+- [ ] گزینه «بارگذاری تنبل تصاویر» باید برای تصاویر قالب و جست‌وجوی افزونه، مقدار `loading` مناسب را اعمال کند.
+- [ ] وقتی داشبورد غیرفعال است، کاربر به‌جای صفحه خالی پیام قابل فهم ببیند؛ آمار غیرفعال نیز نباید query شمارش اجرا کند.
+- [ ] پس از چند ورود ناموفق، محدودیت تلاش ورود به‌صورت موقت و با پیام عمومی اعمال شود؛ ورود موفق محدودیت نام کاربری را پاک کند.
+- [ ] ثبت‌نام موفق از یک IP بیش از ۱۰ حساب در ساعت نسازد؛ ثبت‌نام عادی از IP دیگر تحت تأثیر قرار نگیرد.
+- [ ] یادآوری سالگرد برای یادبود خصوصیِ متعلق به کاربر opt-in نیز ارسال شود، فقط یک بار در هر سال جلالی.
+- [ ] ارسال مجموع فایل‌های بزرگ‌تر از `post_max_size` باید خطای قابل فهم با کد 413 نشان دهد، نه خطای گمراه‌کننده nonce.
+
+- [ ] یادبود دارای دیدگاه تأییدشده باید در صفحه عمومی نمایش دیدگاه داشته باشد؛ ساختار HTML نباید فهرست `ol` تو در تو ایجاد کند.
+- [ ] وقتی دیدگاه‌ها بسته‌اند، دیدگاه‌های تأییدشده همچنان نمایش داده شوند و فرم ارسال نمایش داده نشود.
+- [ ] نویسنده باید پیام در انتظار تأیید خودش را با اعلان مناسب ببیند؛ بازدیدکننده دیگر نباید متن پیام در انتظار را ببیند.
+- [ ] نام سایت در دسکتاپ و موبایل با افکت درخشش دیده شود؛ با تنظیم کاهش حرکت، انیمیشن متوقف شود.
+- [ ] کارت‌های یادبود در صفحه اصلی و آرشیو باید لایه‌های طلایی و افکت نور داشته باشند، در موبایل سرریز افقی نسازند و با صفحه‌کلید focus واضح داشته باشند.
+
+
+## Follow-up regression checks — comment throttling and title shine
+
+- Submit a valid comment once: it should be accepted and either published or marked pending moderation.
+- Submit another comment to the same memorial immediately: the UI should show a clear cooldown message with the configured interval, not mislabel the comment as spam.
+- After the cooldown, submit a new valid comment: it should work normally.
+- If a separate spam filter rejects a comment, the UI should explain that it was rejected by the spam filter rather than claiming the rate limit was hit.
+- Verify the site title has a moving light sweep on desktop and mobile, remains visible on narrow screens, and still reads clearly with reduced motion enabled.
+- If styles appear stale after deployment, purge page/CDN caches and confirm the active theme reports version 2.2.3 and plugin version 1.11.7.
+
+
+## Follow-up regression checks — mobile header, owner comments, reaction identities
+
+- Confirm the site title has no shine animation or gradient, and the mobile header keeps its compact layout without extra height or wrapping regressions.
+- With a logged-in memorial owner, submit a comment on their own published memorial even if that memorial's individual WordPress discussion flag is closed; the global `avam_comments_enabled` setting must still be respected.
+- Verify a visitor who is not the owner cannot comment when the memorial's comments are individually closed.
+- Give a flower and light a candle on a public memorial, then open each supporter list and verify account display names appear without exposing emails or IP addresses.
+- Verify guest reactions are shown as `کاربر مهمان`, and legacy totals with no stored identity show an explanatory note.
+- Verify the supporter list is usable on desktop/mobile, closes by close button, backdrop, and Escape, and does not appear on private memorials.
+
+
+## Owner-side comment moderation
+
+- [ ] A logged-in memorial owner can open `/manage-memorial-comments/` from the account sidebar.
+- [ ] Pending comments on only that owner's published memorials appear; other users' memorial comments are never exposed for moderation.
+- [ ] Approving a pending comment publishes it; rejecting it moves it to the WordPress trash.
+- [ ] The owner can approve their own pending comment; visitors who do not own the memorial cannot use the moderation endpoint.
+- [ ] Invalid/expired nonces and attempts to moderate comments on another user's memorial are rejected.

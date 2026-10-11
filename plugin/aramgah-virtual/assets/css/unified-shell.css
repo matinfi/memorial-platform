@@ -1202,3 +1202,17 @@ body:has(.avam-unified-shell) { background:var(--ui-page,#f2f5f3)!important; }
   .avam-unified-shell>.avam-dash-sidebar { transition:none!important; }
   .avam-unified-content * { scroll-behavior:auto!important; }
 }
+
+/* Configured WordPress menus need their own list reset inside the shared sidebar. */
+.avam-dash-nav>ul.avam-custom-nav{display:grid;gap:4px;margin:0;padding:0;list-style:none}
+.avam-dash-nav>ul.avam-custom-nav>li{min-width:0;margin:0;padding:0;list-style:none}
+.avam-dash-nav>ul.avam-custom-nav a{width:100%;text-decoration:none}
+.avam-dash-nav>ul.avam-custom-nav .sub-menu{display:grid;gap:4px;margin:4px 0 0;padding-inline:14px;list-style:none}
+.avam-dash-nav>ul.avam-custom-nav .sub-menu>li{margin:0;padding:0;list-style:none}
+.avam-dash-nav>ul.avam-custom-nav li.current-menu-item>a,
+.avam-dash-nav>ul.avam-custom-nav li.current-menu-ancestor>a{background:#e7ebe5;color:var(--c-primary)!important;font-weight:700}
+
+
+.avam-unified-site-message{margin:12px 0 18px;padding:11px 15px;border-inline-start:3px solid var(--ui-accent,#ad875c);border-radius:9px;background:var(--ui-card,#fff);color:var(--ui-muted,#68776d);font-size:12px;line-height:1.9}
+
+@media(prefers-reduced-motion:reduce){.avam-unified-welcome-mark video[autoplay]{display:none!important}}

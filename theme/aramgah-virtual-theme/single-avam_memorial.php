@@ -1,5 +1,6 @@
 <?php
 get_header();
+$avam_cc=get_option('avam_control_center',[]); if(!is_array($avam_cc))$avam_cc=[];
 if(have_posts()): while(have_posts()): the_post();
 $birth=get_post_meta(get_the_ID(),'avam_birth',true);
 $death=get_post_meta(get_the_ID(),'avam_death',true);
@@ -13,7 +14,7 @@ $intro=get_option('avam_single_intro','روایتی برای ماندن و به 
   <header class="avam-memorial-reading-header">
     <a href="<?php echo esc_url(avam_memorials_url()); ?>" aria-label="بازگشت به یادبودها">بازگشت به یادبودها</a>
     <a class="avam-reading-brand" href="<?php echo esc_url(home_url('/')); ?>">آرامگاه مجازی</a>
-    <button type="button" data-share aria-label="اشتراک‌گذاری">اشتراک‌گذاری</button>
+    <?php if (get_post_meta(get_the_ID(),'avam_visibility',true)!=='private'): ?><button type="button" data-share aria-label="اشتراک‌گذاری">اشتراک‌گذاری</button><?php endif; ?>
   </header>
 
   <section class="avam-memorial-reading-hero">
@@ -87,24 +88,35 @@ $intro=get_option('avam_single_intro','روایتی برای ماندن و به 
         <h2>گالری یادها</h2>
         <div class="avam-reading-gallery-grid">
           <?php foreach(array_slice($gallery_ids,0,10) as $attachment_id): $gallery_url=wp_get_attachment_image_url(absint($attachment_id),'large'); if(!$gallery_url)continue; ?>
-            <a href="<?php echo esc_url(wp_get_attachment_url(absint($attachment_id))); ?>" target="_blank" rel="noopener"><img loading="lazy" src="<?php echo esc_url($gallery_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>"></a>
+            <a href="<?php echo esc_url(wp_get_attachment_url(absint($attachment_id))); ?>" target="_blank" rel="noopener"><img loading="<?php echo (($avam_cc['lazy_images']??'1')==='1')?'lazy':'eager'; ?>" src="<?php echo esc_url($gallery_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>"></a>
           <?php endforeach; ?>
         </div>
       </section>
     <?php endif; ?>
 
+    <?php if (get_post_meta(get_the_ID(),'avam_visibility',true)!=='private'): ?>
     <div class="avam-memorial-actions" aria-label="همراهی با یادبود">
       <button type="button" data-avam-react="candle" data-id="<?php echo esc_attr(get_the_ID()); ?>">🕯️ روشن کردن شمع <span data-count><?php echo esc_html((int)get_post_meta(get_the_ID(),'avam_candle_count',true)); ?></span></button>
+      <button type="button" data-avam-reaction-list="candle" data-id="<?php echo esc_attr(get_the_ID()); ?>" class="avam-reaction-list-trigger">چه کسانی شمع روشن کرده‌اند؟</button>
       <button type="button" data-avam-react="flower" data-id="<?php echo esc_attr(get_the_ID()); ?>">🌷 تقدیم گل <span data-count><?php echo esc_html((int)get_post_meta(get_the_ID(),'avam_flower_count',true)); ?></span></button>
+      <button type="button" data-avam-reaction-list="flower" data-id="<?php echo esc_attr(get_the_ID()); ?>" class="avam-reaction-list-trigger">چه کسانی گل داده‌اند؟</button>
       <button type="button" data-avam-report data-id="<?php echo esc_attr(get_the_ID()); ?>">گزارش محتوا</button>
     </div>
+    <div id="avam-reaction-modal" class="avam-reaction-modal" role="dialog" aria-modal="true" aria-labelledby="avam-reaction-modal-title" hidden>
+      <div class="avam-reaction-modal-panel">
+        <button type="button" class="avam-reaction-modal-close" data-avam-reaction-close aria-label="بستن فهرست">×</button>
+        <h3 id="avam-reaction-modal-title">همراهان این یادبود</h3>
+        <p class="avam-reaction-modal-status" data-avam-reaction-status role="status" aria-live="polite">در حال بارگذاری…</p>
+        <ul class="avam-reaction-modal-list" data-avam-reaction-items></ul>
+        <p class="avam-reaction-modal-note" data-avam-reaction-note></p>
+      </div>
+    </div>
+    <?php endif; ?>
 
     <section class="avam-reading-comments">
       <span class="avam-reading-index">پیام‌های یادبود</span>
       <h2>دعا و خاطره</h2>
-      <?php if(comments_open() || get_comments_number()): comments_template(); else: ?>
-        <div class="avam-social-comments-empty">هنوز پیامی ثبت نشده است. اولین دعا یا خاطره را شما بنویسید.</div>
-      <?php endif; ?>
+      <?php comments_template(); ?>
     </section>
 
     <footer class="avam-reading-end">
@@ -117,30 +129,4 @@ $intro=get_option('avam_single_intro','روایتی برای ماندن و به 
 </div>
 </article>
 
-<script>
-document.addEventListener('click',function(e){
-  const share=e.target.closest('[data-share]');
-  if(share){
-    const original=share.textContent;
-    const data={title:document.title,url:location.href};
-    if(navigator.share){
-      navigator.share(data).catch(()=>{});
-    }else if(navigator.clipboard){
-      navigator.clipboard.writeText(location.href).then(()=>{
-        share.textContent='لینک کپی شد';
-        setTimeout(()=>share.textContent=original,1800);
-      });
-    }
-  }
-
-  const copy=e.target.closest('[data-copy]');
-  if(copy && navigator.clipboard){
-    navigator.clipboard.writeText(location.href).then(()=>{
-      const original=copy.innerHTML;
-      copy.innerHTML='<span>✓</span> لینک کپی شد';
-      setTimeout(()=>copy.innerHTML=original,1800);
-    });
-  }
-});
-</script>
 <?php endwhile; endif; get_footer();
