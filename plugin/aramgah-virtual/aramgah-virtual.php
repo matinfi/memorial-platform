@@ -2,7 +2,7 @@
 /**
  * Plugin Name: آرامگاه مجازی — Core
  * Description: Core memorial content, authentication, search, front-end account/create flows and administrator settings.
- * Version: 1.11.7
+ * Version: 1.11.8
  * Requires at least: 6.4
  * Requires PHP: 8.0
  * Text Domain: avam
@@ -39,7 +39,7 @@ final class AVAM_Core {
  }
 
  public static function assets(){
-  $version='1.11.7';
+  $version='1.11.8';
   $cc=get_option('avam_control_center',[]);
   $cache_busting=!is_array($cc)||($cc['cache_busting']??'1')==='1';
   $asset_version=static function($relative)use($version,$cache_busting){
