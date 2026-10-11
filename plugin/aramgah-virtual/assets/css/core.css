@@ -1932,3 +1932,31 @@
 .avam-wizard-count{font-size:13px;opacity:.7}
 .avam-reminder-optin{display:flex;align-items:center;gap:10px;margin:16px 0}
 .avam-reminder-optin input{width:auto}
+
+
+/* Premium memorial media manager: accessible upload zones and responsive previews. */
+.avam-media-manager{display:grid;gap:22px}
+.avam-media-manager>.avam-field{min-width:0}
+.avam-media-manager .avam-upload{
+ min-height:104px;gap:14px;padding:18px 20px;border:1px dashed #aabbb0;border-radius:16px;
+ background:linear-gradient(135deg,rgba(242,247,243,.96),rgba(250,251,249,.96));
+}
+.avam-media-manager .avam-upload:focus-within{outline:3px solid rgba(83,119,97,.22);outline-offset:2px;border-color:#587a64}
+.avam-media-manager .avam-upload>div{min-width:0;flex:1}
+.avam-media-manager .avam-upload strong{font-size:13px;line-height:1.8}
+.avam-media-manager .avam-upload small{display:block;font-size:11px;line-height:1.9}
+.avam-media-manager .avam-upload-filename{display:block;max-width:100%;overflow-wrap:anywhere;color:#587461;font-size:11px;font-weight:650}
+.avam-media-manager .avam-upload>span{flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:#e4eee7;color:#4e705b}
+.avam-media-manager .avam-image-preview{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.avam-media-manager .avam-image-preview[hidden]{display:none!important}
+.avam-media-manager .avam-image-preview img{display:block;width:84px;height:84px;object-fit:cover;border:1px solid #dce5de;border-radius:12px;background:#edf1ed}
+.avam-media-manager .avam-featured-preview img{width:116px;height:116px;border-radius:14px}
+.avam-media-manager .avam-image-preview span{color:var(--c-muted,#718076);font-size:11px;overflow-wrap:anywhere}
+.avam-upload-privacy-note{margin:0;color:var(--c-muted,#718076);font-size:11px;line-height:2}
+@media(max-width:600px){
+ .avam-media-manager{gap:18px}
+ .avam-media-manager .avam-upload{min-height:94px;padding:14px;gap:10px}
+ .avam-media-manager .avam-upload>span{flex-basis:36px;width:36px;height:36px}
+ .avam-media-manager .avam-image-preview img{width:72px;height:72px}
+ .avam-media-manager .avam-featured-preview img{width:104px;height:104px}
+}
