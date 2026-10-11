@@ -126,6 +126,7 @@ jQuery(function($){
   img.src=url;img.alt=alt;img.onload=()=>URL.revokeObjectURL(url);
   container.appendChild(img);
  }
+ $(document).on('click','#avam-create-form .avam-gallery-remove',function(){const form=this.closest('#avam-create-form');const item=this.closest('[data-gallery-item]');if(item)item.remove();const galleryInput=form&&form.querySelector('input[name="gallery[]"]');const remaining=form?form.querySelectorAll('[data-gallery-item]').length:0;if(galleryInput)galleryInput.dataset.existingCount=String(remaining);});
  $(document).on('change','#avam-create-form input[type="file"][name="image"],#avam-create-form input[type="file"][name="gallery[]"]',function(){
   const input=this,form=input.closest('#avam-create-form');
   if(!form)return;
