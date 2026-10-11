@@ -91,3 +91,12 @@
 - Give a flower and light a candle on a public memorial, then open each supporter list and verify account display names appear without exposing emails or IP addresses.
 - Verify guest reactions are shown as `کاربر مهمان`, and legacy totals with no stored identity show an explanatory note.
 - Verify the supporter list is usable on desktop/mobile, closes by close button, backdrop, and Escape, and does not appear on private memorials.
+
+
+## Owner-side comment moderation
+
+- [ ] A logged-in memorial owner can open `/manage-memorial-comments/` from the account sidebar.
+- [ ] Pending comments on only that owner's published memorials appear; other users' memorial comments are never exposed for moderation.
+- [ ] Approving a pending comment publishes it; rejecting it moves it to the WordPress trash.
+- [ ] The owner can approve their own pending comment; visitors who do not own the memorial cannot use the moderation endpoint.
+- [ ] Invalid/expired nonces and attempts to moderate comments on another user's memorial are rejected.
